@@ -1,0 +1,276 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.logo {
+    font-family: "Lora", serif;
+    font-size: large;
+}
+body {
+    background: #000;
+}
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+nav {
+    background: #5f2119;
+    margin: auto;
+    padding: 20px 20px;
+}
+.nav-con {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*  */
+.logo a {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+/* ทำให้ Menu อยู่ตรงกลางของ Navbar แนวเรียงแถว */
+.menu {
+    display: flex;
+    list-style: none;
+}
+/* ระยะห่างของรายการ Menu 5 */
+.menu li {
+    margin-left: 3rem;
+}
+.menu a {
+    color: #fff;
+    text-decoration: none;
+}
+.menu a:hover {
+    color: #c3766f;
+}
+/* ================= Main Content ================= */
+.maincontent {
+    font-family: "Poppins", sans-serif;
+    padding: 50px 0;
+}
+
+.maincontent-con {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    background: black;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.maincontent-info{
+    color: #ffff;
+}
+.maincontent-info h1 {
+    font-size: 36px;
+    margin: 30px 0 10px 30px;
+}
+.maincontent-info h4 {
+    margin: 10px 0 10px 30px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.maincontent-btn-category{
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 10px 8px 20px 20px;
+    background: #7c2220;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+}
+.maincontent-info p {
+    padding: 30px 0;
+    font-family: "Prompt", sans-serif;
+    line-height: 1.8;
+    text-indent: 2em;
+}
+.maincontent-btn {
+    display: inline-block;
+    padding: 10px 35px;
+    margin: 10px;
+    background: #7c2220;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+}
+
+.maincontent-btn:hover {
+    background: #c3766f;
+    color: #5f2119;
+}
+
+.maincontent-img img {
+    padding-top: 30px;
+    width: 400px;
+    border-radius: 12px;
+}
+
+/* Section 2 */
+.content {
+    font-family: "Poppins", sans-serif;
+    padding: 60px 0;
+    background-color: #f5f5f5;
+    
+}
+
+.content-title {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.content-title h3 {
+    font-size: 32px;
+}
+
+/*Grid 3 กล่อง */
+.container-con {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+/* Card */
+.container-item {
+    font-family: "prompt", sans-serif;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+.content-title h3 {
+    font-size: 32px;
+}
+.container-item:hover {
+    transform: translateY(-8px);
+}
+.container-item img {
+    width: 100%;
+    height: 370px;
+    object-fit: cover;
+    display: block;
+}
+.container-item h4 {
+    margin: 15px 20px 10px;
+}
+.container-item p {
+    margin: 0 20px 20px;
+    color: #666;
+}
+.container-btn {
+    display: inline-block;
+    margin: 0 20px 20px;
+    padding: 10px 20px;
+    background: #7c2220;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+}
+.container-btn:hover {
+    background: #c3766f;
+    color: #5f2119;
+}
+
+/* ================= Footer Calendar ================= */
+.footer-top {
+    font-family: poppins, sans-serif;
+    background: #7c2220;
+    padding: 50px 0;
+    color: #fff;
+}
+
+.footer-top-item h4 {
+    font-size: 22px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    border-left: 4px solid #c3766f;
+    padding-left: 10px;
+}
+
+.footer-top-item-con {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.footer-top-item-con:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateX(5px);
+}
+
+/* กล่องวันที่ */
+.date {
+    width: 65px;
+    height: 65px;
+    background: #c3766f;
+    color: #5f2119;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    font-weight: 600;
+}
+
+.date .day {
+    font-size: 23px;
+    line-height: 1;
+}
+
+.date .month {
+    font-size: 15px;
+}
+.info{
+    font-family: "Prompt", sans-serif;
+}
+
+/* ข้อมูลกิจกรรม */
+.info-title {
+    display: block;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.info-descrip {
+    font-size: 16px;
+    color: #f0a49d;
+}
+
+/* footer */
+.footer-top-item:nth-child(2) h4,
+.footer-top-item:nth-child(3) h4 {
+    margin-bottom: 1rem;
+}
+
+.footer-bottom {
+    background-color: #fceaca;
+    padding: 1rem;
+    text-align: center;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
+
+
+
+
+

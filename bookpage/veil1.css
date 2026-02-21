@@ -1,0 +1,220 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* cont */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.logo {
+    font-family: "Lora", serif;
+    font-size: large;
+}
+body {
+    background: #fff;
+}
+.container-menu {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+nav {
+    background: #5f2119;
+    margin: auto;
+    padding: 20px 20px;
+}
+.nav-con {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*  */
+.logo a {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+/* ทำให้ Menu อยู่ตรงกลางของ Navbar แนวเรียงแถว */
+.menu {
+    display: flex;
+    list-style: none;
+}
+/* ระยะห่างของรายการ Menu 5 */
+.menu li {
+    margin-left: 3rem;
+}
+.menu a {
+    color: #fff;
+    text-decoration: none;
+}
+.menu a:hover {
+    color: #c3766f;
+}
+
+/* PRODUCT DETAIL SECTION */
+.product-details{
+    font-family: "Poppins", sans-serif;
+    margin: 50px 30px;
+    padding: 60px 50px;
+}
+.product-details-thai{
+    font-family: "Prompt", sans-serif;
+    margin: 50px 30px;
+    padding: 60px 50px;
+}
+
+.product-con-details{
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+/* รูปหนังสือ */
+.product-img img{
+    width: 250px;
+    height: auto;
+}
+
+/* กล่องข้อมูลฝั่งขวา */
+.product-info-1{
+    flex: 1;
+}
+.product-info-1 p{
+    font-size: 18px;
+}
+
+
+/* รายละเอียดหนังสือ */
+.detail-book{
+    font-size: 14px;
+    margin-top: 20px;
+    line-height: 1.8;
+}
+.detail-book-thai{
+    font-family: "Prompt", sans-serif;
+    font-size: 16px;
+    margin-top: 20px;
+    line-height: 1.8;
+}
+
+
+/* ราคา + สถานะ */
+.status-book{
+    font-size: 14px;
+    margin-top: 2px;
+    line-height: 1.8;
+}
+.status-book label{
+    width: 50px;
+    text-align: center;
+    font-size: 18px;
+}
+.status-book input{
+    width: 50px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.online-price,
+.member-price{
+    margin-bottom: 5px;
+}
+
+/* ปุ่ม */
+.product-btn{
+    margin-top: 20px;
+}
+
+.product-btn-1{
+    display: inline-block;
+    margin-right: 15px;
+    padding: 10px 25px;
+    background: #7c2220;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.product-btn-1:hover{
+    background: #c3766f;
+    color: #5f2119;
+}
+/*  */
+.container {
+    font-family: "Poppins", sans-serif;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.product-title{
+    margin: 40px 0 10px;
+}
+.product-title-thai{
+    font-family: "prompt", sans-serif;
+    margin: 40px 0 40px;
+}
+.product-con{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:30px;
+}
+.product-item{
+    margin: 10px 0;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    outline: 1px solid rgba(0,0,0,0.1);
+}
+.product-item:hover{
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+.product-item img{
+    width: 280px;
+    height: 400px;
+    object-fit: cover
+}
+.product-info{
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 15px;
+}
+.product-info-thai{
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 16px;
+    font-family: "prompt", sans-serif;
+}
+.product-info p{
+    padding: 5px 5px 0 0;
+    font-size: 15px;
+}
+.product-details-price{
+    padding: 10px;
+}
+.product-price{
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #5f2119;
+}
+

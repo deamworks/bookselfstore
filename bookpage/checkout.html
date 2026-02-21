@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f8f8f8;
+    padding:40px;
+}
+
+.table-container{
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+table{width:100%;border-collapse:collapse;}
+thead{background:#7c2220;color:white;}
+thead th{padding:15px;}
+tbody td{padding:15px;text-align:center;border-bottom:1px solid #eee;}
+tbody tr:nth-child(even){background:#fadbd9;}
+tbody tr:hover{background:#f5c6c3;}
+
+td img{width:80px;border-radius:6px;margin-bottom:5px;}
+
+.book-name{text-align:left;font-weight:500;}
+.book-name:lang(th){font-family:'Prompt',sans-serif;}
+
+.price{color:#7c2220;font-weight:bold;}
+
+button{
+    font-family: 'Poppins',sans-serif;
+    padding:6px 15px;
+    background:#7c2220;
+    color:white;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+button:hover{background:#5f2119;}
+
+.summary{
+    font-family:'Prompt',sans-serif;
+    margin-top:40px;
+    padding:30px;
+    border-radius:10px;
+    background:#fff3f2;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin:5px 0;
+}
+
+.remove-btn{
+    font-family: 'Prompt',sans-serif;
+    background:#999;
+    padding:3px 10px;
+    border-radius:10px;
+    font-size:12px;
+}
+
+.checkout-btn{
+    font-family: 'Prompt',sans-serif;
+    margin-top:15px;
+    width:100%;
+}
+
+.receipt{
+    margin-top:30px;
+    padding:30px;
+    background:#ffffff;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    display:none;
+    font-family:'Prompt',sans-serif;
+}
+
+.receipt-header{text-align:center;margin-bottom:15px;}
+.receipt-header h2{color:#7c2220;margin-bottom:5px;}
+
+.receipt table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+.receipt th,.receipt td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:center;
+}
+
+.receipt th{background:#f3f3f3;}
+
+.receipt .total-section{
+    font-family:'Prompt',sans-serif;
+    margin-top:15px;
+    text-align:right;
+}
+
+.print-btn{
+    font-family:'Prompt',sans-serif;
+    margin-top:15px;
+    width:100%;
+    background:#7c2220;
+}
+
+@media print{
+    body *{visibility:hidden;}
+    .receipt,.receipt *{visibility:visible;}
+    .receipt{position:absolute;left:0;top:0;width:100%;}
+    .print-btn{display:none;}
+}
+
+.back-btn{
+    font-family:'Prompt',sans-serif;
+    margin-top:15px;
+    width:100%;
+    background:#555;
+}
+
+.back-btn:hover{
+    background:#333;
+}
+</style>
+</head>
+
+<body>
+
+<div class="table-container">
+
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Name Book</th>
+<th>Price</th>
+<th>Stock</th>
+<th>Status</th>
+<th>Checkout</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><img src="../photo/theveil1.jpg"><br>4829571630</td>
+<td class="book-name">Veil Volume 1: Temperature of Orange</td>
+<td class="price" data-price="528">฿528.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/theveil2.jpg"><br>7391058246</td>
+<td class="book-name">Veil Volume 2: Calming Noir</td>
+<td class="price" data-price="528">฿528.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/theveil3.jpg"><br>1569047382</td>
+<td class="book-name">Veil Volume 3: Graceful White</td>
+<td class="price" data-price="529">฿529.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/veil4.jpg"><br>9082715643</td>
+<td class="book-name">Veil Volume 4: Transparent Burns</td>
+<td class="price" data-price="553">฿553.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/veil5.jpg"><br>6248190573</td>
+<td class="book-name">Veil Volume 5: Golden Blink</td>
+<td class="price" data-price="529">฿529.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/veil6.jpg"><br>3716409285</td>
+<td class="book-name">Veil Volume 6: Untangled Rouge</td>
+<td class="price" data-price="600">฿600.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/veil7.jpg"><br>8502947163</td>
+<td class="book-name">Veil Volume 7: Warmest Blue</td>
+<td class="price" data-price="536">฿536.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/book1.gif"><br>2975318640</td>
+<td class="book-name" lang="th">ทรวงทราม</td>
+<td class="price" data-price="529">฿529.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/book2.gif"><br>5648721903</td>
+<td class="book-name" lang="th">ไทยวิจิตร</td>
+<td class="price" data-price="399">฿399.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+<tr>
+<td><img src="../photo/book3.gif"><br>9134067528</td>
+<td class="book-name" lang="th">ผีเน่ากับโลงผุ</td>
+<td class="price" data-price="420">฿420.00</td>
+<td class="stock">10</td>
+<td>Available</td>
+<td><button onclick="buy(this)">Buy</button></td>
+</tr>
+
+</tbody>
+</table>
+
+<div class="summary">
+<h3>ตะกร้าสินค้า</h3>
+<div id="cartList"></div>
+<p>จำนวนเล่มรวมทั้งหมด: <span id="totalQty">0</span> เล่ม</p>
+<hr>
+<p>Subtotal: <span id="subtotal">0.00</span> บาท</p>
+<p>Discount 10% (ครบ 5 เล่ม): <span id="discount">0.00</span> บาท</p>
+<p>VAT 7%: <span id="vat">0.00</span> บาท</p>
+<h3>Total Payment: <span id="total">0.00</span> บาท</h3>
+
+<button class="checkout-btn" onclick="checkout()">ชำระเงิน</button>
+<div class="receipt" id="receipt"></div>
+
+<a href="../index.html">
+<button class="back-btn">← Back to Home</button></a>
+</div>
+
+</div>
+
+
+<script>
+let cart = {};
+let stocks = {};
+
+function buy(btn){
+    let row = btn.closest("tr");
+    let id = row.cells[0].innerText.trim();
+    let name = row.querySelector(".book-name").innerText;
+    let price = parseFloat(row.querySelector(".price").dataset.price);
+    let stockCell = row.querySelector(".stock");
+    let statusCell = row.cells[4];
+
+    if(!stocks[id]) stocks[id] = parseInt(stockCell.innerText);
+    if(stocks[id] <= 0){ 
+        alert("สินค้าหมดแล้ว"); 
+        return; 
+    }
+
+    stocks[id]--;
+    stockCell.innerText = stocks[id];
+
+    // ถ้า stock เหลือ 0
+    if(stocks[id] <= 0){
+        statusCell.innerText = "Sold Out";
+        btn.disabled = true;
+        btn.style.background = "#999";
+        btn.style.cursor = "not-allowed";
+    }
+
+    if(cart[id]) cart[id].qty++;
+    else cart[id] = {name:name,price:price,qty:1};
+
+    renderCart();
+}
+
+function removeItem(id){
+    if(!cart[id]) return;
+
+    cart[id].qty--;
+
+    // คืน stock กลับ 1 ชิ้น
+    document.querySelectorAll("tr").forEach(row=>{
+        if(row.cells[0] && row.cells[0].innerText.trim()==id){
+            let stockCell = row.querySelector(".stock");
+            let statusCell = row.cells[4];
+            let buyBtn = row.querySelector("button");
+
+            stocks[id]++;
+            stockCell.innerText = stocks[id];
+
+            // ถ้า stock กลับมา > 0
+            if(stocks[id] > 0){
+                statusCell.innerText = "Available";
+                buyBtn.disabled = false;
+                buyBtn.style.background = "#7c2220";
+                buyBtn.style.cursor = "pointer";
+            }
+        }
+    });
+
+    if(cart[id].qty <= 0){
+        delete cart[id];
+    }
+
+    renderCart();
+}
+
+function renderCart(){
+    let cartList=document.getElementById("cartList");
+    cartList.innerHTML="";
+    let subtotal=0,totalQty=0;
+
+    for(let id in cart){
+        let item=cart[id];
+        subtotal+=item.price*item.qty;
+        totalQty+=item.qty;
+
+        cartList.innerHTML+=`
+        <div class="cart-item">
+            <span>${item.name} × ${item.qty}</span>
+            <button class="remove-btn" onclick="removeItem('${id}')">ลบ</button>
+        </div>`;
+    }
+
+    let discount = totalQty >= 5 ? subtotal * 0.10 : 0;
+    let totalAfterDiscount = subtotal - discount;
+    let priceBeforeVAT = totalAfterDiscount / 1.07;
+    let vat = totalAfterDiscount - priceBeforeVAT;
+
+    document.getElementById("totalQty").innerText = totalQty;
+    document.getElementById("subtotal").innerText = subtotal.toFixed(2);
+    document.getElementById("discount").innerText = discount.toFixed(2);
+    document.getElementById("vat").innerText = vat.toFixed(2);
+    document.getElementById("total").innerText = totalAfterDiscount.toFixed(2);
+}
+
+function checkout(){
+    if(Object.keys(cart).length===0){ 
+        alert("ยังไม่มีสินค้า"); 
+        return; 
+    }
+
+    let receipt=document.getElementById("receipt");
+    receipt.style.display="block";
+
+    let invoiceNo="INV-"+Date.now();
+    let date=new Date().toLocaleString();
+
+    let subtotal=parseFloat(document.getElementById("subtotal").innerText);
+    let discount=parseFloat(document.getElementById("discount").innerText);
+    let total=parseFloat(document.getElementById("total").innerText);
+
+    let priceBeforeVAT=total/1.07;
+    let vat=total-priceBeforeVAT;
+
+    let html=`
+    <div class="receipt-header">
+        <h2>Bookself Store</h2>
+        <p>www.bookselfstore.com</p>
+        <p>Invoice No: ${invoiceNo}</p>
+        <p>Date: ${date}</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Book</th>
+            <th>Qty</th>
+            <th>Price/Unit</th>
+            <th>Total</th>
+        </tr>
+    `;
+
+    for(let id in cart){
+        let item=cart[id];
+        html+=`
+        <tr>
+            <td>${item.name}</td>
+            <td>${item.qty}</td>
+            <td>${item.price.toFixed(2)}</td>
+            <td>${(item.price*item.qty).toFixed(2)}</td>
+        </tr>`;
+    }
+
+    html+=`
+    </table>
+
+    <div class="total-section">
+        <p>Subtotal: ${subtotal.toFixed(2)} บาท</p>
+        <p>Discount (10% เมื่อครบ 5 เล่ม): -${discount.toFixed(2)} บาท</p>
+        <p>ราคาก่อน VAT: ${priceBeforeVAT.toFixed(2)} บาท</p>
+        <p>VAT 7%: ${vat.toFixed(2)} บาท</p>
+        <h3>Grand Total: ${total.toFixed(2)} บาท</h3>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">พิมพ์ใบเสร็จ</button>
+    `;
+
+    receipt.innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
