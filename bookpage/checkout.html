@@ -481,6 +481,7 @@
 
                 // ตรวจสอบจำนวนซื้อต่อรายการ ไม่เกิน MAX_PER_BOOK เล่ม
                 if (cart[id] && cart[id].qty >= MAX_PER_BOOK) {
+                    statusCell.innerText = "Available";
                     showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
                     return;
                 }
