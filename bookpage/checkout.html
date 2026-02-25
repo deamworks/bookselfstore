@@ -457,7 +457,7 @@
                 modal.style.display = "flex";
 
                 let invoiceNo = "INV-" + Date.now();
-                let date = new Date().toLocaleString();
+                let date = new Date().toLocaleString("th-TH");
 
                 let subtotal = parseFloat(document.getElementById("subtotal").innerText);
                 let discount = parseFloat(document.getElementById("discount").innerText);
