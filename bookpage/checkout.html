@@ -121,7 +121,7 @@
             }
 
             .receipt-modal {
-                font-family:'Prompt', sans-serif;
+                font-family: 'Prompt', sans-serif;
                 position: fixed;
                 inset: 0;
                 background: rgba(0, 0, 0, 0.6);
@@ -194,16 +194,85 @@
             .update-date {
                 font-family: "Prompt", sans-serif;
             }
-            tr:hover td.update-date{
+
+            tr:hover td.update-date {
                 background-color: #fff;
             }
+
             .title-page {
                 margin: 20px;
             }
+
             a {
                 color: black;
                 text-decoration: none;
-}
+            }
+
+            /* CUSTOM ALERT POPUP */
+            .alert-modal {
+                font-family: 'Prompt', sans-serif;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .alert-modal.show {
+                display: flex;
+            }
+
+            .alert-box {
+                background: #fff;
+                border-radius: 15px;
+                padding: 30px 35px;
+                max-width: 380px;
+                width: 90%;
+                text-align: center;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+                animation: popIn 0.2s ease;
+            }
+
+            @keyframes popIn {
+                from { transform: scale(0.85); opacity: 0; }
+                to   { transform: scale(1);    opacity: 1; }
+            }
+
+            .alert-icon {
+                font-size: 40px;
+                margin-bottom: 10px;
+            }
+
+            .alert-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: #7c2220;
+                margin-bottom: 8px;
+            }
+
+            .alert-message {
+                font-size: 14px;
+                color: #555;
+                margin-bottom: 20px;
+                line-height: 1.6;
+            }
+
+            .alert-ok-btn {
+                font-family: 'Prompt', sans-serif;
+                padding: 8px 35px;
+                background: #7c2220;
+                color: white;
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 15px;
+            }
+
+            .alert-ok-btn:hover {
+                background: #5f2119;
+            }
         </style>
     </head>
     <h1 class="title-page" align="center">Check Out</h1>
@@ -227,10 +296,9 @@
                 <tbody>
 
                     <tr>
-                        
                         <td>
                             <a href="veil1.html">
-                            <img src="../photo/theveil1.jpg"><br>4829571630</td></a>
+                            <img src="../photo/theveil1.jpg"><br>4829571630</a></td>
                         <td class="book-name">Veil Volume 1: Temperature of Orange</td>
                         <td class="price" data-price="528">฿528.00</td>
                         <td class="stock">10</td>
@@ -241,7 +309,7 @@
                     <tr>
                         <td>
                             <a href="veil2.html">
-                            <img src="../photo/theveil2.jpg"><br>7391058246</td></a>
+                            <img src="../photo/theveil2.jpg"><br>7391058246</a></td>
                         <td class="book-name">Veil Volume 2: Calming Noir</td>
                         <td class="price" data-price="528">฿528.00</td>
                         <td class="stock">10</td>
@@ -252,7 +320,7 @@
                     <tr>
                         <td>
                             <a href="veil3.html">
-                            <img src="../photo/theveil3.jpg"><br>1569047382</td></a>
+                            <img src="../photo/theveil3.jpg"><br>1569047382</a></td>
                         <td class="book-name">Veil Volume 3: Graceful White</td>
                         <td class="price" data-price="529">฿529.00</td>
                         <td class="stock">10</td>
@@ -263,7 +331,7 @@
                     <tr>
                         <td>
                             <a href="veil4.html">
-                            <img src="../photo/veil4.jpg"><br>9082715643</td></a>
+                            <img src="../photo/veil4.jpg"><br>9082715643</a></td>
                         <td class="book-name">Veil Volume 4: Transparent Burns</td>
                         <td class="price" data-price="553">฿553.00</td>
                         <td class="stock">10</td>
@@ -274,7 +342,7 @@
                     <tr>
                         <td>
                             <a href="veil5.html">
-                            <img src="../photo/veil5.jpg"><br>6248190573</td></a>
+                            <img src="../photo/veil5.jpg"><br>6248190573</a></td>
                         <td class="book-name">Veil Volume 5: Golden Blink</td>
                         <td class="price" data-price="529">฿529.00</td>
                         <td class="stock">10</td>
@@ -283,10 +351,9 @@
                     </tr>
 
                     <tr>
-                        
                         <td>
                             <a href="veil6.html">
-                            <img src="../photo/veil6.jpg"><br>3716409285</td></a>
+                            <img src="../photo/veil6.jpg"><br>3716409285</a></td>
                         <td class="book-name">Veil Volume 6: Untangled Rouge</td>
                         <td class="price" data-price="600">฿600.00</td>
                         <td class="stock">10</td>
@@ -297,7 +364,7 @@
                     <tr>
                         <td>
                             <a href="veil7.html">
-                            <img src="../photo/veil7.jpg"><br>8502947163</td></a>
+                            <img src="../photo/veil7.jpg"><br>8502947163</a></td>
                         <td class="book-name">Veil Volume 7: Warmest Blue</td>
                         <td class="price" data-price="536">฿536.00</td>
                         <td class="stock">10</td>
@@ -308,7 +375,7 @@
                     <tr>
                         <td>
                             <a href="book1.html">
-                            <img src="../photo/book1.gif"><br>2975318640</td></a>
+                            <img src="../photo/book1.gif"><br>2975318640</a></td>
                         <td class="book-name" lang="th">ทรวงทราม</td>
                         <td class="price" data-price="529">฿529.00</td>
                         <td class="stock">10</td>
@@ -319,7 +386,7 @@
                     <tr>
                         <td>
                             <a href="book2.html">
-                            <img src="../photo/book2.gif"><br>5648721903</td></a>
+                            <img src="../photo/book2.gif"><br>5648721903</a></td>
                         <td class="book-name" lang="th">ไทยวิจิตร</td>
                         <td class="price" data-price="399">฿399.00</td>
                         <td class="stock">10</td>
@@ -330,7 +397,7 @@
                     <tr>
                         <td>
                             <a href="book3.html">
-                            <img src="../photo/book3.gif"><br>9134067528</td></a>
+                            <img src="../photo/book3.gif"><br>9134067528</a></td>
                         <td class="book-name" lang="th">ผีเน่ากับโลงผุ</td>
                         <td class="price" data-price="420">฿420.00</td>
                         <td class="stock">10</td>
@@ -366,13 +433,40 @@
 
         </div>
 
+        <!-- CUSTOM ALERT POPUP-->
+        <div class="alert-modal" id="alertModal">
+            <div class="alert-box">
+                <div class="alert-icon" id="alertIcon">⚠️</div>
+                <div class="alert-title" id="alertTitle">แจ้งเตือน</div>
+                <div class="alert-message" id="alertMessage"></div>
+                <button class="alert-ok-btn" onclick="closeAlert()">ตกลง</button>
+            </div>
+        </div>
+
         <div class="receipt-modal" id="receiptModal">
             <div class="receipt-content" id="receipt"></div>
         </div>
 
         <script>
+            const MAX_PER_BOOK = 5;
+
             let cart = {};
             let stocks = {};
+
+            function showAlert(message, title = "แจ้งเตือน", type = "warning") {
+                const icons = { warning: "⚠️", error: "🚫", success: "✅" };
+                const colors = { warning: "#e67e22", error: "#7c2220", success: "#2e7d32" };
+
+                document.getElementById("alertTitle").innerText = title;
+                document.getElementById("alertMessage").innerText = message;
+                document.getElementById("alertIcon").innerText = icons[type] || "⚠️";
+                document.getElementById("alertTitle").style.color = colors[type] || "#7c2220";
+                document.getElementById("alertModal").classList.add("show");
+            }
+
+            function closeAlert() {
+                document.getElementById("alertModal").classList.remove("show");
+            }
 
             function buy(btn) {
                 let row = btn.closest("tr");
@@ -383,35 +477,50 @@
                 let statusCell = row.cells[4];
 
                 if (!stocks[id]) stocks[id] = parseInt(stockCell.innerText);
-                if (stocks[id] <= 0) { alert("สินค้าหมดแล้ว"); return; }
+                if (stocks[id] <= 0) { showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error"); return; }
+
+                // ตรวจสอบจำนวนซื้อต่อรายการ ไม่เกิน MAX_PER_BOOK เล่ม
+                if (cart[id] && cart[id].qty >= MAX_PER_BOOK) {
+                    showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
+                    return;
+                }
 
                 stocks[id]--;
                 stockCell.innerText = stocks[id];
 
-                if (stocks[id] <= 0) {
+                if (cart[id]) cart[id].qty++;
+                else cart[id] = { name, price, qty: 1 };
+
+                // ถ้าซื้อครบโควต้าแล้ว เปลี่ยน Status แต่ไม่ปิดปุ่ม (ให้กดแล้วขึ้น popup แทน)
+                if (cart[id].qty >= MAX_PER_BOOK) {
+                    statusCell.innerText = "Quota Full";
+                } else if (stocks[id] <= 0) {
                     statusCell.innerText = "Sold Out";
                     btn.disabled = true;
                     btn.style.background = "#999";
                 }
-
-                if (cart[id]) cart[id].qty++;
-                else cart[id] = { name, price, qty: 1 };
 
                 renderCart();
             }
 
             function removeItem(id) {
                 if (!cart[id]) return;
+
                 cart[id].qty--;
                 stocks[id]++;
 
                 document.querySelectorAll("tr").forEach(row => {
                     if (row.cells[0] && row.cells[0].innerText.trim() == id) {
                         row.querySelector(".stock").innerText = stocks[id];
+                        let currentQty = cart[id] ? cart[id].qty : 0;
                         if (stocks[id] > 0) {
-                            row.cells[4].innerText = "Available";
-                            row.querySelector("button").disabled = false;
-                            row.querySelector("button").style.background = "#7c2220";
+                            // ถ้าจำนวนในตะกร้าต่ำกว่าโควต้า คืน Status เป็น Available
+                            if (currentQty < MAX_PER_BOOK) {
+                                row.cells[4].innerText = "Available";
+                            }
+                            let buyBtn = row.querySelector("button");
+                            buyBtn.disabled = false;
+                            buyBtn.style.background = "#7c2220";
                         }
                     }
                 });
@@ -432,7 +541,7 @@
 
                     cartList.innerHTML += `
                         <div class="cart-item">
-                            <span>${item.name} จำนวน ${item.qty} เล่ม </span>
+                            <span>${item.name} จำนวน ${item.qty} เล่ม</span>
                             <button class="remove-btn" onclick="removeItem('${id}')">ลบ</button>
                         </div>`;
                 }
@@ -450,7 +559,7 @@
             }
 
             function checkout() {
-                if (Object.keys(cart).length === 0) { alert("ยังไม่มีสินค้า"); return; }
+                if (Object.keys(cart).length === 0) { showAlert("กรุณาเลือกสินค้าก่อนชำระเงิน", "ยังไม่มีสินค้า", "warning"); return; }
 
                 let modal = document.getElementById("receiptModal");
                 let receipt = document.getElementById("receipt");
@@ -504,10 +613,10 @@
             }
 
             function confirmPurchase() {
-                alert("การสั่งซื้อสำเร็จ ");
                 document.getElementById("receiptModal").style.display = "none";
                 cart = {};
                 renderCart();
+                showAlert("ขอบคุณที่ใช้บริการ Bookself Store", "การสั่งซื้อสำเร็จ", "success");
             }
         </script>
 
