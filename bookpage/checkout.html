@@ -452,7 +452,8 @@
             // ค่าคงที่: จำนวนสูงสุดที่ซื้อได้ต่อหนังสือ 1 รายการ
             // หากต้องการเปลี่ยนโควต้า แก้ที่บรรทัดนี้บรรทัดเดียวได้เลย
             // ========================================================
-            const MAX_PER_BOOK = 5;
+            
+            // const MAX_PER_BOOK = 5;
 
             // cart    → เก็บข้อมูลสินค้าในตะกร้า { id: { name, price, qty } }
             // stocks  → เก็บจำนวนสต๊อกปัจจุบันของแต่ละหนังสือ { id: จำนวน }
@@ -521,6 +522,8 @@
                 // ตรวจสอบที่ 1: สต๊อกหมด → แสดง popup error และหยุดทำงาน
                 if (stocks[id] <= 0) {
                     showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
+                    btn.disabled = true;
+                    btn.style.background = "#999";
                     return;
                 }
 
@@ -535,14 +538,18 @@
                 else cart[id] = { name, price, qty: 1 };
 
                 // อัปเดต Status ของแถวตามสถานการณ์
-                if (cart[id].qty >= MAX_PER_BOOK) {
-                    // ซื้อครบโควต้าแล้ว → แสดง "Quota Full" และปิดปุ่ม Buy
-                    statusCell.innerText = "Quota Full";
-                    btn.disabled = true;
-                    btn.style.background = "#999";
-                    showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
-                } else if (stocks[id] <= 0) {
+
+                // if (cart[id].qty >= MAX_PER_BOOK) {
+                //     // ซื้อครบโควต้าแล้ว → แสดง "Quota Full" และปิดปุ่ม Buy
+                //     statusCell.innerText = "Quota Full";
+                //     btn.disabled = true;
+                //     btn.style.background = "#999";
+                //     showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
+                // }  
+
+                if (stocks[id] <= 0) {
                     // สต๊อกหมด → แสดง "Sold Out" และปิดปุ่ม Buy ถาวร
+                    showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
                     statusCell.innerText = "Sold Out";
                     btn.disabled = true;
                     btn.style.background = "#999";
