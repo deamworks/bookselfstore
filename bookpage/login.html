@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="th">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>เข้าสู่ระบบ - Bookself Store</title>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Prompt', sans-serif;
+                background: #f8f8f8;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .login-card {
+                background: white;
+                padding: 50px 40px;
+                border-radius: 15px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                width: 100%;
+                max-width: 420px;
+                text-align: center;
+            }
+
+            .store-logo {
+                font-size: 28px;
+                font-weight: 600;
+                color: #7c2220;
+                margin-bottom: 5px;
+            }
+
+            .store-sub {
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 35px;
+            }
+
+            h2 {
+                font-size: 20px;
+                color: #333;
+                margin-bottom: 25px;
+            }
+
+            .google-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+                padding: 13px 20px;
+                background: white;
+                border: 2px solid #ddd;
+                border-radius: 10px;
+                cursor: pointer;
+                font-family: 'Prompt', sans-serif;
+                font-size: 15px;
+                color: #333;
+                transition: all 0.2s;
+            }
+
+            .google-btn:hover {
+                border-color: #7c2220;
+                background: #fff3f2;
+            }
+
+            .google-btn img {
+                width: 22px;
+            }
+
+            .divider {
+                margin: 25px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #bbb;
+                font-size: 13px;
+            }
+
+            .divider::before,
+            .divider::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: #eee;
+            }
+
+            /* ===== PROFILE SECTION (หลัง login) ===== */
+            .profile-section {
+                display: none;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                border: 3px solid #7c2220;
+                margin-bottom: 12px;
+            }
+
+            .profile-name {
+                font-size: 18px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 4px;
+            }
+
+            .profile-email {
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 25px;
+            }
+
+            /* ===== FORM ที่อยู่จัดส่ง ===== */
+            .form-group {
+                text-align: left;
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                display: block;
+                font-size: 13px;
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                width: 100%;
+                padding: 10px 14px;
+                border: 1.5px solid #ddd;
+                border-radius: 8px;
+                font-family: 'Prompt', sans-serif;
+                font-size: 14px;
+                color: #333;
+                transition: border 0.2s;
+            }
+
+            .form-group input:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: #7c2220;
+            }
+
+            .form-group textarea {
+                resize: vertical;
+                min-height: 70px;
+            }
+
+            .form-row {
+                display: flex;
+                gap: 10px;
+            }
+
+            .form-row .form-group {
+                flex: 1;
+            }
+
+            .save-btn {
+                width: 100%;
+                padding: 12px;
+                background: #7c2220;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-family: 'Prompt', sans-serif;
+                font-size: 15px;
+                cursor: pointer;
+                margin-top: 5px;
+                transition: background 0.2s;
+            }
+
+            .save-btn:hover {
+                background: #5f2119;
+            }
+
+            .logout-btn {
+                width: 100%;
+                padding: 10px;
+                background: white;
+                color: #999;
+                border: 1.5px solid #ddd;
+                border-radius: 10px;
+                font-family: 'Prompt', sans-serif;
+                font-size: 14px;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: all 0.2s;
+            }
+
+            .logout-btn:hover {
+                border-color: #cc0000;
+                color: #cc0000;
+            }
+
+            .goto-shop-btn {
+                width: 100%;
+                padding: 12px;
+                background: #fff3f2;
+                color: #7c2220;
+                border: 2px solid #7c2220;
+                border-radius: 10px;
+                font-family: 'Prompt', sans-serif;
+                font-size: 15px;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: all 0.2s;
+            }
+
+            .goto-shop-btn:hover {
+                background: #7c2220;
+                color: white;
+            }
+
+            .status-msg {
+                font-size: 13px;
+                color: #2e7d32;
+                margin-top: 10px;
+                min-height: 20px;
+            }
+
+            .loading {
+                font-size: 13px;
+                color: #999;
+                margin-top: 15px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="login-card">
+
+            <div class="store-logo">📚 Bookself Store</div>
+            <div class="store-sub">www.bookselfstore.com</div>
+
+            <!-- ===== ส่วนก่อน Login ===== -->
+            <div id="loginSection">
+                <h2>เข้าสู่ระบบ / สมัครสมาชิก</h2>
+
+                <button class="google-btn" onclick="loginWithGoogle()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    เข้าสู่ระบบด้วย Google
+                </button>
+
+                <p class="loading" id="loadingMsg"></p>
+            </div>
+
+            <!-- ===== ส่วนหลัง Login (โปรไฟล์ + ที่อยู่) ===== -->
+            <div class="profile-section" id="profileSection">
+
+                <img class="profile-avatar" id="avatarImg" src="" alt="avatar">
+                <div class="profile-name" id="profileName"></div>
+                <div class="profile-email" id="profileEmail"></div>
+
+                <div class="divider">ข้อมูลการจัดส่ง</div>
+
+                <div class="form-group">
+                    <label>ชื่อ-นามสกุล</label>
+                    <input type="text" id="fullName" placeholder="ชื่อ-นามสกุล">
+                </div>
+
+                <div class="form-group">
+                    <label>เบอร์โทรศัพท์</label>
+                    <input type="tel" id="phone" placeholder="0XX-XXX-XXXX">
+                </div>
+
+                <div class="form-group">
+                    <label>ที่อยู่จัดส่ง</label>
+                    <textarea id="address" placeholder="บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>จังหวัด</label>
+                        <input type="text" id="province" placeholder="จังหวัด">
+                    </div>
+                    <div class="form-group">
+                        <label>รหัสไปรษณีย์</label>
+                        <input type="text" id="postcode" placeholder="XXXXX">
+                    </div>
+                </div>
+
+                <button class="save-btn" onclick="saveProfile()">💾 บันทึกข้อมูล</button>
+                <button class="goto-shop-btn" onclick="window.location.href='checkout.html'">🛒 ไปหน้าสั่งซื้อ</button>
+                <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
+
+                <p class="status-msg" id="statusMsg"></p>
+            </div>
+
+        </div>
+
+        <!-- Supabase SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+            // ========================================================
+            // ตั้งค่า Supabase Client
+            // SUPABASE_URL  → URL ของ project
+            // SUPABASE_ANON → anon public key สำหรับ client-side
+            // ========================================================
+            const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+            const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+
+            // ใช้ชื่อ sbClient เพื่อไม่ให้ชนกับ window.supabase ที่ SDK โหลดมา
+            const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+            // ========================================================
+            // เมื่อโหลดหน้า → ตรวจสอบว่า login อยู่แล้วหรือไม่
+            // ถ้ามี session อยู่แล้ว → แสดงโปรไฟล์ทันที
+            // ========================================================
+            window.addEventListener("load", async () => {
+                const { data: { session }, error } = await sbClient.auth.getSession();
+                console.log("Session:", session);
+                console.log("Error:", error);
+                if (session) {
+                    await showProfile(session.user);
+                }
+            });
+
+            // ========================================================
+            // loginWithGoogle()
+            // เปิดหน้าต่าง OAuth ของ Google ผ่าน Supabase
+            // หลัง login สำเร็จ Supabase จะ redirect กลับมาที่หน้านี้
+            // ========================================================
+            async function loginWithGoogle() {
+                document.getElementById("loadingMsg").innerText = "กำลังเชื่อมต่อ Google...";
+
+                // ใช้ signInWithOAuth แบบ popup แทน redirect
+                // เพื่อหลีกเลี่ยงปัญหา Chrome ลบ session ใน navigation chain
+                const { data, error } = await sbClient.auth.signInWithOAuth({
+                    provider: "google",
+                    options: {
+                        skipBrowserRedirect: false,
+                        redirectTo: window.location.origin + "/bookselfstore/bookpage/login.html",
+                        queryParams: {
+                            access_type: "offline",
+                            prompt: "consent"
+                        }
+                    }
+                });
+
+                if (error) {
+                    document.getElementById("loadingMsg").innerText = "เกิดข้อผิดพลาด: " + error.message;
+                    console.log("Login error:", error);
+                }
+            }
+
+            // ========================================================
+            // showProfile(user)
+            // แสดงส่วนโปรไฟล์และโหลดข้อมูลจาก database
+            // พารามิเตอร์: user → object จาก Supabase auth
+            // ========================================================
+            async function showProfile(user) {
+                // ซ่อนส่วน login และแสดงส่วนโปรไฟล์
+                document.getElementById("loginSection").style.display   = "none";
+                document.getElementById("profileSection").style.display = "block";
+
+                // แสดงข้อมูลจาก Google
+                document.getElementById("avatarImg").src         = user.user_metadata.avatar_url || "";
+                document.getElementById("profileName").innerText = user.user_metadata.full_name  || "";
+                document.getElementById("profileEmail").innerText = user.email || "";
+
+                // โหลดข้อมูลที่บันทึกไว้ใน database (ถ้ามี)
+                const { data: profile } = await sbClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", user.id)
+                    .single();
+
+                // ถ้ามีข้อมูลใน database → ใส่ลงใน form
+                if (profile) {
+                    document.getElementById("fullName").value = profile.full_name || "";
+                    document.getElementById("phone").value    = profile.phone     || "";
+                    document.getElementById("address").value  = profile.address   || "";
+                    document.getElementById("province").value = profile.province  || "";
+                    document.getElementById("postcode").value = profile.postcode  || "";
+                } else {
+                    // ถ้าเป็นสมาชิกใหม่ → สร้าง profile เปล่าไว้ใน database ก่อน
+                    const { error: insertError } = await sbClient.from("profiles").insert({
+                        id:         user.id,
+                        email:      user.email,
+                        full_name:  user.user_metadata.full_name  || "",
+                        avatar_url: user.user_metadata.avatar_url || ""
+                    });
+                    console.log("Insert error:", insertError);
+                    // ใส่ชื่อจาก Google ลงใน form เป็นค่าเริ่มต้น
+                    document.getElementById("fullName").value = user.user_metadata.full_name || "";
+                }
+            }
+
+            // ========================================================
+            // saveProfile()
+            // บันทึกข้อมูลที่อยู่จัดส่งลงใน Supabase database
+            // ใช้ upsert (insert หรือ update อัตโนมัติ)
+            // ========================================================
+            async function saveProfile() {
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) return;
+
+                const user = session.user;
+
+                // รวบรวมข้อมูลจาก form
+                const profileData = {
+                    id:         user.id,
+                    email:      user.email,
+                    full_name:  document.getElementById("fullName").value.trim(),
+                    phone:      document.getElementById("phone").value.trim(),
+                    address:    document.getElementById("address").value.trim(),
+                    province:   document.getElementById("province").value.trim(),
+                    postcode:   document.getElementById("postcode").value.trim(),
+                    avatar_url: user.user_metadata.avatar_url || ""
+                };
+
+                // บันทึกลง database (upsert = insert ถ้าไม่มี, update ถ้ามีแล้ว)
+                const { error, data } = await sbClient
+                    .from("profiles")
+                    .upsert(profileData);
+                console.log("Upsert result:", data);
+                console.log("Upsert error:", error);
+
+                const statusMsg = document.getElementById("statusMsg");
+                if (error) {
+                    statusMsg.style.color = "#cc0000";
+                    statusMsg.innerText   = "เกิดข้อผิดพลาด: " + error.message;
+                } else {
+                    statusMsg.style.color = "#2e7d32";
+                    statusMsg.innerText   = "✅ บันทึกข้อมูลสำเร็จ";
+                    setTimeout(() => statusMsg.innerText = "", 3000);
+                }
+            }
+
+            // ========================================================
+            // logout()
+            // ออกจากระบบและรีเซ็ตหน้าเว็บกลับไปส่วน login
+            // ========================================================
+            async function logout() {
+                await sbClient.auth.signOut();
+                document.getElementById("loginSection").style.display   = "block";
+                document.getElementById("profileSection").style.display = "none";
+                document.getElementById("loadingMsg").innerText          = "";
+            }
+
+            // ========================================================
+            // ตรวจสอบ auth state เมื่อ Supabase redirect กลับมา
+            // หลังจาก Google login สำเร็จ จะมี session ใหม่เข้ามา
+            // ========================================================
+            sbClient.auth.onAuthStateChange(async (event, session) => {
+                console.log("Auth event:", event, "Session:", session);
+                // รับทั้ง SIGNED_IN และ INITIAL_SESSION เพื่อรองรับ redirect flow
+                if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session) {
+                    await showProfile(session.user);
+                }
+            });
+        </script>
+
+    </body>
+</html>

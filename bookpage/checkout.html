@@ -208,7 +208,7 @@
                 text-decoration: none;
             }
 
-            /* CUSTOM ALERT POPUP */
+            /* ===== CUSTOM ALERT POPUP ===== */
             .alert-modal {
                 font-family: 'Prompt', sans-serif;
                 position: fixed;
@@ -273,11 +273,68 @@
             .alert-ok-btn:hover {
                 background: #5f2119;
             }
+
+            /* ===== USER BAR ===== */
+            .user-bar {
+                max-width: 1200px;
+                margin: 0 auto 15px auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: white;
+                padding: 12px 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+                font-family: 'Prompt', sans-serif;
+            }
+
+            .user-bar .user-info {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 14px;
+                color: #333;
+            }
+
+            .user-bar .user-info img {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 2px solid #7c2220;
+            }
+
+            .user-bar a {
+                font-size: 13px;
+                color: #7c2220;
+                text-decoration: none;
+                border: 1.5px solid #7c2220;
+                padding: 5px 14px;
+                border-radius: 20px;
+                transition: all 0.2s;
+            }
+
+            .user-bar a:hover {
+                background: #7c2220;
+                color: white;
+            }
+
+            .not-logged {
+                font-size: 13px;
+                color: #999;
+            }
         </style>
     </head>
     <h1 class="title-page" align="center">Check Out</h1>
 
     <body>
+
+        <!-- ===== USER BAR แสดงสถานะ login ===== -->
+        <div class="user-bar">
+            <div class="user-info" id="userInfo">
+                <span class="not-logged">ยังไม่ได้เข้าสู่ระบบ</span>
+            </div>
+            <a href="login.html" id="loginLink">เข้าสู่ระบบ / สมัครสมาชิก</a>
+        </div>
 
         <div class="table-container">
 
@@ -433,7 +490,7 @@
 
         </div>
 
-        <!-- CUSTOM ALERT POPUP  -->
+        <!-- ===== CUSTOM ALERT POPUP ===== -->
         <div class="alert-modal" id="alertModal">
             <div class="alert-box">
                 <div class="alert-icon" id="alertIcon">⚠️</div>
@@ -452,8 +509,7 @@
             // ค่าคงที่: จำนวนสูงสุดที่ซื้อได้ต่อหนังสือ 1 รายการ
             // หากต้องการเปลี่ยนโควต้า แก้ที่บรรทัดนี้บรรทัดเดียวได้เลย
             // ========================================================
-            
-            // const MAX_PER_BOOK = 5;
+            const MAX_PER_BOOK = 5;
 
             // cart    → เก็บข้อมูลสินค้าในตะกร้า { id: { name, price, qty } }
             // stocks  → เก็บจำนวนสต๊อกปัจจุบันของแต่ละหนังสือ { id: จำนวน }
@@ -522,8 +578,6 @@
                 // ตรวจสอบที่ 1: สต๊อกหมด → แสดง popup error และหยุดทำงาน
                 if (stocks[id] <= 0) {
                     showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
-                    btn.disabled = true;
-                    btn.style.background = "#999";
                     return;
                 }
 
@@ -538,18 +592,14 @@
                 else cart[id] = { name, price, qty: 1 };
 
                 // อัปเดต Status ของแถวตามสถานการณ์
-
-                // if (cart[id].qty >= MAX_PER_BOOK) {
-                //     // ซื้อครบโควต้าแล้ว → แสดง "Quota Full" และปิดปุ่ม Buy
-                //     statusCell.innerText = "Quota Full";
-                //     btn.disabled = true;
-                //     btn.style.background = "#999";
-                //     showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
-                // }  
-
-                if (stocks[id] <= 0) {
+                if (cart[id].qty >= MAX_PER_BOOK) {
+                    // ซื้อครบโควต้าแล้ว → แสดง "Quota Full" และปิดปุ่ม Buy
+                    statusCell.innerText = "Quota Full";
+                    btn.disabled = true;
+                    btn.style.background = "#999";
+                    showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
+                } else if (stocks[id] <= 0) {
                     // สต๊อกหมด → แสดง "Sold Out" และปิดปุ่ม Buy ถาวร
-                    showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
                     statusCell.innerText = "Sold Out";
                     btn.disabled = true;
                     btn.style.background = "#999";
@@ -731,21 +781,85 @@
             //
             // ขั้นตอนการทำงาน:
             //   1. ปิด popup ใบเสร็จ
-            //   2. ล้างตะกร้าสินค้าทั้งหมด (cart = {})
-            //   3. อัปเดต UI ตะกร้าให้แสดง 0 รายการ
-            //   4. แสดง popup success แจ้งว่าสั่งซื้อสำเร็จ
+            //   2. บันทึก order ลง Supabase database (ถ้า login อยู่)
+            //   3. ล้างตะกร้าสินค้าทั้งหมด (cart = {})
+            //   4. อัปเดต UI ตะกร้าให้แสดง 0 รายการ
+            //   5. แสดง popup success แจ้งว่าสั่งซื้อสำเร็จ
             // ========================================================
-            function confirmPurchase() {
+            async function confirmPurchase() {
                 // ปิด popup ใบเสร็จก่อน
                 document.getElementById("receiptModal").style.display = "none";
+
+                // ดึงยอดเงินและรายการสินค้าเพื่อบันทึกลง database
+                let total    = parseFloat(document.getElementById("total").innerText);
+                let invoiceNo = "INV-" + Date.now();
+
+                // บันทึก order ลง Supabase ถ้า login อยู่
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    // แปลง cart เป็น array สำหรับเก็บใน jsonb
+                    const items = Object.entries(cart).map(([id, item]) => ({
+                        id,
+                        name:  item.name,
+                        price: item.price,
+                        qty:   item.qty
+                    }));
+
+                    await supabase.from("orders").insert({
+                        user_id:    session.user.id,
+                        invoice_no: invoiceNo,
+                        items:      items,
+                        total:      total
+                    });
+                }
 
                 // รีเซ็ตตะกร้าสินค้าให้ว่างเปล่า
                 cart = {};
                 renderCart();
 
                 // แสดง popup สีเขียวแจ้งว่าสั่งซื้อสำเร็จ
-                showAlert("ขอบคุณที่ใช้บริการ Bookself Store", "การสั่งซื้อสำเร็จ", "success");
+                showAlert("ขอบคุณที่ใช้บริการ Bookself Store ค่ะ 😊", "การสั่งซื้อสำเร็จ", "success");
             }
+        </script>
+
+        <!-- Supabase SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+            // ========================================================
+            // ตั้งค่า Supabase สำหรับ checkout.html
+            // ใช้สำหรับเช็ค session และบันทึก order
+            // ========================================================
+            const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+            const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+            // ========================================================
+            // เมื่อโหลดหน้า → เช็ค session แล้วอัปเดต user bar ด้านบน
+            // ถ้า login อยู่ → แสดงรูปและชื่อ + ปุ่มโปรไฟล์
+            // ถ้ายังไม่ login → แสดงข้อความและปุ่มเข้าสู่ระบบ
+            // ========================================================
+            window.addEventListener("load", async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+
+                const userInfo  = document.getElementById("userInfo");
+                const loginLink = document.getElementById("loginLink");
+
+                if (session) {
+                    const user = session.user;
+                    const avatar = user.user_metadata.avatar_url || "";
+                    const name   = user.user_metadata.full_name  || user.email;
+
+                    // แสดงรูปโปรไฟล์และชื่อใน user bar
+                    userInfo.innerHTML = `
+                        <img src="${avatar}" alt="avatar">
+                        <span>สวัสดี, ${name}</span>
+                    `;
+                    // เปลี่ยนปุ่มเป็น "จัดการโปรไฟล์"
+                    loginLink.innerText = "จัดการโปรไฟล์";
+                    loginLink.href      = "login.html";
+                }
+            });
         </script>
 
     </body>
