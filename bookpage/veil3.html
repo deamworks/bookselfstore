@@ -6,6 +6,7 @@
     <title>The Veil Volume 3</title>
     <link rel="stylesheet" href="veil1.css">
     
+<script src="../js/navbar-auth.js" defer></script>
 </head>
 <body>
     <nav>
@@ -17,7 +18,14 @@
                     <li><a href="../book.html">Book</a></li>
                     <li><a href="checkout.html">Shop</a></li>
                     <li><a href="../register.html">Member</a></li>
-                    <li><a href="#">Contract</a></li>
+                    <li id="navContractItem"><a href="#">Contract</a></li>
+                    <li id="navUserItem" style="display:none;">
+                        <a href="profile.html" id="navDisplayName"
+                           style="color:#fff;padding:3px 12px;
+                                  border:1px solid rgba(255,255,255,0.4);
+                                  border-radius:20px;font-size:14px;
+                                  text-decoration:none;"></a>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -4,30 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ - Bookself Store</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Prompt', sans-serif;
             background: #f8f8f8;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        nav { background: #5f2119; padding: 18px 20px; }
+        nav { background: #5f2119; padding: 20px 20px; }
         .nav-con {
-            max-width: 1200px; margin: auto;
-            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1200px; 
+            display: flex; justify-content: space-between; align-items: center; margin: auto;
         }
         .logo a {
-            font-family: 'Lora', serif; color: #fff;
-            font-size: 22px; font-weight: bold; text-decoration: none;
+            font-family: 'Lora', serif; 
+            color: #fff;
+            font-size: 24px; 
+            font-weight: bold; 
+            text-decoration: none;
+            margin-left: 20.5px;
         }
-        .menu { display: flex; list-style: none; gap: 3rem; }
+        .menu { display: flex; list-style: none; }
         .menu a { color: #fff; text-decoration: none; font-size: 14px; }
         .menu a:hover { color: #c3766f; }
 
@@ -95,13 +100,9 @@
 
 <nav>
     <div class="nav-con">
-        <div class="logo"><a href="../index.html">Bookself.</a></div>
+        <div class="logo"><a href="index.html">Bookself.</a></div>
         <ul class="menu">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../book.html">Book</a></li>
-            <li><a href="checkout.html">Shop</a></li>
-            <li><a href="login.html" style="color:#fceaca;">Member</a></li>
-            <li id="navContractItem"><a href="#">Contract</a></li>
+            <li><a href="index.html">Home</a></li>
             <li id="navUserItem" style="display:none;">
                 <a href="profile.html" id="navUserName"
                    style="color:#fceaca; padding:3px 12px;
@@ -152,20 +153,10 @@
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
     const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-    // ตรวจ session — ถ้ามีอยู่แล้ว แสดงชื่อใน navbar
+    // ตรวจ session — login สำเร็จ → redirect ไปหน้าหลักทันที
     sbClient.auth.onAuthStateChange((event, session) => {
-        if (session) {
-            const name = session.user.user_metadata?.full_name
-                      || session.user.user_metadata?.name
-                      || session.user.email.split("@")[0];
-            document.getElementById("navUserName").textContent       = "👤 " + name;
-            document.getElementById("navUserItem").style.display     = "list-item";
-            document.getElementById("navContractItem").style.display = "none";
-
-            // เพิ่ง login สำเร็จ → ไป profile
-            if (event === "SIGNED_IN") {
-                window.location.href = "profile.html";
-            }
+        if (event === "SIGNED_IN" && session) {
+            window.location.href = "index.html";
         }
     });
 
@@ -207,7 +198,7 @@
         const { error } = await sbClient.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: window.location.origin + "/bookselfstore/idex.html",
+                redirectTo: window.location.origin + "index.html",
                 queryParams: { access_type: "offline", prompt: "consent" }
             }
         });

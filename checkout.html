@@ -9,465 +9,200 @@
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
             @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
 
-            body {
-                font-family: 'Poppins', sans-serif;
-                background: #f8f8f8;
-                padding: 40px;
-            }
+            body { font-family: 'Poppins', sans-serif; background: #f8f8f8; padding: 40px; }
 
-            .table-container {
-                max-width: 1200px;
-                margin: auto;
-                background: white;
-                padding: 25px;
-                border-radius: 10px;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            }
+            .table-container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
 
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
+            table { width: 100%; border-collapse: collapse; }
+            thead { background: #7c2220; color: white; }
+            thead th { padding: 15px; }
+            tbody td { padding: 15px; text-align: center; border-bottom: 1px solid #eee; }
+            tbody tr:nth-child(even) { background: #fadbd9; }
+            tbody tr:hover { background: #f5c6c3; }
+            td img { width: 80px; border-radius: 6px; margin-bottom: 5px; }
+            .book-name { text-align: left; font-weight: 500; }
+            .book-name:lang(th) { font-family: 'Prompt', sans-serif; }
+            .price { color: #7c2220; font-weight: bold; }
 
-            thead {
-                background: #7c2220;
-                color: white;
-            }
+            button { font-family: 'Poppins', sans-serif; padding: 6px 15px; background: #7c2220; color: white; border: none; border-radius: 20px; cursor: pointer; }
+            button:hover { background: #5f2119; }
 
-            thead th {
-                padding: 15px;
-            }
+            .summary { font-family: 'Prompt', sans-serif; margin-top: 40px; padding: 30px; border-radius: 10px; background: #fff3f2; }
+            .cart-item { display: flex; justify-content: space-between; margin: 5px 0; }
+            .remove-btn { font-family: 'Prompt', sans-serif; background: #999; padding: 3px 10px; border-radius: 10px; font-size: 12px; }
+            .checkout-btn { font-family: 'Prompt', sans-serif; margin-top: 15px; width: 100%; }
+            .back-btn { font-family: 'Prompt', sans-serif; margin-top: 15px; width: 100%; background: #555; }
+            .back-btn:hover { background: #333; }
 
-            tbody td {
-                padding: 15px;
-                text-align: center;
-                border-bottom: 1px solid #eee;
-            }
+            .receipt-modal { font-family: 'Prompt', sans-serif; position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 999; }
+            .receipt-content { width: 600px; max-height: 90vh; overflow: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+            .receipt-header { text-align: center; margin-bottom: 15px; }
+            .receipt-header h2 { color: #7c2220; margin-bottom: 5px; }
+            .receipt-content table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            .receipt-content th, .receipt-content td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+            .receipt-content th { background: #f3f3f3; }
+            .total-section { margin-top: 15px; text-align: right; }
+            .print-btn { font-family: 'Prompt', sans-serif; margin-top: 15px; width: 100%; background: #7c2220; }
 
-            tbody tr:nth-child(even) {
-                background: #fadbd9;
-            }
+            .update-date { font-family: "Prompt", sans-serif; }
+            tr:hover td.update-date { background-color: #fff; }
+            .title-page { margin: 20px; }
+            a { color: black; text-decoration: none; }
 
-            tbody tr:hover {
-                background: #f5c6c3;
-            }
+            /* ALERT POPUP */
+            .alert-modal { font-family: 'Prompt', sans-serif; position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+            .alert-modal.show { display: flex; }
+            .alert-box { background: #fff; border-radius: 15px; padding: 30px 35px; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
+            @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+            .alert-icon    { font-size: 40px; margin-bottom: 10px; }
+            .alert-title   { font-size: 18px; font-weight: 600; color: #7c2220; margin-bottom: 8px; }
+            .alert-message { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.6; }
+            .alert-ok-btn  { font-family: 'Prompt', sans-serif; padding: 8px 35px; background: #7c2220; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; }
+            .alert-ok-btn:hover { background: #5f2119; }
 
-            td img {
-                width: 80px;
-                border-radius: 6px;
-                margin-bottom: 5px;
-            }
+            /* USER BAR */
+            .user-bar { max-width: 1200px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); font-family: 'Prompt', sans-serif; }
+            .ub-left  { display: flex; align-items: center; gap: 10px; }
+            .ub-right { display: flex; gap: 8px; align-items: center; }
+            .ub-avatar-img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7c2220; object-fit: cover; display: none; }
+            .ub-avatar-ini { width: 36px; height: 36px; border-radius: 50%; background: #7c2220; color: #fff; font-size: 15px; font-weight: 600; display: none; align-items: center; justify-content: center; }
+            .ub-name  { font-size: 14px; color: #333; font-weight: 500; }
+            .ub-guest { font-size: 14px; color: #999; }
+            .ub-btn-login    { font-size: 13px; color: #7c2220; text-decoration: none; border: 1.5px solid #7c2220; padding: 5px 14px; border-radius: 20px; transition: 0.2s; }
+            .ub-btn-login:hover { background: #7c2220; color: white; }
+            .ub-btn-reg      { font-size: 13px; color: #5f2119; text-decoration: none; background: #fceaca; padding: 5px 14px; border-radius: 20px; transition: 0.2s; }
+            .ub-btn-reg:hover { background: #f5d5a0; }
+            .ub-btn-profile  { font-size: 13px; color: #7c2220; text-decoration: none; border: 1.5px solid #7c2220; padding: 5px 14px; border-radius: 20px; transition: 0.2s; }
+            .ub-btn-profile:hover { background: #7c2220; color: white; }
+            .ub-btn-logout   { font-size: 13px; color: #999; background: none; border: 1.5px solid #ddd; padding: 5px 14px; border-radius: 20px; cursor: pointer; font-family: 'Prompt', sans-serif; transition: 0.2s; }
+            .ub-btn-logout:hover { border-color: #7c2220; color: white; }
 
-            .book-name {
-                text-align: left;
-                font-weight: 500;
-            }
-
-            .book-name:lang(th) {
-                font-family: 'Prompt', sans-serif;
-            }
-
-            .price {
-                color: #7c2220;
-                font-weight: bold;
-            }
-
-            button {
-                font-family: 'Poppins', sans-serif;
-                padding: 6px 15px;
-                background: #7c2220;
-                color: white;
-                border: none;
-                border-radius: 20px;
-                cursor: pointer;
-            }
-
-            button:hover {
-                background: #5f2119;
-            }
-
-            .summary {
-                font-family: 'Prompt', sans-serif;
-                margin-top: 40px;
-                padding: 30px;
-                border-radius: 10px;
-                background: #fff3f2;
-            }
-
-            .cart-item {
-                display: flex;
-                justify-content: space-between;
-                margin: 5px 0;
-            }
-
-            .remove-btn {
-                font-family: 'Prompt', sans-serif;
-                background: #999;
-                padding: 3px 10px;
-                border-radius: 10px;
-                font-size: 12px;
-            }
-
-            .checkout-btn {
-                font-family: 'Prompt', sans-serif;
-                margin-top: 15px;
-                width: 100%;
-            }
-
-            .receipt-modal {
-                font-family: 'Prompt', sans-serif;
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.6);
-                display: none;
-                justify-content: center;
-                align-items: center;
-                z-index: 999;
-            }
-
-            .receipt-content {
-                width: 600px;
-                max-height: 90vh;
-                overflow: auto;
-                background: #fff;
-                padding: 30px;
-                border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            }
-
-            .receipt-header {
-                text-align: center;
-                margin-bottom: 15px;
-            }
-
-            .receipt-header h2 {
-                color: #7c2220;
-                margin-bottom: 5px;
-            }
-
-            .receipt-content table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 15px;
-            }
-
-            .receipt-content th,
-            .receipt-content td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: center;
-            }
-
-            .receipt-content th {
-                background: #f3f3f3;
-            }
-
-            .total-section {
-                margin-top: 15px;
-                text-align: right;
-            }
-
-            .print-btn {
-                font-family: 'Prompt', sans-serif;
-                margin-top: 15px;
-                width: 100%;
-                background: #7c2220;
-            }
-
-            .back-btn {
-                font-family: 'Prompt', sans-serif;
-                margin-top: 15px;
-                width: 100%;
-                background: #555;
-            }
-
-            .back-btn:hover {
-                background: #333;
-            }
-
-            .update-date {
-                font-family: "Prompt", sans-serif;
-            }
-
-            tr:hover td.update-date {
-                background-color: #fff;
-            }
-
-            .title-page {
-                margin: 20px;
-            }
-
-            a {
-                color: black;
-                text-decoration: none;
-            }
-
-            /* ===== CUSTOM ALERT POPUP ===== */
-            .alert-modal {
-                font-family: 'Prompt', sans-serif;
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.5);
-                display: none;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-
-            .alert-modal.show {
-                display: flex;
-            }
-
-            .alert-box {
-                background: #fff;
-                border-radius: 15px;
-                padding: 30px 35px;
-                max-width: 380px;
-                width: 90%;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-                animation: popIn 0.2s ease;
-            }
-
-            @keyframes popIn {
-                from { transform: scale(0.85); opacity: 0; }
-                to   { transform: scale(1);    opacity: 1; }
-            }
-
-            .alert-icon {
-                font-size: 40px;
-                margin-bottom: 10px;
-            }
-
-            .alert-title {
-                font-size: 18px;
-                font-weight: 600;
-                color: #7c2220;
-                margin-bottom: 8px;
-            }
-
-            .alert-message {
-                font-size: 14px;
-                color: #555;
-                margin-bottom: 20px;
-                line-height: 1.6;
-            }
-
-            .alert-ok-btn {
-                font-family: 'Prompt', sans-serif;
-                padding: 8px 35px;
-                background: #7c2220;
-                color: white;
-                border: none;
-                border-radius: 20px;
-                cursor: pointer;
-                font-size: 15px;
-            }
-
-            .alert-ok-btn:hover {
-                background: #5f2119;
-            }
-
-            /* ===== USER BAR ===== */
-            .user-bar {
-                max-width: 1200px;
-                margin: 0 auto 15px auto;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background: white;
-                padding: 12px 20px;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-                font-family: 'Prompt', sans-serif;
-            }
-
-            .user-bar .user-info {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 14px;
-                color: #333;
-            }
-
-            .user-bar .user-info img {
-                width: 34px;
-                height: 34px;
-                border-radius: 50%;
-                border: 2px solid #7c2220;
-            }
-
-            .user-bar a {
-                font-size: 13px;
-                color: #7c2220;
-                text-decoration: none;
-                border: 1.5px solid #7c2220;
-                padding: 5px 14px;
-                border-radius: 20px;
-                transition: all 0.2s;
-            }
-
-            .user-bar a:hover {
-                background: #7c2220;
-                color: white;
-            }
-
-            .not-logged {
-                font-size: 13px;
-                color: #999;
-            }
+            /* LOGIN REQUIRED OVERLAY */
+            .lock-overlay { font-family: "prompt" , sans-serif ; display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1002; justify-content: center; align-items: center; }
+            .lock-overlay.show { display: flex; }
+            .lock-box { background: white; border-radius: 16px; padding: 40px 36px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
+            .lock-box .lk-icon { font-size: 48px; margin-bottom: 12px; }
+            .lock-box h3 { color: #7c2220; font-size: 18px; margin-bottom: 8px; }
+            .lock-box p  { color: #666; font-size: 14px; margin-bottom: 22px; line-height: 1.6; }
+            .lock-box .lk-go { display: inline-block; padding: 10px 28px; background: #7c2220; color: white; text-decoration: none; border-radius: 20px; font-size: 14px; margin-right: 8px; transition: 0.2s; }
+            .lock-box .lk-go:hover { background: #5f2119; color: white; }
+            .lock-box .lk-cancel { padding: 10px 20px; background: none; border: 1.5px solid #ddd; color: #999; border-radius: 20px; font-size: 14px; cursor: pointer; font-family: 'Prompt', sans-serif; transition: 0.2s; }
+            .lock-box .lk-cancel:hover { border-color: #aaa; color: #666; }
         </style>
     </head>
+
     <h1 class="title-page" align="center">Check Out</h1>
 
     <body>
 
-        <!-- ===== USER BAR แสดงสถานะ login ===== -->
+        <!-- USER BAR -->
         <div class="user-bar">
-            <div class="user-info" id="userInfo">
-                <span class="not-logged">ยังไม่ได้เข้าสู่ระบบ</span>
+            <div class="ub-left">
+                <img  class="ub-avatar-img" id="ubAvatarImg" src="" alt="">
+                <div  class="ub-avatar-ini" id="ubAvatarIni"></div>
+                <span class="ub-name"       id="ubName"  style="display:none;"></span>
+                <span class="ub-guest"      id="ubGuest">ยังไม่ได้เข้าสู่ระบบ</span>
             </div>
-            <a href="login.html" id="loginLink">เข้าสู่ระบบ / สมัครสมาชิก</a>
+            <div class="ub-right">
+                <div id="ubGuestBtns" style="display:flex; gap:8px;">
+                    <a href="login.html"    class="ub-btn-login">เข้าสู่ระบบ</a>
+                    <a href="register.html" class="ub-btn-reg">สมัครสมาชิก</a>
+                </div>
+                <div id="ubMemberBtns" style="display:none; gap:8px; align-items:center;">
+                    <a href="profile.html" class="ub-btn-profile">👤 โปรไฟล์</a>
+                    <button class="ub-btn-logout" id="ubLogoutBtn">ออกจากระบบ</button>
+                </div>
+            </div>
         </div>
 
-        <div class="table-container">
+        <!-- LOGIN REQUIRED OVERLAY -->
+        <div class="lock-overlay" id="lockOverlay">
+            <div class="lock-box">
+                <div class="lk-icon">🔒</div>
+                <h3>กรุณาเข้าสู่ระบบก่อน</h3>
+                <p>ต้องเข้าสู่ระบบก่อนจึงจะสั่งซื้อสินค้าได้</p>
+                <a href="login.html" class="lk-go">เข้าสู่ระบบ</a>
+                <button class="lk-cancel" onclick="document.getElementById('lockOverlay').classList.remove('show')">ยกเลิก</button>
+            </div>
+        </div>
 
+        <!-- TABLE -->
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Name Book</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Status</th>
-                        <th>Checkout</th>
+                        <th>No.</th><th>Name Book</th><th>Price</th>
+                        <th>Stock</th><th>Status</th><th>Checkout</th>
                     </tr>
                 </thead>
-
                 <tbody>
-
                     <tr>
-                        <td>
-                            <a href="veil1.html">
-                            <img src="photo/theveil1.jpg"><br>4829571630</a></td>
+                        <td><a href="veil1.html"><img src="photo/theveil1.jpg"><br>4829571630</a></td>
                         <td class="book-name">Veil Volume 1: Temperature of Orange</td>
                         <td class="price" data-price="528">฿528.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="veil2.html">
-                            <img src="photo/theveil2.jpg"><br>7391058246</a></td>
+                        <td><a href="veil2.html"><img src="photo/theveil2.jpg"><br>7391058246</a></td>
                         <td class="book-name">Veil Volume 2: Calming Noir</td>
                         <td class="price" data-price="528">฿528.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="veil3.html">
-                            <img src="photo/theveil3.jpg"><br>1569047382</a></td>
+                        <td><a href="veil3.html"><img src="photo/theveil3.jpg"><br>1569047382</a></td>
                         <td class="book-name">Veil Volume 3: Graceful White</td>
                         <td class="price" data-price="529">฿529.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="veil4.html">
-                            <img src="photo/veil4.jpg"><br>9082715643</a></td>
+                        <td><a href="veil4.html"><img src="photo/veil4.jpg"><br>9082715643</a></td>
                         <td class="book-name">Veil Volume 4: Transparent Burns</td>
                         <td class="price" data-price="553">฿553.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="veil5.html">
-                            <img src="photo/veil5.jpg"><br>6248190573</a></td>
+                        <td><a href="veil5.html"><img src="photo/veil5.jpg"><br>6248190573</a></td>
                         <td class="book-name">Veil Volume 5: Golden Blink</td>
                         <td class="price" data-price="529">฿529.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="veil6.html">
-                            <img src="photo/veil6.jpg"><br>3716409285</a></td>
+                        <td><a href="veil6.html"><img src="photo/veil6.jpg"><br>3716409285</a></td>
                         <td class="book-name">Veil Volume 6: Untangled Rouge</td>
                         <td class="price" data-price="600">฿600.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="veil7.html">
-                            <img src="photo/veil7.jpg"><br>8502947163</a></td>
+                        <td><a href="veil7.html"><img src="photo/veil7.jpg"><br>8502947163</a></td>
                         <td class="book-name">Veil Volume 7: Warmest Blue</td>
                         <td class="price" data-price="536">฿536.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="book1.html">
-                            <img src="photo/book1.gif"><br>2975318640</a></td>
+                        <td><a href="book1.html"><img src="photo/book1.gif"><br>2975318640</a></td>
                         <td class="book-name" lang="th">ทรวงทราม</td>
                         <td class="price" data-price="529">฿529.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="book2.html">
-                            <img src="photo/book2.gif"><br>5648721903</a></td>
+                        <td><a href="book2.html"><img src="photo/book2.gif"><br>5648721903</a></td>
                         <td class="book-name" lang="th">ไทยวิจิตร</td>
                         <td class="price" data-price="399">฿399.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <a href="book3.html">
-                            <img src="photo/book3.gif"><br>9134067528</a></td>
+                        <td><a href="book3.html"><img src="photo/book3.gif"><br>9134067528</a></td>
                         <td class="book-name" lang="th">ผีเน่ากับโลงผุ</td>
                         <td class="price" data-price="420">฿420.00</td>
-                        <td class="stock">10</td>
-                        <td>Available</td>
-                        <td><button onclick="buy(this)">Buy</button></td>
+                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
-
                     <tr>
                         <td class="update-date" align="center" colspan="6">
                             สินค้าอัพเดพ ณ วันที่ <script>document.write(new Date().toLocaleDateString("th-TH"))</script>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
 
@@ -480,207 +215,165 @@
                 <p>Discount 10% (ครบ 5 เล่ม): <span id="discount">0.00</span> บาท</p>
                 <p>VAT 7%: <span id="vat">0.00</span> บาท</p>
                 <h3>Total Payment: <span id="total">0.00</span> บาท</h3>
-
                 <button class="checkout-btn" onclick="checkout()">ชำระเงิน</button>
-
-                <a href="index.html">
-                    <button class="back-btn">← Back to Home</button>
-                </a>
+                <a href="../index.html"><button class="back-btn">← Back to Home</button></a>
             </div>
-
         </div>
 
-        <!-- ===== CUSTOM ALERT POPUP ===== -->
+        <!-- ALERT POPUP -->
         <div class="alert-modal" id="alertModal">
             <div class="alert-box">
-                <div class="alert-icon" id="alertIcon">⚠️</div>
-                <div class="alert-title" id="alertTitle">แจ้งเตือน</div>
+                <div class="alert-icon"    id="alertIcon">⚠️</div>
+                <div class="alert-title"   id="alertTitle">แจ้งเตือน</div>
                 <div class="alert-message" id="alertMessage"></div>
                 <button class="alert-ok-btn" onclick="closeAlert()">ตกลง</button>
             </div>
         </div>
 
+        <!-- RECEIPT MODAL -->
         <div class="receipt-modal" id="receiptModal">
             <div class="receipt-content" id="receipt"></div>
         </div>
 
+        <!-- Supabase SDK (โหลดครั้งเดียว) -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
         <script>
-            // ========================================================
-            // ค่าคงที่: จำนวนสูงสุดที่ซื้อได้ต่อหนังสือ 1 รายการ
-            // หากต้องการเปลี่ยนโควต้า แก้ที่บรรทัดนี้บรรทัดเดียวได้เลย
-            // ========================================================
-            const MAX_PER_BOOK = 5;
+            // ============================================================
+            // Supabase setup
+            // ============================================================
+            const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+            const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+            const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-            // cart    → เก็บข้อมูลสินค้าในตะกร้า { id: { name, price, qty } }
-            // stocks  → เก็บจำนวนสต๊อกปัจจุบันของแต่ละหนังสือ { id: จำนวน }
-            let cart = {};
-            let stocks = {};
+            let isLoggedIn = false;
 
-            // ========================================================
-            // showAlert(message, title, type)
-            // ฟังก์ชันแสดง custom popup แทน alert() ของ browser
-            //
-            // พารามิเตอร์:
-            //   message → ข้อความที่ต้องการแสดงใน popup
-            //   title   → หัวข้อของ popup (default: "แจ้งเตือน")
-            //   type    → ประเภทของ popup มี 3 แบบ:
-            //             "warning" → icon ⚠️  สีส้ม  (เตือน เช่น เกินโควต้า)
-            //             "error"   → icon 🚫  สีแดง  (ผิดพลาด เช่น สินค้าหมด)
-            //             "success" → icon ✅  สีเขียว (สำเร็จ เช่น สั่งซื้อสำเร็จ)
-            // ========================================================
+            // ============================================================
+            // User bar — โหลดเมื่อหน้าพร้อม
+            // ============================================================
+            document.addEventListener("DOMContentLoaded", async () => {
+                const { data: { session } } = await sbClient.auth.getSession();
+
+                document.getElementById("ubLogoutBtn").addEventListener("click", async () => {
+                    await sbClient.auth.signOut();
+                    location.reload();
+                });
+
+                if (!session) return;
+
+                isLoggedIn = true;
+                const user     = session.user;
+                const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+                const avatar   = user.user_metadata?.avatar_url || "";
+                const display  = fullName || user.email.split("@")[0];
+
+                if (avatar) {
+                    const img = document.getElementById("ubAvatarImg");
+                    img.src = avatar;
+                    img.style.display = "block";
+                } else {
+                    const ini = document.getElementById("ubAvatarIni");
+                    ini.textContent   = display[0].toUpperCase();
+                    ini.style.display = "flex";
+                }
+
+                document.getElementById("ubName").textContent    = "สวัสดี, " + display;
+                document.getElementById("ubName").style.display  = "inline";
+                document.getElementById("ubGuest").style.display = "none";
+                document.getElementById("ubGuestBtns").style.display  = "none";
+                document.getElementById("ubMemberBtns").style.display = "flex";
+            });
+
+            // ตรวจ login ก่อนซื้อ
+            function requireLogin() {
+                if (!isLoggedIn) {
+                    document.getElementById("lockOverlay").classList.add("show");
+                    return false;
+                }
+                return true;
+            }
+
+            // ============================================================
+            // Cart
+            // ============================================================
+            let cart = {}, stocks = {};
+
             function showAlert(message, title = "แจ้งเตือน", type = "warning") {
                 const icons  = { warning: "⚠️", error: "🚫", success: "✅" };
                 const colors = { warning: "#e67e22", error: "#7c2220", success: "#2e7d32" };
-
-                // ใส่ข้อความ, icon, และสีหัวข้อตาม type ที่รับมา
-                document.getElementById("alertTitle").innerText       = title;
-                document.getElementById("alertMessage").innerText     = message;
-                document.getElementById("alertIcon").innerText        = icons[type]  || "⚠️";
-                document.getElementById("alertTitle").style.color     = colors[type] || "#7c2220";
-
-                // เปิด popup โดยเพิ่ม class "show" (CSS จะ display: flex)
+                document.getElementById("alertTitle").innerText      = title;
+                document.getElementById("alertMessage").innerText    = message;
+                document.getElementById("alertIcon").innerText       = icons[type] || "⚠️";
+                document.getElementById("alertTitle").style.color    = colors[type] || "#7c2220";
                 document.getElementById("alertModal").classList.add("show");
             }
 
-            // ========================================================
-            // closeAlert()
-            // ฟังก์ชันปิด popup เมื่อกดปุ่ม "ตกลง"
-            // ทำงานโดยลบ class "show" ออก ทำให้ popup ซ่อนตัว
-            // ========================================================
             function closeAlert() {
                 document.getElementById("alertModal").classList.remove("show");
             }
 
-            // ========================================================
-            // buy(btn)
-            // ฟังก์ชันเพิ่มหนังสือลงตะกร้า เรียกเมื่อกดปุ่ม "Buy"
-            //
-            // ขั้นตอนการทำงาน:
-            //   1. ดึงข้อมูลหนังสือจาก row ของตาราง (id, ชื่อ, ราคา, สต๊อก)
-            //   2. ตรวจสอบว่าสต๊อกหมดหรือไม่
-            //   3. ตรวจสอบว่าในตะกร้ามีครบโควต้า (MAX_PER_BOOK) แล้วหรือยัง
-            //   4. ถ้าผ่านทุกเงื่อนไข → ลดสต๊อก + เพิ่มจำนวนในตะกร้า
-            //   5. อัปเดต Status ของแถวนั้นในตาราง
-            //   6. เรียก renderCart() เพื่ออัปเดตสรุปยอดด้านล่าง
-            // ========================================================
             function buy(btn) {
-                // ดึง element ต่าง ๆ จากแถวที่กดปุ่ม Buy
+                if (!requireLogin()) return;
+
                 let row        = btn.closest("tr");
-                let id         = row.cells[0].innerText.trim();   // ISBN / รหัสหนังสือ
+                let id         = row.cells[0].innerText.trim();
                 let name       = row.querySelector(".book-name").innerText;
                 let price      = parseFloat(row.querySelector(".price").dataset.price);
-                let stockCell  = row.querySelector(".stock");      // cell แสดงจำนวนสต๊อก
-                let statusCell = row.cells[4];                     // cell แสดงสถานะ
+                let stockCell  = row.querySelector(".stock");
+                let statusCell = row.cells[4];
 
-                // ครั้งแรกที่กด Buy → บันทึกจำนวนสต๊อกเริ่มต้นลงใน stocks{}
                 if (!stocks[id]) stocks[id] = parseInt(stockCell.innerText);
 
-                // ตรวจสอบที่ 1: สต๊อกหมด → แสดง popup error และหยุดทำงาน
                 if (stocks[id] <= 0) {
                     showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
+                    btn.disabled = true; btn.style.background = "#999";
                     return;
                 }
 
-                // ลดจำนวนสต๊อกใน stocks{} และอัปเดตตัวเลขในตาราง
                 stocks[id]--;
                 stockCell.innerText = stocks[id];
 
-                // เพิ่มหนังสือในตะกร้า:
-                //   ถ้ามีอยู่แล้ว → เพิ่มจำนวน (qty++)
-                //   ถ้ายังไม่มี   → สร้าง object ใหม่พร้อม qty: 1
                 if (cart[id]) cart[id].qty++;
                 else cart[id] = { name, price, qty: 1 };
 
-                // อัปเดต Status ของแถวตามสถานการณ์
-                if (cart[id].qty >= MAX_PER_BOOK) {
-                    // ซื้อครบโควต้าแล้ว → แสดง "Quota Full" และปิดปุ่ม Buy
-                    statusCell.innerText = "Quota Full";
-                    btn.disabled = true;
-                    btn.style.background = "#999";
-                    showAlert(`ซื้อได้สูงสุด ${MAX_PER_BOOK} เล่ม ต่อหนังสือ 1 รายการ`, "เกินจำนวนที่กำหนด", "warning");
-                } else if (stocks[id] <= 0) {
-                    // สต๊อกหมด → แสดง "Sold Out" และปิดปุ่ม Buy ถาวร
+                if (stocks[id] <= 0) {
+                    showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
                     statusCell.innerText = "Sold Out";
-                    btn.disabled = true;
-                    btn.style.background = "#999";
+                    btn.disabled = true; btn.style.background = "#999";
                 }
 
-                // อัปเดตสรุปยอดในตะกร้าด้านล่าง
                 renderCart();
             }
 
-            // ========================================================
-            // removeItem(id)
-            // ฟังก์ชันลบหนังสือออกจากตะกร้าทีละ 1 เล่ม
-            // เรียกเมื่อกดปุ่ม "ลบ" ในรายการตะกร้าสินค้า
-            //
-            // ขั้นตอนการทำงาน:
-            //   1. ลดจำนวนในตะกร้า (qty--) และคืนสต๊อก (stocks++)
-            //   2. อัปเดตตัวเลขสต๊อกและ Status ในตาราง
-            //   3. คืนปุ่ม Buy ให้กดได้อีกครั้ง (กรณีสต๊อกมีและยังไม่เกินโควต้า)
-            //   4. ถ้า qty เป็น 0 → ลบรายการออกจาก cart{} ทั้งหมด
-            //   5. เรียก renderCart() เพื่ออัปเดตยอดรวม
-            // ========================================================
             function removeItem(id) {
-                // ถ้าไม่มีสินค้านี้ในตะกร้าให้หยุดทำงาน
                 if (!cart[id]) return;
-
-                // ลดจำนวนในตะกร้า 1 เล่ม และคืนสต๊อก 1 เล่ม
                 cart[id].qty--;
                 stocks[id]++;
 
-                // วนหาแถวของหนังสือนี้ในตาราง แล้วอัปเดต UI
                 document.querySelectorAll("tr").forEach(row => {
                     if (row.cells[0] && row.cells[0].innerText.trim() == id) {
-
-                        // อัปเดตตัวเลขสต๊อกในตาราง
                         row.querySelector(".stock").innerText = stocks[id];
-
-                        let currentQty = cart[id] ? cart[id].qty : 0;
-
                         if (stocks[id] > 0) {
-                            // ถ้าจำนวนในตะกร้าลดลงต่ำกว่าโควต้า → คืน Status เป็น "Available"
-                            if (currentQty < MAX_PER_BOOK) {
-                                row.cells[4].innerText = "Available";
-                            }
-                            // คืนปุ่ม Buy ให้ใช้งานได้ปกติ
-                            let buyBtn = row.querySelector("button");
-                            buyBtn.disabled = false;
-                            buyBtn.style.background = "#7c2220";
+                            row.cells[4].innerText = "Available";
+                            let b = row.querySelector("button");
+                            b.disabled = false; b.style.background = "#7c2220";
                         }
                     }
                 });
 
-                // ถ้าจำนวนในตะกร้าเป็น 0 → ลบรายการออกจาก cart{} ทั้งหมด
                 if (cart[id].qty <= 0) delete cart[id];
-
-                // อัปเดตสรุปยอดในตะกร้าด้านล่าง
                 renderCart();
             }
 
-            // ========================================================
-            // renderCart()
-            // ฟังก์ชันแสดงรายการสินค้าในตะกร้าและคำนวณยอดรวม
-            //
-            // การคำนวณ:
-            //   subtotal          = ราคารวมก่อนหักส่วนลด
-            //   discount (10%)    = ลดให้เมื่อซื้อรวมกัน ≥ 5 เล่มทุกรายการ
-            //   totalAfterDiscount= subtotal - discount
-            //   priceBeforeVAT    = totalAfterDiscount / 1.07 (ถอด VAT ออก)
-            //   vat               = totalAfterDiscount - priceBeforeVAT
-            // ========================================================
             function renderCart() {
                 let cartList = document.getElementById("cartList");
-                cartList.innerHTML = "";   // ล้างรายการเก่าก่อนวาดใหม่
+                cartList.innerHTML = "";
                 let subtotal = 0, totalQty = 0;
 
-                // วนแสดงรายการสินค้าทุกรายการในตะกร้า
                 for (let id in cart) {
                     let item = cart[id];
-                    subtotal  += item.price * item.qty;
-                    totalQty  += item.qty;
-
-                    // สร้าง HTML ของแต่ละรายการพร้อมปุ่มลบ
+                    subtotal += item.price * item.qty;
+                    totalQty += item.qty;
                     cartList.innerHTML += `
                         <div class="cart-item">
                             <span>${item.name} จำนวน ${item.qty} เล่ม</span>
@@ -688,34 +381,21 @@
                         </div>`;
                 }
 
-                // คำนวณส่วนลด: ได้รับเมื่อจำนวนรวมทุกรายการ ≥ 5 เล่ม
-                let discount          = totalQty >= 5 ? subtotal * 0.10 : 0;
+                let discount           = totalQty >= 5 ? subtotal * 0.10 : 0;
                 let totalAfterDiscount = subtotal - discount;
+                let priceBeforeVAT     = totalAfterDiscount / 1.07;
+                let vat                = totalAfterDiscount - priceBeforeVAT;
 
-                // ถอด VAT 7% ออกจากราคารวม (ราคาที่แสดงรวม VAT อยู่แล้ว)
-                let priceBeforeVAT    = totalAfterDiscount / 1.07;
-                let vat               = totalAfterDiscount - priceBeforeVAT;
-
-                // แสดงผลลัพธ์ทั้งหมดในส่วนสรุปยอด
-                document.getElementById("totalQty").innerText  = totalQty;
-                document.getElementById("subtotal").innerText  = subtotal.toFixed(2);
-                document.getElementById("discount").innerText  = discount.toFixed(2);
-                document.getElementById("vat").innerText       = vat.toFixed(2);
-                document.getElementById("total").innerText     = totalAfterDiscount.toFixed(2);
+                document.getElementById("totalQty").innerText = totalQty;
+                document.getElementById("subtotal").innerText = subtotal.toFixed(2);
+                document.getElementById("discount").innerText = discount.toFixed(2);
+                document.getElementById("vat").innerText      = vat.toFixed(2);
+                document.getElementById("total").innerText    = totalAfterDiscount.toFixed(2);
             }
 
-            // ========================================================
-            // checkout()
-            // ฟังก์ชันเปิดหน้าต่างใบเสร็จ เรียกเมื่อกดปุ่ม "ชำระเงิน"
-            //
-            // ขั้นตอนการทำงาน:
-            //   1. ตรวจสอบว่าตะกร้าไม่ว่างเปล่า
-            //   2. สร้างเลข Invoice อัตโนมัติจาก timestamp
-            //   3. สร้าง HTML ของใบเสร็จพร้อมตารางรายการสินค้า
-            //   4. แสดง popup ใบเสร็จ
-            // ========================================================
             function checkout() {
-                // ถ้าตะกร้าว่างเปล่า → แสดง popup เตือนและหยุดทำงาน
+                if (!requireLogin()) return;
+
                 if (Object.keys(cart).length === 0) {
                     showAlert("กรุณาเลือกสินค้าก่อนชำระเงิน", "ยังไม่มีสินค้า", "warning");
                     return;
@@ -723,20 +403,16 @@
 
                 let modal   = document.getElementById("receiptModal");
                 let receipt = document.getElementById("receipt");
-                modal.style.display = "flex";   // เปิด popup ใบเสร็จ
+                modal.style.display = "flex";
 
-                // สร้างเลข Invoice จาก timestamp (มิลลิวินาที) เพื่อให้ไม่ซ้ำกัน
-                let invoiceNo = "INV-" + Date.now();
-                let date      = new Date().toLocaleString("th-TH");
-
-                // ดึงยอดเงินจาก element ในหน้าเพื่อนำมาแสดงในใบเสร็จ
+                let invoiceNo      = "INV-" + Date.now();
+                let date           = new Date().toLocaleString("th-TH");
                 let subtotal       = parseFloat(document.getElementById("subtotal").innerText);
                 let discount       = parseFloat(document.getElementById("discount").innerText);
                 let total          = parseFloat(document.getElementById("total").innerText);
                 let priceBeforeVAT = total / 1.07;
                 let vat            = total - priceBeforeVAT;
 
-                // สร้าง HTML ส่วนหัวของใบเสร็จ
                 let html = `
                     <div class="receipt-header">
                         <h2>Bookself Store</h2>
@@ -744,24 +420,18 @@
                         <p>Invoice No: ${invoiceNo}</p>
                         <p>Date: ${date}</p>
                     </div>
-                    <table>
-                        <tr><th>Book</th><th>Qty</th><th>Price</th><th>Total</th></tr>
-                `;
+                    <table><tr><th>Book</th><th>Qty</th><th>Price</th><th>Total</th></tr>`;
 
-                // วนสร้างแถวรายการสินค้าแต่ละรายการในใบเสร็จ
                 for (let id in cart) {
                     let item = cart[id];
                     html += `<tr>
-                        <td>${item.name}</td>
-                        <td>${item.qty}</td>
+                        <td>${item.name}</td><td>${item.qty}</td>
                         <td>${item.price.toFixed(2)}</td>
                         <td>${(item.price * item.qty).toFixed(2)}</td>
                     </tr>`;
                 }
 
-                // สร้าง HTML ส่วนท้ายใบเสร็จ (สรุปยอด + ปุ่มยืนยัน)
-                html += `
-                    </table>
+                html += `</table>
                     <div class="total-section">
                         <p>Subtotal: ${subtotal.toFixed(2)} บาท</p>
                         <p>Discount: -${discount.toFixed(2)} บาท</p>
@@ -769,97 +439,17 @@
                         <p>VAT 7%: ${vat.toFixed(2)} บาท</p>
                         <h3>Total: ${total.toFixed(2)} บาท</h3>
                     </div>
-                    <button class="print-btn" onclick="confirmPurchase()">ยืนยันการซื้อ</button>
-                `;
+                    <button class="print-btn" onclick="confirmPurchase()">ยืนยันการซื้อ</button>`;
 
                 receipt.innerHTML = html;
             }
 
-            // ========================================================
-            // confirmPurchase()
-            // ฟังก์ชันยืนยันการซื้อ เรียกเมื่อกดปุ่ม "ยืนยันการซื้อ" ในใบเสร็จ
-            //
-            // ขั้นตอนการทำงาน:
-            //   1. ปิด popup ใบเสร็จ
-            //   2. บันทึก order ลง Supabase database (ถ้า login อยู่)
-            //   3. ล้างตะกร้าสินค้าทั้งหมด (cart = {})
-            //   4. อัปเดต UI ตะกร้าให้แสดง 0 รายการ
-            //   5. แสดง popup success แจ้งว่าสั่งซื้อสำเร็จ
-            // ========================================================
-            async function confirmPurchase() {
-                // ปิด popup ใบเสร็จก่อน
+            function confirmPurchase() {
                 document.getElementById("receiptModal").style.display = "none";
-
-                // ดึงยอดเงินและรายการสินค้าเพื่อบันทึกลง database
-                let total    = parseFloat(document.getElementById("total").innerText);
-                let invoiceNo = "INV-" + Date.now();
-
-                // บันทึก order ลง Supabase ถ้า login อยู่
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session) {
-                    // แปลง cart เป็น array สำหรับเก็บใน jsonb
-                    const items = Object.entries(cart).map(([id, item]) => ({
-                        id,
-                        name:  item.name,
-                        price: item.price,
-                        qty:   item.qty
-                    }));
-
-                    await supabase.from("orders").insert({
-                        user_id:    session.user.id,
-                        invoice_no: invoiceNo,
-                        items:      items,
-                        total:      total
-                    });
-                }
-
-                // รีเซ็ตตะกร้าสินค้าให้ว่างเปล่า
                 cart = {};
                 renderCart();
-
-                // แสดง popup สีเขียวแจ้งว่าสั่งซื้อสำเร็จ
-                showAlert("ขอบคุณที่ใช้บริการ Bookself Store ค่ะ 😊", "การสั่งซื้อสำเร็จ", "success");
+                showAlert("ขอบคุณที่ใช้บริการ Bookself Store", "การสั่งซื้อสำเร็จ", "success");
             }
-        </script>
-
-        <!-- Supabase SDK -->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-        <script>
-            // ========================================================
-            // ตั้งค่า Supabase สำหรับ checkout.html
-            // ใช้สำหรับเช็ค session และบันทึก order
-            // ========================================================
-            const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
-            const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-            // ========================================================
-            // เมื่อโหลดหน้า → เช็ค session แล้วอัปเดต user bar ด้านบน
-            // ถ้า login อยู่ → แสดงรูปและชื่อ + ปุ่มโปรไฟล์
-            // ถ้ายังไม่ login → แสดงข้อความและปุ่มเข้าสู่ระบบ
-            // ========================================================
-            window.addEventListener("load", async () => {
-                const { data: { session } } = await supabase.auth.getSession();
-
-                const userInfo  = document.getElementById("userInfo");
-                const loginLink = document.getElementById("loginLink");
-
-                if (session) {
-                    const user = session.user;
-                    const avatar = user.user_metadata.avatar_url || "";
-                    const name   = user.user_metadata.full_name  || user.email;
-
-                    // แสดงรูปโปรไฟล์และชื่อใน user bar
-                    userInfo.innerHTML = `
-                        <img src="${avatar}" alt="avatar">
-                        <span>สวัสดี, ${name}</span>
-                    `;
-                    // เปลี่ยนปุ่มเป็น "จัดการโปรไฟล์"
-                    loginLink.innerText = "จัดการโปรไฟล์";
-                    loginLink.href      = "login.html";
-                }
-            });
         </script>
 
     </body>

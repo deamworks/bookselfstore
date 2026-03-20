@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สมัครสมาชิก - Bookself</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,7 +20,7 @@
 
         nav {
             background: #5f2119;
-            padding: 18px 40px;
+            padding: 20px 20px 20px 62.5px;
         }
         .nav-con {
             max-width: 1200px;
@@ -29,14 +30,15 @@
             align-items: center;
         }
         .logo a {
-            font-family: 'Georgia', serif;
+            font-family: 'Lora', serif;
             color: #fff;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             text-decoration: none;
         }
-        .menu { display: flex; list-style: none; gap: 2rem; }
-        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu { display: flex; list-style: none; }
+        .menu li {padding-left: -20px; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; margin-right: 20px;}
         .menu a:hover { color: #c3766f; }
 
         /* ===== CARD ===== */
@@ -205,10 +207,8 @@
         <div class="nav-con">
             <div class="logo"><a href="../index.html">Bookself.</a></div>
             <ul class="menu">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../book.html">Book</a></li>
-                <li><a href="checkout.html">Shop</a></li>
-                <li><a href="login.html">Member</a></li>
+                <li><a href="index.html">Home</a></li>
+
             </ul>
         </div>
     </nav>
