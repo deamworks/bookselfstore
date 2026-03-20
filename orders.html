@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประวัติการสั่งซื้อ - Bookself Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== NAV ===== */
+        nav { background: #5f2119; padding: 18px 20px; }
+        .nav-con {
+            max-width: 1200px; margin: auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo a {
+            font-family: 'Lora', serif; color: #fff;
+            font-size: 22px; font-weight: bold; text-decoration: none;
+        }
+        .menu { display: flex; list-style: none; gap: 3rem; align-items: center; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
+        #navUserName {
+            color: #fceaca; font-size: 13px; padding: 3px 12px;
+            border: 1px solid rgba(252,234,202,0.5); border-radius: 20px;
+        }
+
+        /* ===== PAGE ===== */
+        .page-wrap {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 50px 20px;
+        }
+
+        .orders-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.09);
+            width: 100%;
+            max-width: 620px;
+            overflow: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .orders-header {
+            background: linear-gradient(135deg, #7c2220, #5f2119);
+            padding: 32px 40px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .orders-header h1 { font-size: 20px; font-weight: 600; }
+        .orders-header p  { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+        .header-icon { font-size: 36px; opacity: 0.8; }
+
+        /* ===== BODY ===== */
+        .orders-body { padding: 32px 40px; }
+
+        .section-title {
+            font-size: 13px; font-weight: 600; color: #7c2220;
+            letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 18px; padding-bottom: 8px;
+            border-bottom: 2px solid #f5e6e6;
+        }
+
+        /* ===== STAT CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: #fff3f2;
+            border-radius: 10px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+        .stat-label { font-size: 12px; color: #999; margin-bottom: 6px; }
+        .stat-val   { font-size: 20px; font-weight: 600; color: #7c2220; }
+
+        /* ===== ORDER CARD ===== */
+        .order-card {
+            border: 1.5px solid #eedede;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            transition: box-shadow 0.2s;
+        }
+        .order-card:hover { box-shadow: 0 3px 12px rgba(124,34,32,0.1); }
+
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .inv-no   { font-size: 13px; font-weight: 600; color: #333; }
+        .inv-date { font-size: 12px; color: #999; margin-top: 3px; }
+
+        /* badge */
+        .badge {
+            font-size: 11px; font-weight: 500;
+            padding: 3px 11px; border-radius: 20px;
+            white-space: nowrap;
+        }
+        .badge-paid     { background: #e8f5e9; color: #2e7d32; }
+        .badge-cancelled { background: #fdecea; color: #c62828; }
+
+        /* items list */
+        .order-items {
+            font-size: 13px; color: #666;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #eee;
+        }
+        .order-item-row { display: flex; justify-content: space-between; }
+        .order-item-row .item-total { color: #333; font-weight: 500; white-space: nowrap; }
+
+        /* footer */
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-total { font-size: 15px; font-weight: 600; color: #7c2220; }
+        .order-total.cancelled { text-decoration: line-through; color: #bbb; }
+
+        /* address box */
+        .order-address {
+            font-size: 12px; color: #888;
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .order-address strong { color: #555; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #bbb;
+        }
+        .empty-state .empty-icon { font-size: 48px; margin-bottom: 14px; }
+        .empty-state p { font-size: 15px; margin-bottom: 18px; color: #999; }
+
+        /* ===== BUTTONS ===== */
+        .btn-row { display: flex; gap: 10px; margin-top: 24px; }
+
+        .btn-profile {
+            flex: 1; padding: 11px;
+            background: #fff3f2; color: #7c2220;
+            border: 2px solid #7c2220; border-radius: 10px;
+            font-family: 'Prompt', sans-serif; font-size: 14px;
+            cursor: pointer; transition: all 0.2s; text-decoration: none;
+            text-align: center;
+        }
+        .btn-profile:hover { background: #7c2220; color: white; }
+
+        .btn-shop {
+            flex: 1; padding: 11px;
+            background: #7c2220; color: white;
+            border: none; border-radius: 10px;
+            font-family: 'Prompt', sans-serif; font-size: 14px;
+            cursor: pointer; transition: background 0.2s; text-decoration: none;
+            text-align: center;
+        }
+        .btn-shop:hover { background: #5f2119; }
+
+        /* ===== LOADING ===== */
+        .loading-screen {
+            padding: 60px 40px;
+            text-align: center;
+            color: #999; font-size: 15px;
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid #f0e0e0;
+            border-top-color: #7c2220;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-con">
+        <div class="logo"><a href="index.html">Bookself.</a></div>
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="book.html">Book</a></li>
+            <li><a href="checkout.html">Shop</a></li>
+            <li id="navUserItem" style="display:none;">
+                <span id="navUserName"></span>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="orders-card" id="ordersCard">
+
+        <!-- Loading -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="spinner"></div>
+            กำลังโหลดประวัติการสั่งซื้อ...
+        </div>
+
+        <!-- Content (ซ่อนจนกว่าจะโหลดเสร็จ) -->
+        <div id="ordersContent" style="display:none;">
+
+            <div class="orders-header">
+                <div>
+                    <h1>ประวัติการสั่งซื้อ</h1>
+                    <p id="headerSub">กำลังโหลด...</p>
+                </div>
+                <div class="header-icon">📋</div>
+            </div>
+
+            <div class="orders-body">
+
+                <!-- Stats -->
+                <div class="stats-grid" id="statsGrid"></div>
+
+                <!-- Order list -->
+                <div class="section-title">รายการสั่งซื้อทั้งหมด</div>
+                <div id="orderList"></div>
+
+                <!-- Bottom buttons -->
+                <div class="btn-row">
+                    <a href="profile.html" class="btn-profile">👤 โปรไฟล์</a>
+                    <a href="checkout.html" class="btn-shop"> สั่งซื้อเพิ่ม</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+
+        if (!session) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        // nav
+        const user        = session.user;
+        const fullName    = user.user_metadata?.full_name || user.user_metadata?.name || "";
+        const displayName = fullName || user.email.split("@")[0];
+        document.getElementById("navUserName").textContent   = "👤 " + displayName;
+        document.getElementById("navUserItem").style.display = "list-item";
+
+        // ดึง orders ทั้งหมดของ user เรียงล่าสุดก่อน
+        const { data: orders, error } = await sb
+            .from("orders")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        renderStats(orders);
+        renderOrders(orders);
+
+        document.getElementById("loadingScreen").style.display  = "none";
+        document.getElementById("ordersContent").style.display  = "block";
+    })();
+
+    // ============================================================
+    // renderStats — stat cards สรุปยอด
+    // ============================================================
+    function renderStats(orders) {
+        const paid        = orders.filter(o => o.status === "paid");
+        const totalOrders = orders.length;
+        const totalBooks  = paid.reduce((sum, o) => {
+            return sum + (o.items || []).reduce((s, i) => s + i.qty, 0);
+        }, 0);
+        const totalSpent  = paid.reduce((sum, o) => sum + (o.total || 0), 0);
+
+        document.getElementById("headerSub").innerText =
+            totalOrders === 0 ? "ยังไม่มีรายการ" : `${totalOrders} รายการ`;
+
+        document.getElementById("statsGrid").innerHTML = `
+            <div class="stat-card">
+                <div class="stat-label">สั่งซื้อทั้งหมด</div>
+                <div class="stat-val">${totalOrders} ครั้ง</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">หนังสือที่ซื้อ</div>
+                <div class="stat-val">${totalBooks} เล่ม</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">ยอดรวมทั้งหมด</div>
+                <div class="stat-val">฿${totalSpent.toFixed(2)}</div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // renderOrders — แสดง order card แต่ละรายการ
+    // ============================================================
+    function renderOrders(orders) {
+        const container = document.getElementById("orderList");
+
+        if (orders.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <p>ยังไม่มีประวัติการสั่งซื้อ</p>
+                    <a href="checkout.html" class="btn-shop" style="display:inline-block; padding:11px 28px;">เลือกซื้อหนังสือ</a>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = orders.map(o => {
+            const date   = new Date(o.created_at).toLocaleString("th-TH", {
+                year: "numeric", month: "short", day: "numeric",
+                hour: "2-digit", minute: "2-digit"
+            });
+            const isPaid = o.status === "paid";
+            const badge  = isPaid
+                ? `<span class="badge badge-paid">ชำระแล้ว</span>`
+                : `<span class="badge badge-cancelled">ยกเลิก</span>`;
+
+            // รายการหนังสือ
+            const items = (o.items || []);
+            const itemsHtml = items.map(i => `
+                <div class="order-item-row">
+                    <span>${i.book_name} × ${i.qty}</span>
+                    <span class="item-total">฿${(i.line_total || i.price * i.qty).toFixed(2)}</span>
+                </div>`).join("");
+
+            // ที่อยู่จัดส่ง (ถ้ามี)
+            const addr = o.shipping_address;
+            const addrHtml = (addr && addr.address) ? `
+                <div class="order-address">
+                    <strong>จัดส่งไปที่:</strong><br>
+                    ${addr.name ? addr.name + " · " : ""}${addr.phone || ""}<br>
+                    ${addr.address}, ${addr.province} ${addr.postcode}
+                </div>` : "";
+
+            // ยอดรวม
+            const totalHtml = isPaid
+                ? `<span class="order-total">฿${(o.total || 0).toFixed(2)}</span>`
+                : `<span class="order-total cancelled">฿${(o.total || 0).toFixed(2)}</span>`;
+
+            return `
+                <div class="order-card">
+                    <div class="order-top">
+                        <div>
+                            <div class="inv-no">${o.invoice_no}</div>
+                            <div class="inv-date">${date}</div>
+                        </div>
+                        ${badge}
+                    </div>
+                    ${addrHtml}
+                    <div class="order-items">${itemsHtml}</div>
+                    <div class="order-footer">
+                        ${totalHtml}
+                        <span style="font-size:12px; color:#bbb;">${items.length} รายการ</span>
+                    </div>
+                </div>`;
+        }).join("");
+    }
+</script>
+</body>
+</html>

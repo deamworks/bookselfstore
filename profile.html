@@ -219,13 +219,16 @@
                         <label>รหัสไปรษณีย์</label>
                         <input type="text" id="postcode" placeholder="XXXXX">
                     </div>
+                    
                 </div>
 
-                <button class="btn-save" id="saveBtn" onclick="saveProfile()">💾 บันทึกข้อมูล</button>
+
+                <button class="btn-save" id="saveBtn" onclick="saveProfile()">บันทึกข้อมูล</button>
                 <p class="status-msg" id="statusMsg"></p>
 
                 <div class="btn-row">
-                    <button class="btn-home"   onclick="window.location.href='index.html'">🏠 หน้าหลัก</button>
+                    <button class="btn-home"   onclick="window.location.href='index.html'">หน้าหลัก</button>
+                    <button class="btn-home"   onclick="window.location.href='orders.html'">📋 ประวัติสั่งซื้อ</button>
                     <button class="btn-logout" id="logoutBtn">ออกจากระบบ</button>
                 </div>
             </div>
@@ -352,7 +355,7 @@
         }, { onConflict: "id" });
 
         btn.disabled  = false;
-        btn.innerText = "💾 บันทึกข้อมูล";
+        btn.innerText = "บันทึกข้อมูล";
 
         const statusMsg = document.getElementById("statusMsg");
         if (error) {

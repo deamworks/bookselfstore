@@ -51,7 +51,6 @@
             .title-page { margin: 20px; }
             a { color: black; text-decoration: none; }
 
-            /* ALERT POPUP */
             .alert-modal { font-family: 'Prompt', sans-serif; position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
             .alert-modal.show { display: flex; }
             .alert-box { background: #fff; border-radius: 15px; padding: 30px 35px; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
@@ -62,7 +61,6 @@
             .alert-ok-btn  { font-family: 'Prompt', sans-serif; padding: 8px 35px; background: #7c2220; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; }
             .alert-ok-btn:hover { background: #5f2119; }
 
-            /* USER BAR */
             .user-bar { max-width: 1200px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); font-family: 'Prompt', sans-serif; }
             .ub-left  { display: flex; align-items: center; gap: 10px; }
             .ub-right { display: flex; gap: 8px; align-items: center; }
@@ -79,8 +77,7 @@
             .ub-btn-logout   { font-size: 13px; color: #999; background: none; border: 1.5px solid #ddd; padding: 5px 14px; border-radius: 20px; cursor: pointer; font-family: 'Prompt', sans-serif; transition: 0.2s; }
             .ub-btn-logout:hover { border-color: #7c2220; color: white; }
 
-            /* LOGIN REQUIRED OVERLAY */
-            .lock-overlay { font-family: "prompt" , sans-serif ; display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1002; justify-content: center; align-items: center; }
+            .lock-overlay { font-family: "prompt", sans-serif; display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1002; justify-content: center; align-items: center; }
             .lock-overlay.show { display: flex; }
             .lock-box { background: white; border-radius: 16px; padding: 40px 36px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
             .lock-box .lk-icon { font-size: 48px; margin-bottom: 12px; }
@@ -97,7 +94,6 @@
 
     <body>
 
-        <!-- USER BAR -->
         <div class="user-bar">
             <div class="ub-left">
                 <img  class="ub-avatar-img" id="ubAvatarImg" src="" alt="">
@@ -117,7 +113,6 @@
             </div>
         </div>
 
-        <!-- LOGIN REQUIRED OVERLAY -->
         <div class="lock-overlay" id="lockOverlay">
             <div class="lock-box">
                 <div class="lk-icon">🔒</div>
@@ -128,7 +123,6 @@
             </div>
         </div>
 
-        <!-- TABLE -->
         <div class="table-container">
             <table>
                 <thead>
@@ -216,11 +210,10 @@
                 <p>VAT 7%: <span id="vat">0.00</span> บาท</p>
                 <h3>Total Payment: <span id="total">0.00</span> บาท</h3>
                 <button class="checkout-btn" onclick="checkout()">ชำระเงิน</button>
-                <a href="../index.html"><button class="back-btn">← Back to Home</button></a>
+                <a href="./index.html"><button class="back-btn">← Back to Home</button></a>
             </div>
         </div>
 
-        <!-- ALERT POPUP -->
         <div class="alert-modal" id="alertModal">
             <div class="alert-box">
                 <div class="alert-icon"    id="alertIcon">⚠️</div>
@@ -230,27 +223,19 @@
             </div>
         </div>
 
-        <!-- RECEIPT MODAL -->
         <div class="receipt-modal" id="receiptModal">
             <div class="receipt-content" id="receipt"></div>
         </div>
 
-        <!-- Supabase SDK (โหลดครั้งเดียว) -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
         <script>
-            // ============================================================
-            // Supabase setup
-            // ============================================================
             const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
             const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
             const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
             let isLoggedIn = false;
 
-            // ============================================================
-            // User bar — โหลดเมื่อหน้าพร้อม
-            // ============================================================
             document.addEventListener("DOMContentLoaded", async () => {
                 const { data: { session } } = await sbClient.auth.getSession();
 
@@ -284,7 +269,6 @@
                 document.getElementById("ubMemberBtns").style.display = "flex";
             });
 
-            // ตรวจ login ก่อนซื้อ
             function requireLogin() {
                 if (!isLoggedIn) {
                     document.getElementById("lockOverlay").classList.add("show");
@@ -293,9 +277,6 @@
                 return true;
             }
 
-            // ============================================================
-            // Cart
-            // ============================================================
             let cart = {}, stocks = {};
 
             function showAlert(message, title = "แจ้งเตือน", type = "warning") {
@@ -337,7 +318,6 @@
                 else cart[id] = { name, price, qty: 1 };
 
                 if (stocks[id] <= 0) {
-                    showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
                     statusCell.innerText = "Sold Out";
                     btn.disabled = true; btn.style.background = "#999";
                 }
@@ -393,13 +373,20 @@
                 document.getElementById("total").innerText    = totalAfterDiscount.toFixed(2);
             }
 
-            function checkout() {
+            async function checkout() {
                 if (!requireLogin()) return;
 
                 if (Object.keys(cart).length === 0) {
                     showAlert("กรุณาเลือกสินค้าก่อนชำระเงิน", "ยังไม่มีสินค้า", "warning");
                     return;
                 }
+
+                const { data: { session } } = await sbClient.auth.getSession();
+                const { data: profile } = await sbClient
+                    .from("profiles")
+                    .select("full_name, phone, address, province, postcode")
+                    .eq("id", session.user.id)
+                    .single();
 
                 let modal   = document.getElementById("receiptModal");
                 let receipt = document.getElementById("receipt");
@@ -413,6 +400,12 @@
                 let priceBeforeVAT = total / 1.07;
                 let vat            = total - priceBeforeVAT;
 
+                const name     = profile?.full_name || session.user.email;
+                const phone    = profile?.phone     || "-";
+                const address  = profile?.address   || "-";
+                const province = profile?.province  || "-";
+                const postcode = profile?.postcode  || "-";
+
                 let html = `
                     <div class="receipt-header">
                         <h2>Bookself Store</h2>
@@ -420,6 +413,15 @@
                         <p>Invoice No: ${invoiceNo}</p>
                         <p>Date: ${date}</p>
                     </div>
+
+                    <div style="margin:15px 0; padding:12px; background:#f9f9f9; border-radius:8px; font-size:14px; line-height:1.8;">
+                        <strong>📦 ที่อยู่จัดส่ง</strong><br>
+                        ชื่อ: ${name}<br>
+                        โทร: ${phone}<br>
+                        ที่อยู่: ${address}<br>
+                        จังหวัด: ${province} ${postcode}
+                    </div>
+
                     <table><tr><th>Book</th><th>Qty</th><th>Price</th><th>Total</th></tr>`;
 
                 for (let id in cart) {
@@ -438,17 +440,106 @@
                         <p>ราคาก่อน VAT: ${priceBeforeVAT.toFixed(2)} บาท</p>
                         <p>VAT 7%: ${vat.toFixed(2)} บาท</p>
                         <h3>Total: ${total.toFixed(2)} บาท</h3>
-                    </div>
-                    <button class="print-btn" onclick="confirmPurchase()">ยืนยันการซื้อ</button>`;
+                    </div>`;
+
+                if (!profile?.address) {
+                    html += `<p style="color:#e67e22; font-size:13px; margin-top:10px;">
+                        ⚠️ ยังไม่มีที่อยู่จัดส่ง <a href="profile.html" style="color:#7c2220;">คลิกเพื่อกรอกที่อยู่</a>
+                    </p>`;
+                }
+
+                html += `
+                    <div style="display:flex; gap:10px; margin-top:15px;">
+                        <button class="print-btn"
+                                style="margin-top:0; background:#999; flex:1;"
+                                onclick="document.getElementById('receiptModal').style.display='none'">
+                            ← ย้อนกลับ
+                        </button>
+                        <button class="print-btn"
+                                style="margin-top:0; flex:1;"
+                                onclick="confirmPurchase()">
+                            ยืนยันการซื้อ
+                        </button>
+                    </div>`;
 
                 receipt.innerHTML = html;
             }
 
-            function confirmPurchase() {
+            async function confirmPurchase() {
                 document.getElementById("receiptModal").style.display = "none";
+
+                const { data: { session } } = await sbClient.auth.getSession();
+                if (!session) {
+                    showAlert("กรุณาเข้าสู่ระบบก่อน", "ข้อผิดพลาด", "error");
+                    return;
+                }
+
+                const { data: profile } = await sbClient
+                    .from("profiles")
+                    .select("full_name, phone, address, province, postcode")
+                    .eq("id", session.user.id)
+                    .single();
+
+                const invoiceNo = "INV-" + Date.now();
+                const subtotal  = parseFloat(document.getElementById("subtotal").innerText);
+                const discount  = parseFloat(document.getElementById("discount").innerText);
+                const total     = parseFloat(document.getElementById("total").innerText);
+
+                const items = Object.entries(cart).map(([id, item]) => ({
+                    book_id:    id,
+                    book_name:  item.name,
+                    price:      item.price,
+                    qty:        item.qty,
+                    line_total: parseFloat((item.price * item.qty).toFixed(2))
+                }));
+
+                // ① insert order
+                const { error } = await sbClient.from("orders").insert({
+                    user_id:    session.user.id,
+                    invoice_no: invoiceNo,
+                    items:      items,
+                    total:      total,
+                    status:     "paid",
+                    shipping_address: {
+                        name:     profile?.full_name || "",
+                        phone:    profile?.phone     || "",
+                        address:  profile?.address   || "",
+                        province: profile?.province  || "",
+                        postcode: profile?.postcode  || ""
+                    }
+                });
+
+                if (error) {
+                    showAlert("บันทึกคำสั่งซื้อไม่สำเร็จ:\n" + error.message, "ข้อผิดพลาด", "error");
+                    return;
+                }
+
+                // ② ส่งอีเมล พร้อม log ผลลัพธ์
+                try {
+                    console.log("📧 กำลังส่งอีเมลไปที่:", session.user.email);
+                    const { data: emailData, error: emailError } = await sbClient.functions.invoke("send-order-email", {
+                        body: {
+                            to:         session.user.email,
+                            invoice_no: invoiceNo,
+                            items:      items,
+                            total:      total,
+                            name:       profile?.full_name || session.user.email.split("@")[0]
+                        }
+                    });
+                    console.log("📧 Email result:", JSON.stringify(emailData));
+                    console.log("📧 Email error:", emailError);
+                } catch (emailErr) {
+                    console.warn("📧 Email catch:", emailErr);
+                }
+
+                // ③ เคลียร์ตะกร้า + แจ้งสำเร็จ
                 cart = {};
                 renderCart();
-                showAlert("ขอบคุณที่ใช้บริการ Bookself Store", "การสั่งซื้อสำเร็จ", "success");
+                showAlert(
+                    `Invoice: ${invoiceNo}\nยอดชำระ: ${total.toFixed(2)} บาท\nขอบคุณที่ใช้บริการ Bookself Store`,
+                    "การสั่งซื้อสำเร็จ ✅",
+                    "success"
+                );
             }
         </script>
 
