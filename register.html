@@ -1,50 +1,420 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>สมัครสมาชิก - Bookself</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background: #5f2119;
+            padding: 18px 40px;
+        }
+        .nav-con {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a {
+            font-family: 'Georgia', serif;
+            color: #fff;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .menu { display: flex; list-style: none; gap: 2rem; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
+
+        /* ===== CARD ===== */
+        .page-wrap {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 45px 40px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.09);
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .card-logo {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            color: #7c2220;
+            margin-bottom: 4px;
+        }
+        .card-sub {
+            text-align: center;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            color: #333;
+            transition: border 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #7c2220;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        .form-row .form-group { flex: 1; }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: #7c2220;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #5f2119; }
+        .btn-primary:disabled { background: #bbb; cursor: not-allowed; }
+
+        .divider {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #bbb;
+            font-size: 13px;
+        }
+        .divider::before, .divider::after {
+            content: ''; flex: 1; height: 1px; background: #eee;
+        }
+
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .btn-google:hover { border-color: #7c2220; background: #fff3f2; }
+        .btn-google img { width: 20px; }
+
+        /* ===== ALERTS ===== */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .alert-error   { background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; display: block; }
+        .alert-success { background: #f0fff4; color: #2e7d32; border: 1px solid #c3e6cb; display: block; }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+        .login-link a { color: #7c2220; text-decoration: none; font-weight: 500; }
+        .login-link a:hover { text-decoration: underline; }
+
+        /* ===== SUCCESS STATE ===== */
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .success-box .icon { font-size: 54px; margin-bottom: 16px; }
+        .success-box h3 { font-size: 20px; color: #2e7d32; margin-bottom: 8px; }
+        .success-box p { font-size: 14px; color: #666; line-height: 1.7; }
+        .success-box .btn-go {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 11px 30px;
+            background: #7c2220;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .success-box .btn-go:hover { background: #5f2119; }
+    </style>
 </head>
 <body>
-    <form action="">
-        <label for="name">ชื่อ</label>
-        <input type="text" id="name" name="name" placeholder="พิมพ์ชื่อ" required>
-        <span style="color: red">*</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;
 
-        <label for="surename">นามสกุล</label>
-        <input type="text" id="surename" >
-        <span style="color: red">*</span>
-        &nbsp;&nbsp;&nbsp;&nbsp; <br><br>
+    <nav>
+        <div class="nav-con">
+            <div class="logo"><a href="../index.html">Bookself.</a></div>
+            <ul class="menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../book.html">Book</a></li>
+                <li><a href="checkout.html">Shop</a></li>
+                <li><a href="login.html">Member</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <label for="date"> วัน เดือน ปีเกิด</label>
-        <input type="date" name="date" id="date" >
+    <div class="page-wrap">
+        <div class="card">
 
-        <label for="age">อายุ</label>
-        <input type="number" name="age" id="age"> <br><br>
+            <div class="card-logo">Bookself.</div>
+            <div class="card-sub">ร้านหนังสือออนไลน์</div>
 
-        <label for="gender">Gender</label> 
-        <input type="checkbox" name="Male" id="Male">
-        <label for="male">Male</label> 
+            <!-- FORM STATE -->
+            <div id="formState">
+                <h2>สมัครสมาชิกใหม่</h2>
 
-        <input type="checkbox" name="Female" id="Female">
-        <label for="female">Female</label> <br><br>
+                <div class="alert" id="alertMsg"></div>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" placeholder="Enter email address">
-        <span style="color: red">*</span>
-        &nbsp;&nbsp;&nbsp;&nbsp; <br><br>
+                <!-- Google Signup -->
+                <button class="btn-google" onclick="signupWithGoogle()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    สมัครด้วย Google
+                </button>
 
-        <input type="checkbox" name="check" id="check">
-        <label for="check">ข้อมูลถูกต้อง</label> <br><br>
+                <div class="divider">หรือสมัครด้วยอีเมล</div>
 
-        <label for="password">password =</label>
-        <input type="password" name="password" id="password"> <br><br>
+                <!-- Email/Password Form -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ชื่อ</label>
+                        <input type="text" id="firstName" placeholder="ชื่อ" required>
+                    </div>
+                    <div class="form-group">
+                        <label>นามสกุล</label>
+                        <input type="text" id="lastName" placeholder="นามสกุล">
+                    </div>
+                </div>
 
-        <label for="comfirm password">Comfirm password =</label>
-        <input type="password" name="" id="">
-    </form>
-    
+                <div class="form-group">
+                    <label>อีเมล <span style="color:#c0392b">*</span></label>
+                    <input type="email" id="email" placeholder="example@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>รหัสผ่าน <span style="color:#c0392b">*</span> <span style="color:#aaa;font-size:12px">(อย่างน้อย 6 ตัวอักษร)</span></label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label>ยืนยันรหัสผ่าน <span style="color:#c0392b">*</span></label>
+                    <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                </div>
+
+                <button class="btn-primary" id="submitBtn" onclick="registerWithEmail()">
+                    สมัครสมาชิก
+                </button>
+
+                <p class="login-link">มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a></p>
+            </div>
+
+            <!-- SUCCESS STATE -->
+            <div class="success-box" id="successState">
+                <div class="icon">📧</div>
+                <h3>สมัครสมาชิกสำเร็จ!</h3>
+                <p>ระบบส่งอีเมลยืนยันไปที่<br><strong id="confirmedEmail"></strong><br><br>กรุณาตรวจสอบอีเมลและกดลิงก์ยืนยันก่อนเข้าสู่ระบบ</p>
+                <a href="login.html" class="btn-go">ไปหน้า Login →</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // ========================================
+        // Supabase Config (ใช้ key เดิมจาก login.html)
+        // ========================================
+        const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+        const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+        const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        // ========================================
+        // ถ้า login อยู่แล้ว → redirect ไป login.html
+        // ========================================
+        window.addEventListener("load", async () => {
+            const { data: { session } } = await sbClient.auth.getSession();
+            if (session) {
+                window.location.href = "login.html";
+            }
+        });
+
+        // ========================================
+        // showAlert(msg, type)
+        // type: 'error' | 'success'
+        // ========================================
+        function showAlert(msg, type = "error") {
+            const el = document.getElementById("alertMsg");
+            el.className = `alert alert-${type}`;
+            el.innerText = msg;
+        }
+
+        function clearAlert() {
+            const el = document.getElementById("alertMsg");
+            el.className = "alert";
+            el.innerText = "";
+        }
+
+        // ========================================
+        // registerWithEmail()
+        // สมัครด้วย Email + Password ผ่าน Supabase Auth
+        // หลังสมัครสำเร็จ → Supabase ส่ง confirmation email อัตโนมัติ
+        // ========================================
+        async function registerWithEmail() {
+            clearAlert();
+
+            const firstName       = document.getElementById("firstName").value.trim();
+            const lastName        = document.getElementById("lastName").value.trim();
+            const email           = document.getElementById("email").value.trim();
+            const password        = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            // ── Validation ──
+            if (!firstName) {
+                showAlert("กรุณากรอกชื่อ");
+                return;
+            }
+            if (!email) {
+                showAlert("กรุณากรอกอีเมล");
+                return;
+            }
+            if (password.length < 6) {
+                showAlert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร");
+                return;
+            }
+            if (password !== confirmPassword) {
+                showAlert("รหัสผ่านไม่ตรงกัน กรุณากรอกใหม่");
+                return;
+            }
+
+            // ── Loading state ──
+            const btn = document.getElementById("submitBtn");
+            btn.disabled    = true;
+            btn.innerText   = "กำลังสมัครสมาชิก...";
+
+            // ── Supabase signUp ──
+            const { data, error } = await sbClient.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name:  `${firstName} ${lastName}`.trim(),
+                        first_name: firstName,
+                        last_name:  lastName
+                    }
+                }
+            });
+
+            btn.disabled  = false;
+            btn.innerText = "สมัครสมาชิก";
+
+            if (error) {
+                // แปลงข้อความ error เป็นภาษาไทย
+                const msg = translateError(error.message);
+                showAlert(msg);
+                return;
+            }
+
+            // ── Success → แสดงหน้าสำเร็จ ──
+            document.getElementById("formState").style.display   = "none";
+            document.getElementById("successState").style.display = "block";
+            document.getElementById("confirmedEmail").innerText   = email;
+        }
+
+        // ========================================
+        // signupWithGoogle()
+        // ใช้ Google OAuth เดียวกับ login.html
+        // ========================================
+        async function signupWithGoogle() {
+            const { error } = await sbClient.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: window.location.origin + "/bookselfstore/bookpage/login.html"
+                }
+            });
+            if (error) showAlert("เกิดข้อผิดพลาด: " + error.message);
+        }
+
+        // ========================================
+        // translateError(msg)
+        // แปล error message จาก Supabase เป็นภาษาไทย
+        // ========================================
+        function translateError(msg) {
+            if (msg.includes("already registered") || msg.includes("User already registered")) {
+                return "อีเมลนี้มีบัญชีอยู่แล้ว กรุณาเข้าสู่ระบบ";
+            }
+            if (msg.includes("invalid email") || msg.includes("Invalid email")) {
+                return "รูปแบบอีเมลไม่ถูกต้อง";
+            }
+            if (msg.includes("Password should be")) {
+                return "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
+            }
+            if (msg.includes("rate limit") || msg.includes("too many")) {
+                return "สมัครบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่";
+            }
+            return "เกิดข้อผิดพลาด: " + msg;
+        }
+    </script>
+
 </body>
 </html>

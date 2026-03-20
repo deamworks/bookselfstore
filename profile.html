@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลสมาชิก - Bookself Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== NAV ===== */
+        nav { background: #5f2119; padding: 18px 20px; }
+        .nav-con {
+            max-width: 1200px; margin: auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo a {
+            font-family: 'Lora', serif; color: #fff;
+            font-size: 22px; font-weight: bold; text-decoration: none;
+        }
+        .menu { display: flex; list-style: none; gap: 3rem; align-items: center; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
+        #navUserName {
+            color: #fceaca; font-size: 13px; padding: 3px 12px;
+            border: 1px solid rgba(252,234,202,0.5); border-radius: 20px;
+        }
+
+        /* ===== PAGE ===== */
+        .page-wrap {
+            flex: 1; display: flex;
+            justify-content: center; align-items: flex-start;
+            padding: 50px 20px;
+        }
+
+        .profile-card {
+            background: white; border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.09);
+            width: 100%; max-width: 500px;
+            overflow: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .profile-header {
+            background: linear-gradient(135deg, #7c2220, #5f2119);
+            padding: 36px 40px 28px;
+            text-align: center;
+            color: white;
+        }
+        .avatar-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 14px;
+        }
+        .profile-avatar {
+            width: 90px; height: 90px; border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.6);
+            object-fit: cover; display: block;
+        }
+        /* placeholder เมื่อไม่มีรูป (email login) */
+        .avatar-initial {
+            width: 90px; height: 90px; border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; font-weight: 600; color: white;
+            margin: 0 auto 14px;
+        }
+        .profile-name  { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+        .profile-email { font-size: 13px; opacity: 0.75; }
+
+        /* ===== BODY ===== */
+        .profile-body { padding: 32px 40px; }
+
+        .section-title {
+            font-size: 13px; font-weight: 600; color: #7c2220;
+            letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 18px; padding-bottom: 8px;
+            border-bottom: 2px solid #f5e6e6;
+        }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; font-size: 13px;
+            color: #555; margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #e0e0e0; border-radius: 8px;
+            font-family: 'Prompt', sans-serif; font-size: 14px;
+            color: #333; transition: border 0.2s; background: #fafafa;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none; border-color: #7c2220; background: white;
+        }
+        .form-group textarea { resize: vertical; min-height: 75px; }
+        .form-row { display: flex; gap: 12px; }
+        .form-row .form-group { flex: 1; }
+
+        /* ===== BUTTONS ===== */
+        .btn-save {
+            width: 100%; padding: 13px; background: #7c2220; color: white;
+            border: none; border-radius: 10px; font-family: 'Prompt', sans-serif;
+            font-size: 15px; font-weight: 500; cursor: pointer;
+            transition: background 0.2s; margin-top: 6px;
+        }
+        .btn-save:hover { background: #5f2119; }
+
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+
+        .btn-home {
+            flex: 1; padding: 11px; background: #fff3f2; color: #7c2220;
+            border: 2px solid #7c2220; border-radius: 10px;
+            font-family: 'Prompt', sans-serif; font-size: 14px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-home:hover { background: #7c2220; color: white; }
+
+        .btn-logout {
+            flex: 1; padding: 11px; background: white; color: #999;
+            border: 1.5px solid #ddd; border-radius: 10px;
+            font-family: 'Prompt', sans-serif; font-size: 14px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-logout:hover { border-color: #cc0000; color: #cc0000; }
+
+        /* ===== STATUS / LOADING ===== */
+        .status-msg { font-size: 13px; margin-top: 10px; min-height: 20px; text-align: center; }
+
+        .loading-screen {
+            padding: 60px 40px;
+            text-align: center;
+            color: #999; font-size: 15px;
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid #f0e0e0;
+            border-top-color: #7c2220;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-con">
+        <div class="logo"><a href="../index.html">Bookself.</a></div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../book.html">Book</a></li>
+            <li><a href="checkout.html">Shop</a></li>
+            <li><a href="login.html">Member</a></li>
+            <li id="navContractItem"><a href="#">Contract</a></li>
+            <li id="navUserItem" style="display:none;">
+                <span id="navUserName"></span>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="profile-card" id="profileCard">
+
+        <!-- Loading spinner ขณะรอ session -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="spinner"></div>
+            กำลังโหลดข้อมูล...
+        </div>
+
+        <!-- เนื้อหาจริง (ซ่อนไว้ก่อน) -->
+        <div id="profileContent" style="display:none;">
+
+            <!-- Header: รูป + ชื่อ + อีเมล -->
+            <div class="profile-header">
+                <div class="avatar-wrap">
+                    <img class="profile-avatar" id="avatarImg" src="" alt="avatar" style="display:none;">
+                    <div class="avatar-initial"  id="avatarInitial" style="display:none;"></div>
+                </div>
+                <div class="profile-name"  id="profileName"></div>
+                <div class="profile-email" id="profileEmail"></div>
+            </div>
+
+            <!-- Body: form ข้อมูลจัดส่ง -->
+            <div class="profile-body">
+                <div class="section-title">ข้อมูลการจัดส่ง</div>
+
+                <div class="form-group">
+                    <label>ชื่อ-นามสกุล</label>
+                    <input type="text" id="fullName" placeholder="ชื่อ-นามสกุล">
+                </div>
+                <div class="form-group">
+                    <label>เบอร์โทรศัพท์</label>
+                    <input type="tel" id="phone" placeholder="0XX-XXX-XXXX">
+                </div>
+                <div class="form-group">
+                    <label>ที่อยู่จัดส่ง</label>
+                    <textarea id="address" placeholder="บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>จังหวัด</label>
+                        <input type="text" id="province" placeholder="จังหวัด">
+                    </div>
+                    <div class="form-group">
+                        <label>รหัสไปรษณีย์</label>
+                        <input type="text" id="postcode" placeholder="XXXXX">
+                    </div>
+                </div>
+
+                <button class="btn-save" id="saveBtn" onclick="saveProfile()">💾 บันทึกข้อมูล</button>
+                <p class="status-msg" id="statusMsg"></p>
+
+                <div class="btn-row">
+                    <button class="btn-home"   onclick="window.location.href='../index.html'">🏠 หน้าหลัก</button>
+                    <button class="btn-logout" id="logoutBtn">ออกจากระบบ</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // ผูก logout ด้วย addEventListener (ไม่ใช้ onclick inline)
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await sbClient.auth.signOut();
+        window.location.href = "login.html";
+    });
+
+    // ================================================================
+    // ตรวจ session ตอนโหลดหน้า — ใช้ getSession() แทน onAuthStateChange
+    // เพื่อป้องกัน redirect ออกก่อนที่ session จะโหลดเสร็จ
+    // ================================================================
+    (async () => {
+        const { data: { session } } = await sbClient.auth.getSession();
+
+        if (!session) {
+            // ไม่มี session จริงๆ → กลับหน้า login
+            window.location.href = "login.html";
+            return;
+        }
+
+        await loadProfile(session.user);
+    })();
+
+    // รับ event SIGNED_OUT เพื่อ redirect ออก (กรณี logout จากที่อื่น)
+    sbClient.auth.onAuthStateChange((event) => {
+        if (event === "SIGNED_OUT") {
+            window.location.href = "login.html";
+        }
+    });
+
+    // ================================================================
+    // loadProfile(user) — ดึงข้อมูลจาก DB แล้วแสดงผล
+    // ================================================================
+    async function loadProfile(user) {
+        const fullName  = user.user_metadata?.full_name
+                       || user.user_metadata?.name
+                       || "";
+        const avatarUrl = user.user_metadata?.avatar_url || "";
+
+        // ── navbar ──
+        const displayName = fullName || user.email.split("@")[0];
+        document.getElementById("navUserName").textContent       = "👤 " + displayName;
+        document.getElementById("navUserItem").style.display     = "list-item";
+        document.getElementById("navContractItem").style.display = "none";
+
+        // ── header ──
+        document.getElementById("profileName").innerText  = fullName || user.email;
+        document.getElementById("profileEmail").innerText = user.email;
+
+        if (avatarUrl) {
+            // Google login → มีรูป
+            const img = document.getElementById("avatarImg");
+            img.src = avatarUrl;
+            img.style.display = "block";
+        } else {
+            // Email login → แสดงตัวอักษรแรกแทน
+            const initial = document.getElementById("avatarInitial");
+            initial.textContent = (fullName || user.email)[0].toUpperCase();
+            initial.style.display = "flex";
+        }
+
+        // ── ดึงข้อมูลจาก DB ──
+        const { data: profile, error } = await sbClient
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (error) console.error("Fetch error:", error.message);
+
+        if (profile) {
+            document.getElementById("fullName").value = profile.full_name || "";
+            document.getElementById("phone").value    = profile.phone     || "";
+            document.getElementById("address").value  = profile.address   || "";
+            document.getElementById("province").value = profile.province  || "";
+            document.getElementById("postcode").value = profile.postcode  || "";
+        } else {
+            // สมาชิกใหม่ → สร้าง row เริ่มต้น
+            await sbClient.from("profiles").insert({
+                id: user.id, email: user.email,
+                full_name: fullName, avatar_url: avatarUrl
+            });
+            document.getElementById("fullName").value = fullName;
+        }
+
+        // ── ซ่อน loading แสดงเนื้อหา ──
+        document.getElementById("loadingScreen").style.display  = "none";
+        document.getElementById("profileContent").style.display = "block";
+    }
+
+    // ================================================================
+    // saveProfile()
+    // ================================================================
+    async function saveProfile() {
+        const { data: { session } } = await sbClient.auth.getSession();
+        if (!session) return;
+
+        const btn = document.getElementById("saveBtn");
+        btn.disabled  = true;
+        btn.innerText = "กำลังบันทึก...";
+
+        const { error } = await sbClient.from("profiles").upsert({
+            id:         session.user.id,
+            email:      session.user.email,
+            full_name:  document.getElementById("fullName").value.trim(),
+            phone:      document.getElementById("phone").value.trim(),
+            address:    document.getElementById("address").value.trim(),
+            province:   document.getElementById("province").value.trim(),
+            postcode:   document.getElementById("postcode").value.trim(),
+            avatar_url: session.user.user_metadata?.avatar_url || ""
+        }, { onConflict: "id" });
+
+        btn.disabled  = false;
+        btn.innerText = "💾 บันทึกข้อมูล";
+
+        const statusMsg = document.getElementById("statusMsg");
+        if (error) {
+            statusMsg.style.color = "#cc0000";
+            statusMsg.innerText   = "เกิดข้อผิดพลาด: " + error.message;
+            console.error("Save error:", error.message);
+        } else {
+            statusMsg.style.color = "#2e7d32";
+            statusMsg.innerText   = "✅ บันทึกข้อมูลสำเร็จ";
+            setTimeout(() => statusMsg.innerText = "", 3000);
+        }
+    }
+</script>
+</body>
+</html>

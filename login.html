@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - Bookself Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav { background: #5f2119; padding: 18px 20px; }
+        .nav-con {
+            max-width: 1200px; margin: auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo a {
+            font-family: 'Lora', serif; color: #fff;
+            font-size: 22px; font-weight: bold; text-decoration: none;
+        }
+        .menu { display: flex; list-style: none; gap: 3rem; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
+
+        .page-wrap {
+            flex: 1; display: flex;
+            justify-content: center; align-items: center; padding: 50px 20px;
+        }
+        .login-card {
+            background: white; padding: 50px 40px;
+            border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            width: 100%; max-width: 420px; text-align: center;
+        }
+        .store-logo { font-size: 26px; font-weight: 600; color: #7c2220; margin-bottom: 4px; }
+        .store-sub  { font-size: 13px; color: #999; margin-bottom: 32px; }
+        h2 { font-size: 20px; color: #333; margin-bottom: 24px; }
+
+        .google-btn {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            width: 100%; padding: 13px 20px; background: white;
+            border: 2px solid #ddd; border-radius: 10px; cursor: pointer;
+            font-family: 'Prompt', sans-serif; font-size: 15px; color: #333; transition: all 0.2s;
+        }
+        .google-btn:hover { border-color: #7c2220; background: #fff3f2; }
+        .google-btn img  { width: 22px; }
+
+        .divider-or {
+            margin: 20px 0; display: flex; align-items: center; gap: 10px;
+            color: #bbb; font-size: 13px;
+        }
+        .divider-or::before, .divider-or::after { content:''; flex:1; height:1px; background:#eee; }
+
+        .form-group { text-align: left; margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; }
+        .form-group input {
+            width: 100%; padding: 11px 14px; border: 1.5px solid #ddd;
+            border-radius: 8px; font-family: 'Prompt', sans-serif;
+            font-size: 14px; color: #333; transition: border 0.2s;
+        }
+        .form-group input:focus { outline: none; border-color: #7c2220; }
+
+        .btn-login {
+            width: 100%; padding: 13px; background: #7c2220; color: white;
+            border: none; border-radius: 10px; font-family: 'Prompt', sans-serif;
+            font-size: 15px; cursor: pointer; margin-top: 4px; transition: background 0.2s;
+        }
+        .btn-login:hover    { background: #5f2119; }
+        .btn-login:disabled { background: #bbb; cursor: not-allowed; }
+
+        .alert-box {
+            padding: 10px 14px; border-radius: 8px;
+            font-size: 13px; margin-bottom: 14px; display: none;
+        }
+        .alert-box.error {
+            display: block; background: #fff0f0;
+            color: #c0392b; border: 1px solid #f5c6cb;
+        }
+
+        .register-link { text-align: center; margin-top: 18px; font-size: 13px; color: #888; }
+        .register-link a { color: #7c2220; text-decoration: none; font-weight: 500; }
+        .register-link a:hover { text-decoration: underline; }
+        .loading-msg { font-size: 13px; color: #999; margin-top: 12px; min-height: 18px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-con">
+        <div class="logo"><a href="../index.html">Bookself.</a></div>
+        <ul class="menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../book.html">Book</a></li>
+            <li><a href="checkout.html">Shop</a></li>
+            <li><a href="login.html" style="color:#fceaca;">Member</a></li>
+            <li id="navContractItem"><a href="#">Contract</a></li>
+            <li id="navUserItem" style="display:none;">
+                <a href="profile.html" id="navUserName"
+                   style="color:#fceaca; padding:3px 12px;
+                          border:1px solid rgba(252,234,202,0.5);
+                          border-radius:20px; font-size:13px;"></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="login-card">
+        <div class="store-logo">📚 Bookself Store</div>
+        <div class="store-sub">www.bookselfstore.com</div>
+        <h2>เข้าสู่ระบบ</h2>
+
+        <button class="google-btn" onclick="loginWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            เข้าสู่ระบบด้วย Google
+        </button>
+
+        <div class="divider-or">หรือเข้าสู่ระบบด้วยอีเมล</div>
+
+        <div class="alert-box" id="alertBox"></div>
+
+        <div class="form-group">
+            <label>อีเมล</label>
+            <input type="email" id="loginEmail" placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+            <label>รหัสผ่าน</label>
+            <input type="password" id="loginPassword" placeholder="••••••••"
+                onkeydown="if(event.key==='Enter') loginWithEmail()">
+        </div>
+
+        <button class="btn-login" id="loginBtn" onclick="loginWithEmail()">เข้าสู่ระบบ</button>
+        <p class="loading-msg" id="loadingMsg"></p>
+
+        <div class="register-link">
+            ยังไม่มีบัญชี? <a href="register.html">สมัครสมาชิกฟรี</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // ตรวจ session — ถ้ามีอยู่แล้ว แสดงชื่อใน navbar
+    sbClient.auth.onAuthStateChange((event, session) => {
+        if (session) {
+            const name = session.user.user_metadata?.full_name
+                      || session.user.user_metadata?.name
+                      || session.user.email.split("@")[0];
+            document.getElementById("navUserName").textContent       = "👤 " + name;
+            document.getElementById("navUserItem").style.display     = "list-item";
+            document.getElementById("navContractItem").style.display = "none";
+
+            // เพิ่ง login สำเร็จ → ไป profile
+            if (event === "SIGNED_IN") {
+                window.location.href = "profile.html";
+            }
+        }
+    });
+
+    async function loginWithEmail() {
+        const email    = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        const alertEl  = document.getElementById("alertBox");
+        const btn      = document.getElementById("loginBtn");
+
+        alertEl.className = "alert-box";
+        if (!email || !password) {
+            alertEl.className = "alert-box error";
+            alertEl.innerText = "กรุณากรอกอีเมลและรหัสผ่าน";
+            return;
+        }
+
+        btn.disabled  = true;
+        btn.innerText = "กำลังเข้าสู่ระบบ...";
+
+        const { error } = await sbClient.auth.signInWithPassword({ email, password });
+
+        btn.disabled  = false;
+        btn.innerText = "เข้าสู่ระบบ";
+
+        if (error) {
+            alertEl.className = "alert-box error";
+            if (error.message.includes("Invalid login") || error.message.includes("invalid_credentials")) {
+                alertEl.innerText = "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+            } else if (error.message.includes("Email not confirmed")) {
+                alertEl.innerText = "กรุณายืนยันอีเมลก่อน (ตรวจสอบกล่องจดหมาย)";
+            } else {
+                alertEl.innerText = "เกิดข้อผิดพลาด: " + error.message;
+            }
+        }
+    }
+
+    async function loginWithGoogle() {
+        document.getElementById("loadingMsg").innerText = "กำลังเชื่อมต่อ Google...";
+        const { error } = await sbClient.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: window.location.origin + "/bookselfstore/idex.html",
+                queryParams: { access_type: "offline", prompt: "consent" }
+            }
+        });
+        if (error) document.getElementById("loadingMsg").innerText = "เกิดข้อผิดพลาด: " + error.message;
+    }
+</script>
+</body>
+</html>
