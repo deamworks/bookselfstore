@@ -36,6 +36,45 @@
             border: 1px solid rgba(252,234,202,0.5); border-radius: 20px;
         }
 
+    .menu { align-items: center; gap: 2.8rem; }
+    .menu li { margin-left: 0 !important; }
+    .menu li.has-dropdown { position: relative; }
+    .dropdown {
+        display: none; position: absolute;
+        top: calc(100% + 12px); left: 50%;
+        transform: translateX(-50%);
+        background: #fff; border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        padding: 10px 8px; min-width: 210px;
+        z-index: 999; border: 1px solid rgba(0,0,0,0.06);
+    }
+    .dropdown::before {
+        content: ''; position: absolute;
+        top: -7px; left: 50%; transform: translateX(-50%);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.06));
+    }
+    .dropdown.open { display: block; }
+    .dropdown a {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 10px;
+        color: #333 !important; font-size: 14px;
+        text-decoration: none; transition: background 0.18s;
+        white-space: nowrap;
+    }
+    .dropdown a:hover { background: #fff3f2; color: #7c2220 !important; }
+    .dropdown-icon { width: 34px; height: 34px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0; }
+    .dropdown-text { display: flex; flex-direction: column; }
+    .dropdown-title { font-weight: 500; color: #333; font-size: 14px; }
+    .dropdown-sub   { font-size: 11px; color: #999; margin-top: 1px; }
+    .dropdown hr { border: none; border-top: 1px solid #f0f0f0; margin: 4px 8px; }
+    .book-arrow { font-size: 10px; opacity: 0.7; margin-left: 3px; transition: transform 0.2s; }
+    .menu li.has-dropdown.open .book-arrow { transform: rotate(180deg); }
+
         /* ===== PAGE ===== */
         .page-wrap {
             flex: 1; display: flex;
@@ -162,9 +201,44 @@
         <div class="logo"><a href="index.html">Bookself.</a></div>
         <ul class="menu">
             <li><a href="index.html">Home</a></li>
-            <li><a href="book.html">Book</a></li>
             <li><a href="checkout.html">Shop</a></li>
-            <li id="navContractItem"><a href="#">Contract</a></li>
+                                <li class="has-dropdown">
+                        <a style="display:flex;align-items:center;gap:2px;cursor:pointer;">
+                            Book <span class="book-arrow">▼</span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="book.html">
+                                <div class="dropdown-icon" style="background:#fff3f2;">📚</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">All Books</span>
+                                    <span class="dropdown-sub">หนังสือทั้งหมด</span>
+                                </div>
+                            </a>
+                            <hr>
+                            <a href="book.html">
+                                <div class="dropdown-icon" style="background:#eafaf1;">✨</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">New Arrivals</span>
+                                    <span class="dropdown-sub">ใหม่ล่าสุด</span>
+                                </div>
+                            </a>
+                            <a href="book.html">
+                                <div class="dropdown-icon" style="background:#fce8f0;">🎌</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">The Veil Series</span>
+                                    <span class="dropdown-sub">by Kotteri · 7 เล่ม</span>
+                                </div>
+                            </a>
+                            <a href="book.html">
+                                <div class="dropdown-icon" style="background:#fef9e7;">🇹🇭</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">นิยายไทย</span>
+                                    <span class="dropdown-sub">โรมานซ์ · ภาษาไทย</span>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+            <li id="navContractItem"><a href="#"></a></li>
             <li id="navUserItem" style="display:none;">
                 <span id="navUserName"></span>
             </li>
@@ -219,17 +293,37 @@
                         <label>รหัสไปรษณีย์</label>
                         <input type="text" id="postcode" placeholder="XXXXX">
                     </div>
-                    
                 </div>
-
 
                 <button class="btn-save" id="saveBtn" onclick="saveProfile()">บันทึกข้อมูล</button>
                 <p class="status-msg" id="statusMsg"></p>
 
+                <!-- ปุ่ม Admin — แสดงเฉพาะ is_admin = true -->
+                <div id="adminBtn" style="display:none; margin-bottom:10px;">
+                    <button onclick="window.location.href='admin.html'"
+                        style="width:100%; padding:12px; background:#7c2220; color:#fff;
+                               border:none; border-radius:10px; font-family:'Prompt',sans-serif;
+                               font-size:14px; font-weight:500; cursor:pointer; transition:background 0.2s;"
+                        onmouseover="this.style.background='#7c2220'"
+                        onmouseout="this.style.background='#7c2220'">
+                        Admin Dashboard
+                    </button>
+                </div>
+
+                <!-- ปุ่มประวัติสั่งซื้อ -->
+                <div style="margin-bottom:10px;">
+                    <button onclick="window.location.href='orders.html'"
+                        style="width:100%; padding:12px; background:#fff3f2; color:#7c2220;
+                               border:2px solid #7c2220; border-radius:10px; font-family:'Prompt',sans-serif;
+                               font-size:14px; cursor:pointer; transition:all 0.2s;"
+                        onmouseover="this.style.background='#7c2220';this.style.color='white'"
+                        onmouseout="this.style.background='#fff3f2';this.style.color='#7c2220'">
+                        ประวัติการสั่งซื้อ
+                    </button>
+                </div>
+
                 <div class="btn-row">
                     <button class="btn-home"   onclick="window.location.href='index.html'">หน้าหลัก</button>
-                    <button class="btn-home"   onclick="window.location.href='orders.html'">📋 ประวัติสั่งซื้อ</button>
-                    <button class="btn-home" id="adminBtn" style="display:none;" onclick="window.location.href='admin.html'">🔧 Admin Dashboard</button>
                     <button class="btn-logout" id="logoutBtn">ออกจากระบบ</button>
                 </div>
             </div>
@@ -239,6 +333,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/cart.js"></script>
 <script>
     const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
@@ -312,8 +407,7 @@
             .maybeSingle();
 
         if (error) console.error("Fetch error:", error.message);
-        console.log("Profile data:", profile);
-        
+
         if (profile) {
             document.getElementById("fullName").value = profile.full_name || "";
             document.getElementById("phone").value    = profile.phone     || "";
@@ -321,11 +415,12 @@
             document.getElementById("province").value = profile.province  || "";
             document.getElementById("postcode").value = profile.postcode  || "";
 
-    // แสดงปุ่ม Admin เฉพาะ is_admin = true
-    if (profile.is_admin) {
-        document.getElementById("adminBtn").style.display = "block";
-    }
-    } else {
+            // แสดงปุ่ม Admin ถ้า is_admin = true
+            if (profile.is_admin) {
+                const adminBtn = document.getElementById("adminBtn");
+                if (adminBtn) adminBtn.style.display = "block";
+            }
+        } else {
             // สมาชิกใหม่ → สร้าง row เริ่มต้น
             await sbClient.from("profiles").insert({
                 id: user.id, email: user.email,
@@ -374,8 +469,27 @@
             statusMsg.innerText   = "✅ บันทึกข้อมูลสำเร็จ";
             setTimeout(() => statusMsg.innerText = "", 3000);
         }
-
     }
+
+    document.querySelectorAll(".has-dropdown").forEach(li => {
+        li.addEventListener("click", e => {
+            e.stopPropagation();
+            document.querySelectorAll(".has-dropdown").forEach(other => {
+                if (other !== li) {
+                    other.classList.remove("open");
+                    other.querySelector(".dropdown").classList.remove("open");
+                }
+            });
+            li.classList.toggle("open");
+            li.querySelector(".dropdown").classList.toggle("open");
+        });
+    });
+    document.addEventListener("click", () => {
+        document.querySelectorAll(".has-dropdown").forEach(li => {
+            li.classList.remove("open");
+            li.querySelector(".dropdown").classList.remove("open");
+        });
+    });
 </script>
 </body>
 </html>

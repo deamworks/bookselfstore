@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookself Shop</title>
     <link rel="stylesheet" href="./css/book.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         .search-wrap { max-width:1200px; margin:24px auto 0; padding:0 20px; }
         .search-bar { display:flex; gap:10px; margin-bottom:12px; }
@@ -21,6 +22,45 @@
         .empty-state { font-family:'Prompt',sans-serif; text-align:center; padding:60px 20px; color:#bbb; font-size:15px; display:none; }
         .empty-state.show { display:block; }
     </style>
+    <style>
+    .menu-ul { align-items: center; gap: 2.8rem; }
+    .has-dropdown { position: relative; }
+    .book-dropdown {
+        display: none; position: absolute;
+        top: calc(100% + 12px); left: 50%;
+        transform: translateX(-50%);
+        background: #fff; border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        padding: 10px 8px; min-width: 210px;
+        z-index: 999; border: 1px solid rgba(0,0,0,0.06);
+        list-style: none;
+    }
+    .book-dropdown::before {
+        content: ''; position: absolute;
+        top: -7px; left: 50%; transform: translateX(-50%);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+    }
+    .book-dropdown.open { display: block; }
+    .book-dropdown a {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 10px;
+        color: #333 !important; font-size: 14px;
+        text-decoration: none; transition: background 0.18s;
+        white-space: nowrap;
+    }
+    .book-dropdown a:hover { background: #fff3f2; color: #7c2220 !important; }
+    .dd-icon { width: 34px; height: 34px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0; }
+    .dd-text { display: flex; flex-direction: column; }
+    .dd-title { font-weight: 500; color: #333; font-size: 14px; }
+    .dd-sub   { font-size: 11px; color: #999; margin-top: 1px; }
+    .book-dropdown hr { border: none; border-top: 1px solid #f0f0f0; margin: 4px 8px; }
+    .book-arrow { font-size: 10px; opacity: 0.7; margin-left: 3px; transition: transform 0.2s; }
+    .has-dropdown.open .book-arrow { transform: rotate(180deg); }
+    </style>
 </head>
 <body>
 
@@ -30,33 +70,40 @@
             <div style="font-family:'Lora',serif;">
                 <a href="index.html" style="color:#fff; font-size:22px; font-weight:bold; text-decoration:none;">Bookself.</a>
             </div>
-            <ul id="navMenu" style="display:flex; list-style:none; gap:2.8rem; align-items:center; margin:0; padding:0;">
+            <ul id="navMenu" class="menu" style="display:flex; list-style:none; gap:2.8rem; align-items:center; margin:0; padding:0;">
                 <li><a href="index.html" style="color:#fff; text-decoration:none; font-size:14px;">Home</a></li>
-                <li><a href="checkout.html" style="color:#fff; text-decoration:none; font-size:14px;">Shop</a></li>
-                <li style="position:relative;" id="bookDropdownItem">
+                <li><a href="book.html" style="color:#fff; text-decoration:none; font-size:14px;">Shop</a></li>
+                <li class="has-dropdown" id="bookDropLi" style="list-style:none;">
                     <a style="display:flex;align-items:center;gap:2px;color:#fff;text-decoration:none;font-size:14px;cursor:pointer;">
-                        Book <span id="bookArrow" style="font-size:10px;opacity:0.7;margin-left:3px;transition:transform 0.2s;">▼</span>
+                        Book <span class="book-arrow">▼</span>
                     </a>
-                    <div id="bookDropdown" style="display:none;position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#fff;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.15);padding:10px 8px;min-width:210px;z-index:999;border:1px solid rgba(0,0,0,0.06);">
-                        <div style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:7px solid #fff;"></div>
-                        <a href="book.html" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;color:#333;text-decoration:none;font-size:14px;" onmouseover="this.style.background='#fff3f2'" onmouseout="this.style.background='transparent'">
-                            <div style="width:34px;height:34px;border-radius:8px;background:#fff3f2;display:flex;align-items:center;justify-content:center;font-size:18px;">📚</div>
-                            <div style="display:flex;flex-direction:column;"><span style="font-weight:500;color:#333;font-size:14px;">All Books</span><span style="font-size:11px;color:#999;">หนังสือทั้งหมด</span></div>
+                    <div class="book-dropdown" id="bookDrop">
+                        <a href="book.html">
+                            <div class="dd-icon" style="background:#fff3f2;">📚</div>
+                            <div class="dd-text"><span class="dd-title">All Books</span><span class="dd-sub">หนังสือทั้งหมด</span></div>
                         </a>
-                        <hr style="border:none;border-top:1px solid #f0f0f0;margin:4px 8px;">
-                        <a href="book.html" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;color:#333;text-decoration:none;font-size:14px;" onmouseover="this.style.background='#fff3f2'" onmouseout="this.style.background='transparent'">
-                            <div style="width:34px;height:34px;border-radius:8px;background:#eafaf1;display:flex;align-items:center;justify-content:center;font-size:18px;">✨</div>
-                            <div style="display:flex;flex-direction:column;"><span style="font-weight:500;color:#333;font-size:14px;">New Arrivals</span><span style="font-size:11px;color:#999;">ใหม่ล่าสุด</span></div>
+                        <hr>
+                        <a href="book.html">
+                            <div class="dd-icon" style="background:#eafaf1;">✨</div>
+                            <div class="dd-text"><span class="dd-title">New Arrivals</span><span class="dd-sub">ใหม่ล่าสุด</span></div>
                         </a>
-                        <a href="book.html" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;color:#333;text-decoration:none;font-size:14px;" onmouseover="this.style.background='#fff3f2'" onmouseout="this.style.background='transparent'">
-                            <div style="width:34px;height:34px;border-radius:8px;background:#fce8f0;display:flex;align-items:center;justify-content:center;font-size:18px;">🎌</div>
-                            <div style="display:flex;flex-direction:column;"><span style="font-weight:500;color:#333;font-size:14px;">The Veil Series</span><span style="font-size:11px;color:#999;">by Kotteri · 7 เล่ม</span></div>
+                        <a href="book.html">
+                            <div class="dd-icon" style="background:#fce8f0;">🎌</div>
+                            <div class="dd-text"><span class="dd-title">The Veil Series</span><span class="dd-sub">by Kotteri · 7 เล่ม</span></div>
                         </a>
-                        <a href="book.html" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;color:#333;text-decoration:none;font-size:14px;" onmouseover="this.style.background='#fff3f2'" onmouseout="this.style.background='transparent'">
-                            <div style="width:34px;height:34px;border-radius:8px;background:#fef9e7;display:flex;align-items:center;justify-content:center;font-size:18px;">🇹🇭</div>
-                            <div style="display:flex;flex-direction:column;"><span style="font-weight:500;color:#333;font-size:14px;">นิยายไทย</span><span style="font-size:11px;color:#999;">โรมานซ์ · ภาษาไทย</span></div>
+                        <a href="book.html">
+                            <div class="dd-icon" style="background:#fef9e7;">🇹🇭</div>
+                            <div class="dd-text"><span class="dd-title">นิยายไทย</span><span class="dd-sub">โรมานซ์ · ภาษาไทย</span></div>
                         </a>
                     </div>
+                </li>
+                
+                
+                                <li class="cart-nav-item" style="list-style:none;">
+                    <a href="cart.html" style="position:relative; display:inline-flex; align-items:center; color:#fff; text-decoration:none; padding:0 4px;">
+                        <i class="fa-solid fa-cart-shopping" style="color:#fff; font-size:18px;"></i>
+                        <span class="cart-badge-count" style="position:absolute; top:-8px; right:-10px; background:#fceaca; color:#7c2220; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; padding:0 4px; display:none; align-items:center; justify-content:center; font-family:'Prompt',sans-serif;">0</span>
+                    </a>
                 </li>
                 <li id="navContractItem" style="display:flex;gap:10px;align-items:center;margin-left:0.6rem;">
                     <a href="login.html" style="color:#fff;font-size:14px;text-decoration:none;padding:5px 14px;border:1.5px solid rgba(255,255,255,0.5);border-radius:20px;transition:all 0.2s;"
@@ -264,5 +311,20 @@
         });
     </script>
 
+<script>
+    const bookDropLi = document.getElementById("bookDropLi");
+    const bookDrop   = document.getElementById("bookDrop");
+    if (bookDropLi) {
+        bookDropLi.addEventListener("click", e => {
+            e.stopPropagation();
+            bookDropLi.classList.toggle("open");
+            bookDrop.classList.toggle("open");
+        });
+    }
+    document.addEventListener("click", () => {
+        if (bookDropLi) bookDropLi.classList.remove("open");
+        if (bookDrop)   bookDrop.classList.remove("open");
+    });
+</script>
 </body>
 </html>
