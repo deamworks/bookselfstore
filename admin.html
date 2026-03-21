@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Bookself Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        nav { background: #5f2119; padding: 18px 20px; }
+        .nav-con {
+            max-width: 1400px; margin: auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo a {
+            font-family: 'Lora', serif; color: #fff;
+            font-size: 22px; font-weight: bold; text-decoration: none;
+        }
+        .nav-badge {
+            background: rgba(255,255,255,0.15);
+            color: #fceaca; font-size: 12px;
+            padding: 3px 10px; border-radius: 20px;
+            margin-left: 10px;
+        }
+        .menu { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
+        .btn-logout-nav {
+            font-size: 13px; color: rgba(255,255,255,0.6);
+            background: none; border: 1px solid rgba(255,255,255,0.2);
+            padding: 4px 14px; border-radius: 20px;
+            cursor: pointer; font-family: 'Prompt', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-logout-nav:hover { border-color: rgba(255,255,255,0.6); color: white; }
+
+        /* PAGE */
+        .page-wrap { max-width: 1400px; margin: 0 auto; padding: 32px 20px; }
+
+        /* LOADING */
+        .loading-screen {
+            text-align: center; padding: 80px 20px; color: #999;
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid #f0e0e0; border-top-color: #7c2220;
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0,1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: white; border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+        .stat-label { font-size: 12px; color: #999; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val   { font-size: 26px; font-weight: 600; color: #333; }
+        .stat-val.accent { color: #7c2220; }
+        .stat-sub   { font-size: 12px; color: #bbb; margin-top: 4px; }
+
+        /* SECTION */
+        .section-card {
+            background: white; border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            padding: 24px; margin-bottom: 24px;
+        }
+        .section-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 15px; font-weight: 600; color: #333;
+        }
+
+        /* FILTER */
+        .filter-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+        .chip {
+            padding: 5px 16px; border-radius: 20px; font-size: 13px;
+            cursor: pointer; border: 1.5px solid #ddd;
+            background: white; color: #777; transition: all 0.15s;
+            font-family: 'Prompt', sans-serif;
+        }
+        .chip:hover  { border-color: #7c2220; color: #7c2220; }
+        .chip.active { background: #7c2220; color: white; border-color: #7c2220; }
+        .search-input {
+            flex: 1; min-width: 180px; padding: 7px 14px;
+            border: 1.5px solid #ddd; border-radius: 10px;
+            font-family: 'Prompt', sans-serif; font-size: 13px;
+            color: #333; transition: border 0.2s;
+        }
+        .search-input:focus { outline: none; border-color: #7c2220; }
+
+        /* TABLE */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead th {
+            padding: 10px 12px; text-align: left;
+            color: #999; font-weight: 500;
+            border-bottom: 1.5px solid #f0e6e6;
+            white-space: nowrap;
+        }
+        tbody td {
+            padding: 12px 12px; border-bottom: 1px solid #f5f5f5;
+            color: #333; vertical-align: middle;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: #fff8f8; }
+
+        /* BADGES */
+        .badge {
+            display: inline-block; font-size: 11px;
+            padding: 3px 10px; border-radius: 20px; font-weight: 500;
+        }
+        .badge-paid     { background: #e8f5e9; color: #2e7d32; }
+        .badge-cancelled { background: #fdecea; color: #c62828; }
+
+        /* DETAIL EXPAND */
+        .detail-row td {
+            background: #fafafa; padding: 12px 16px;
+            font-size: 13px; color: #666;
+        }
+        .detail-row { display: none; }
+        .detail-row.show { display: table-row; }
+        .detail-items { display: flex; flex-wrap: wrap; gap: 8px; }
+        .detail-item {
+            background: white; border: 1px solid #eee;
+            border-radius: 8px; padding: 6px 12px;
+            font-size: 12px; color: #555;
+        }
+
+        /* EXPAND BTN */
+        .expand-btn {
+            background: none; border: none; cursor: pointer;
+            color: #7c2220; font-size: 13px; padding: 0;
+            font-family: 'Prompt', sans-serif;
+            text-decoration: underline;
+        }
+
+        /* RESULT COUNT */
+        .result-count { font-size: 13px; color: #999; margin-bottom: 10px; }
+        .result-count span { color: #7c2220; font-weight: 600; }
+
+        /* EMPTY */
+        .empty-state {
+            text-align: center; padding: 40px 20px;
+            color: #bbb; font-size: 14px;
+        }
+
+        /* ACCESS DENIED */
+        .access-denied {
+            text-align: center; padding: 80px 20px;
+        }
+        .access-denied h2 { color: #7c2220; font-size: 22px; margin-bottom: 10px; }
+        .access-denied p  { color: #999; font-size: 14px; margin-bottom: 20px; }
+        .btn-back {
+            display: inline-block; padding: 10px 28px;
+            background: #7c2220; color: white;
+            text-decoration: none; border-radius: 20px;
+            font-size: 14px; transition: background 0.2s;
+        }
+        .btn-back:hover { background: #5f2119; }
+
+        /* TOP BOOKS */
+        .top-book-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+        .top-book-row:last-child { border-bottom: none; }
+        .top-book-name { font-size: 13px; color: #333; }
+        .top-book-count { font-size: 13px; font-weight: 600; color: #7c2220; }
+        .top-book-bar-wrap { flex: 1; margin: 0 12px; height: 6px; background: #f0e6e6; border-radius: 3px; }
+        .top-book-bar { height: 6px; background: #7c2220; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-con">
+        <div class="logo">
+            <a href="index.html">Bookself.</a>
+            <span class="nav-badge">Admin</span>
+        </div>
+        <ul class="menu">
+            <li><a href="index.html">หน้าหลัก</a></li>
+            <li><a href="checkout.html">Shop</a></li>
+            <li id="navUserItem" style="display:none;">
+                <span id="navUserName" style="color:#fceaca; font-size:13px;"></span>
+            </li>
+        </ul>
+        <button class="btn-logout-nav" id="logoutBtn">ออกจากระบบ</button>
+    </div>
+</nav>
+
+<div class="page-wrap">
+
+    <!-- Loading -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="spinner"></div>
+        กำลังโหลด dashboard...
+    </div>
+
+    <!-- Access Denied -->
+    <div id="accessDenied" class="access-denied" style="display:none;">
+        <h2>🔒 ไม่มีสิทธิ์เข้าถึง</h2>
+        <p>หน้านี้สำหรับ Admin เท่านั้น</p>
+        <a href="index.html" class="btn-back">กลับหน้าหลัก</a>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashContent" style="display:none;">
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Top 2 sections side by side -->
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; margin-bottom:24px;">
+
+            <!-- Orders Table -->
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-title">รายการสั่งซื้อทั้งหมด</span>
+                    <span id="orderCount" style="font-size:13px; color:#999;"></span>
+                </div>
+
+                <div class="filter-row">
+                    <button class="chip active" data-filter="all"       onclick="setFilter(this)">ทั้งหมด</button>
+                    <button class="chip"        data-filter="paid"      onclick="setFilter(this)">ชำระแล้ว</button>
+                    <button class="chip"        data-filter="cancelled" onclick="setFilter(this)">ยกเลิก</button>
+                    <input class="search-input" id="searchInput"
+                           placeholder="ค้นหา invoice หรืออีเมล..."
+                           oninput="renderOrders()">
+                </div>
+
+                <div class="result-count">แสดง <span id="showCount">0</span> รายการ</div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>ลูกค้า</th>
+                                <th>ยอด</th>
+                                <th>สถานะ</th>
+                                <th>วันที่</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Top Books -->
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-title">หนังสือขายดี</span>
+                </div>
+                <div id="topBooks"></div>
+            </div>
+
+        </div>
+
+        <!-- Customers Table -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title">ลูกค้าทั้งหมด</span>
+                <span id="customerCount" style="font-size:13px; color:#999;"></span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ชื่อ</th>
+                            <th>อีเมล</th>
+                            <th>เบอร์โทร</th>
+                            <th>ที่อยู่</th>
+                            <th>สมัครเมื่อ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    let allOrders    = [];
+    let allCustomers = [];
+    let activeFilter = "all";
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await sb.auth.signOut();
+        window.location.href = "login.html";
+    });
+
+    // ================================================================
+    // INIT
+    // ================================================================
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+
+        if (!session) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        // แสดงชื่อใน nav
+        const user        = session.user;
+        const displayName = user.user_metadata?.full_name || user.email.split("@")[0];
+        document.getElementById("navUserName").textContent   = "👤 " + displayName;
+        document.getElementById("navUserItem").style.display = "list-item";
+
+        // ตรวจสิทธิ์ admin
+        const { data: profile } = await sb
+            .from("profiles")
+            .select("is_admin")
+            .eq("id", user.id)
+            .single();
+
+        if (!profile?.is_admin) {
+            document.getElementById("loadingScreen").style.display = "none";
+            document.getElementById("accessDenied").style.display  = "block";
+            return;
+        }
+
+        // ดึงข้อมูล
+        await Promise.all([loadOrders(), loadCustomers()]);
+
+        document.getElementById("loadingScreen").style.display = "none";
+        document.getElementById("dashContent").style.display   = "block";
+    })();
+
+    // ================================================================
+    // LOAD ORDERS
+    // ================================================================
+    async function loadOrders() {
+        const { data, error } = await sb
+            .from("orders")
+            .select("*, profiles(email, full_name)")
+            .order("created_at", { ascending: false });
+
+        if (error) { console.error(error); return; }
+        allOrders = data || [];
+
+        renderStats();
+        renderOrders();
+        renderTopBooks();
+    }
+
+    // ================================================================
+    // LOAD CUSTOMERS
+    // ================================================================
+    async function loadCustomers() {
+        const { data, error } = await sb
+            .from("profiles")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) { console.error(error); return; }
+        allCustomers = data || [];
+
+        document.getElementById("customerCount").innerText = allCustomers.length + " คน";
+
+        const tbody = document.getElementById("customerTbody");
+        if (allCustomers.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="empty-state">ยังไม่มีลูกค้า</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = allCustomers.map(c => {
+            const date = new Date(c.created_at).toLocaleDateString("th-TH", {
+                year: "numeric", month: "short", day: "numeric"
+            });
+            return `<tr>
+                <td>${c.full_name || "-"}</td>
+                <td>${c.email || "-"}</td>
+                <td>${c.phone || "-"}</td>
+                <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    ${c.address ? c.address + ", " + (c.province || "") : "-"}
+                </td>
+                <td>${date}</td>
+            </tr>`;
+        }).join("");
+    }
+
+    // ================================================================
+    // RENDER STATS
+    // ================================================================
+    function renderStats() {
+        const paid       = allOrders.filter(o => o.status === "paid");
+        const totalRev   = paid.reduce((s, o) => s + (o.total || 0), 0);
+        const todayStr   = new Date().toLocaleDateString("th-TH");
+        const todayRev   = paid
+            .filter(o => new Date(o.created_at).toLocaleDateString("th-TH") === todayStr)
+            .reduce((s, o) => s + (o.total || 0), 0);
+        const totalBooks = paid.reduce((s, o) => {
+            return s + (o.items || []).reduce((si, i) => si + i.qty, 0);
+        }, 0);
+
+        document.getElementById("statsGrid").innerHTML = `
+            <div class="stat-card">
+                <div class="stat-label">ยอดขายทั้งหมด</div>
+                <div class="stat-val accent">฿${totalRev.toLocaleString("th-TH", {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+                <div class="stat-sub">เฉพาะ orders ที่ชำระแล้ว</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">ยอดขายวันนี้</div>
+                <div class="stat-val accent">฿${todayRev.toLocaleString("th-TH", {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+                <div class="stat-sub">${todayStr}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">orders ทั้งหมด</div>
+                <div class="stat-val">${allOrders.length}</div>
+                <div class="stat-sub">ชำระแล้ว ${paid.length} รายการ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">หนังสือที่ขายไป</div>
+                <div class="stat-val">${totalBooks} เล่ม</div>
+                <div class="stat-sub">จาก orders ที่ชำระแล้ว</div>
+            </div>
+        `;
+    }
+
+    // ================================================================
+    // RENDER ORDERS
+    // ================================================================
+    function setFilter(el) {
+        document.querySelectorAll(".chip[data-filter]").forEach(c => c.classList.remove("active"));
+        el.classList.add("active");
+        activeFilter = el.dataset.filter;
+        renderOrders();
+    }
+
+    function renderOrders() {
+        const q = document.getElementById("searchInput").value.toLowerCase().trim();
+
+        let list = allOrders.filter(o => {
+            const matchFilter = activeFilter === "all" || o.status === activeFilter;
+            const email  = (o.profiles?.email || o.user_email || "").toLowerCase();
+            const inv    = (o.invoice_no || "").toLowerCase();
+            const matchQ = !q || inv.includes(q) || email.includes(q);
+            return matchFilter && matchQ;
+        });
+
+        document.getElementById("orderCount").innerText = allOrders.length + " รายการทั้งหมด";
+        document.getElementById("showCount").innerText  = list.length;
+
+        const tbody = document.getElementById("orderTbody");
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="empty-state">ไม่พบรายการ</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = list.map((o, idx) => {
+            const email    = o.profiles?.email || o.user_email || "-";
+            const date     = new Date(o.created_at).toLocaleString("th-TH", {
+                month: "short", day: "numeric",
+                hour: "2-digit", minute: "2-digit"
+            });
+            const badge    = o.status === "paid"
+                ? `<span class="badge badge-paid">ชำระแล้ว</span>`
+                : `<span class="badge badge-cancelled">ยกเลิก</span>`;
+            const items    = (o.items || []);
+            const itemsStr = items.map(i => `
+                <div class="detail-item">${i.book_name} × ${i.qty} (฿${(i.line_total || i.price * i.qty).toFixed(2)})</div>
+            `).join("");
+
+            const addr = o.shipping_address;
+            const addrStr = (addr && addr.address)
+                ? `${addr.name} · ${addr.phone || ""} · ${addr.address}, ${addr.province} ${addr.postcode}`
+                : "ไม่มีที่อยู่";
+
+            return `
+                <tr>
+                    <td style="font-family:monospace; font-size:12px;">${o.invoice_no}</td>
+                    <td style="max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${email}</td>
+                    <td style="font-weight:600; color:#7c2220;">฿${(o.total || 0).toFixed(2)}</td>
+                    <td>${badge}</td>
+                    <td style="white-space:nowrap;">${date}</td>
+                    <td>
+                        <button class="expand-btn" onclick="toggleDetail('detail-${idx}', this)">ดู</button>
+                    </td>
+                </tr>
+                <tr class="detail-row" id="detail-${idx}">
+                    <td colspan="6">
+                        <div style="margin-bottom:8px; font-weight:500; color:#555;">รายการหนังสือ:</div>
+                        <div class="detail-items">${itemsStr}</div>
+                        <div style="margin-top:8px; color:#888; font-size:12px;">📦 ${addrStr}</div>
+                    </td>
+                </tr>`;
+        }).join("");
+    }
+
+    function toggleDetail(id, btn) {
+        const row = document.getElementById(id);
+        const show = !row.classList.contains("show");
+        row.classList.toggle("show", show);
+        btn.innerText = show ? "ซ่อน" : "ดู";
+    }
+
+    // ================================================================
+    // RENDER TOP BOOKS
+    // ================================================================
+    function renderTopBooks() {
+        const bookCount = {};
+        allOrders
+            .filter(o => o.status === "paid")
+            .forEach(o => {
+                (o.items || []).forEach(i => {
+                    bookCount[i.book_name] = (bookCount[i.book_name] || 0) + i.qty;
+                });
+            });
+
+        const sorted = Object.entries(bookCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 6);
+
+        if (sorted.length === 0) {
+            document.getElementById("topBooks").innerHTML = `<div class="empty-state">ยังไม่มีข้อมูล</div>`;
+            return;
+        }
+
+        const max = sorted[0][1];
+        document.getElementById("topBooks").innerHTML = sorted.map(([name, count]) => `
+            <div class="top-book-row">
+                <div class="top-book-name" style="max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${name}">${name}</div>
+                <div class="top-book-bar-wrap">
+                    <div class="top-book-bar" style="width:${Math.round(count/max*100)}%"></div>
+                </div>
+                <div class="top-book-count">${count} เล่ม</div>
+            </div>
+        `).join("");
+    }
+</script>
+</body>
+</html>

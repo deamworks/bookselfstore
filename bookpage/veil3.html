@@ -4,26 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Veil Volume 3</title>
-    <link rel="stylesheet" href="veil1.css">
-    
-<script src="../js/navbar-auth.js" defer></script>
+    <link rel="stylesheet" href="../css/veill1.css">
+    <style>
+    .menu { align-items: center; gap: 2.8rem; }
+    .menu li { margin-left: 0 !important; }
+    .menu li.has-dropdown { position: relative; }
+    .dropdown {
+        display: none; position: absolute;
+        top: calc(100% + 12px); left: 50%;
+        transform: translateX(-50%);
+        background: #fff; border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        padding: 10px 8px; min-width: 210px;
+        z-index: 999; border: 1px solid rgba(0,0,0,0.06);
+    }
+    .dropdown::before {
+        content: ''; position: absolute;
+        top: -7px; left: 50%; transform: translateX(-50%);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.06));
+    }
+    .dropdown.open { display: block; }
+    .dropdown a {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 10px;
+        color: #333 !important; font-size: 14px;
+        text-decoration: none; transition: background 0.18s;
+        white-space: nowrap;
+    }
+    .dropdown a:hover { background: #fff3f2; color: #7c2220 !important; }
+    .dropdown-icon { width: 34px; height: 34px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0; }
+    .dropdown-text { display: flex; flex-direction: column; }
+    .dropdown-title { font-weight: 500; color: #333; font-size: 14px; }
+    .dropdown-sub   { font-size: 11px; color: #999; margin-top: 1px; }
+    .dropdown hr { border: none; border-top: 1px solid #f0f0f0; margin: 4px 8px; }
+    .book-arrow { font-size: 10px; opacity: 0.7; margin-left: 3px; transition: transform 0.2s; }
+    .menu li.has-dropdown.open .book-arrow { transform: rotate(180deg); }
+    </style>
 </head>
 <body>
-    <nav>
-        <div class="container-menu">
+        <nav>
+        <div class="container">
             <div class="nav-con">
                 <div class="logo"><a href="../index.html">Bookself.</a></div>
                 <ul class="menu">
                     <li><a href="../index.html">Home</a></li>
-                    <li><a href="../book.html">Book</a></li>
-                    <li><a href="checkout.html">Shop</a></li>
-                    <li><a href="../register.html">Member</a></li>
-                    <li id="navContractItem"><a href="#">Contract</a></li>
-                    <li id="navUserItem" style="display:none;">
-                        <a href="profile.html" id="navDisplayName"
-                           style="color:#fff;padding:3px 12px;
+                    <li><a href="../checkout.html">Shop</a></li>
+                    <li class="has-dropdown">
+                        <a style="display:flex;align-items:center;gap:2px;">
+                            Book <span class="book-arrow">▼</span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#fff3f2;">📚</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">All Books</span>
+                                    <span class="dropdown-sub">หนังสือทั้งหมด</span>
+                                </div>
+                            </a>
+                            <hr>
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#eafaf1;">✨</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">New Arrivals</span>
+                                    <span class="dropdown-sub">ใหม่ล่าสุด</span>
+                                </div>
+                            </a>
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#fce8f0;">🎌</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">The Veil Series</span>
+                                    <span class="dropdown-sub">by Kotteri · 7 เล่ม</span>
+                                </div>
+                            </a>
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#fef9e7;">🇹🇭</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">นิยายไทย</span>
+                                    <span class="dropdown-sub">โรมานซ์ · ภาษาไทย</span>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="navContract" id="navContractItem" style="display:flex; gap:10px; align-items:center; margin-left:0.6rem !important;">
+                        <a href="../login.html"
+                           style="color:#fff; font-size:14px; text-decoration:none;
+                                  padding:5px 14px; border:1.5px solid rgba(255,255,255,0.5);
+                                  border-radius:20px; transition:all 0.2s;"
+                           onmouseover="this.style.background='rgba(255,255,255,0.15)'"
+                           onmouseout="this.style.background='transparent'">
+                            เข้าสู่ระบบ
+                        </a>
+                        <a href="../register.html"
+                           style="color:#5f2119; font-size:14px; text-decoration:none;
+                                  padding:5px 14px; background:#fceaca;
+                                  border-radius:20px; font-weight:500; transition:all 0.2s;"
+                           onmouseover="this.style.background='#f5d5a0'"
+                           onmouseout="this.style.background='#fceaca'">
+                            สมัครสมาชิก
+                        </a>
+                    </li>
+                    <li class="navUser" id="navUserItem" style="display:none;">
+                        <a href="../profile.html" id="navDisplayName"
+                           style="color:#fff; padding:3px 12px;
                                   border:1px solid rgba(255,255,255,0.4);
-                                  border-radius:20px;font-size:14px;
+                                  border-radius:20px; font-size:14px;
                                   text-decoration:none;"></a>
                     </li>
                 </ul>
@@ -76,7 +165,7 @@
 
                     <div class="product-btn">
                         <a href="#" class="product-btn-1">Add to Cart</a>
-                        <a href="checkout.html" class="product-btn-1">Buy Now</a>
+                        <a href="../checkout.html" class="product-btn-1">Buy Now</a>
                     </div>
                 </div>
 
@@ -304,5 +393,43 @@
         </div>
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sbNav = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    (async () => {
+        const { data: { session } } = await sbNav.auth.getSession();
+        if (!session) return;
+        const user = session.user;
+        const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+        const displayName = fullName || user.email.split("@")[0];
+        const contractItem = document.getElementById("navContractItem");
+        if (contractItem) contractItem.style.display = "none";
+        const userItem = document.getElementById("navUserItem");
+        const nameEl   = document.getElementById("navDisplayName");
+        if (userItem) userItem.style.display = "list-item";
+        if (nameEl)   nameEl.innerText = "👤 " + displayName;
+    })();
+    document.querySelectorAll(".has-dropdown").forEach(li => {
+        li.addEventListener("click", e => {
+            e.stopPropagation();
+            document.querySelectorAll(".has-dropdown").forEach(other => {
+                if (other !== li) {
+                    other.classList.remove("open");
+                    other.querySelector(".dropdown").classList.remove("open");
+                }
+            });
+            li.classList.toggle("open");
+            li.querySelector(".dropdown").classList.toggle("open");
+        });
+    });
+    document.addEventListener("click", () => {
+        document.querySelectorAll(".has-dropdown").forEach(li => {
+            li.classList.remove("open");
+            li.querySelector(".dropdown").classList.remove("open");
+        });
+    });
+</script>
 </body>
 </html>

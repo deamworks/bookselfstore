@@ -4,26 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheVeil Volume 1</title>
-    <link rel="stylesheet" href="veil1.css">
-    
-<script src="../js/navbar-auth.js" defer></script>
+    <link rel="stylesheet" href="../css/veill1.css">
+
+    <style>
+    .menu { align-items: center; gap: 2.8rem; }
+    .menu li { margin-left: 0 !important; }
+
+    .menu li.has-dropdown { position: relative; }
+
+    .dropdown {
+        display: none; position: absolute;
+        top: calc(100% + 12px); left: 50%;
+        transform: translateX(-50%);
+        background: #fff; border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        padding: 10px 8px; min-width: 210px;
+        z-index: 999; border: 1px solid rgba(0,0,0,0.06);
+    }
+    .dropdown::before {
+        content: ''; position: absolute;
+        top: -7px; left: 50%; transform: translateX(-50%);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+        filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.06));
+    }
+    .dropdown.open { display: block; }
+    .dropdown a {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 10px;
+        color: #333 !important; font-size: 14px;
+        text-decoration: none; transition: background 0.18s;
+        white-space: nowrap;
+    }
+    .dropdown a:hover { background: #fff3f2; color: #7c2220 !important; }
+    .dropdown-icon {
+        width: 34px; height: 34px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    }
+    .dropdown-text { display: flex; flex-direction: column; }
+    .dropdown-title { font-weight: 500; color: #333; font-size: 14px; }
+    .dropdown-sub   { font-size: 11px; color: #999; margin-top: 1px; }
+    .dropdown hr { border: none; border-top: 1px solid #f0f0f0; margin: 4px 8px; }
+    .book-arrow { font-size: 10px; opacity: 0.7; margin-left: 3px; transition: transform 0.2s; }
+    .menu li.has-dropdown.open .book-arrow { transform: rotate(180deg); }
+
+
+    </style>
 </head>
 <body>
+
     <nav>
-        <div class="container-menu">
+        <div class="container">
             <div class="nav-con">
                 <div class="logo"><a href="../index.html">Bookself.</a></div>
                 <ul class="menu">
                     <li><a href="../index.html">Home</a></li>
-                    <li><a href="../book.html">Book</a></li>
-                    <li><a href="checkout.html">Shop</a></li>
-                    <li><a href="../register.html">Member</a></li>
-                    <li id="navContractItem"><a href="#">Contract</a></li>
-                    <li id="navUserItem" style="display:none;">
-                        <a href="profile.html" id="navDisplayName"
-                           style="color:#fff;padding:3px 12px;
+                    <li><a href="../checkout.html">Shop</a></li>
+
+                    <li class="has-dropdown">
+                        <a style="display:flex;align-items:center;gap:2px;">
+                            Book <span class="book-arrow">▼</span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#fff3f2;">📚</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">All Books</span>
+                                    <span class="dropdown-sub">หนังสือทั้งหมด</span>
+                                </div>
+                            </a>
+                            <hr>
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#eafaf1;">✨</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">New Arrivals</span>
+                                    <span class="dropdown-sub">ใหม่ล่าสุด</span>
+                                </div>
+                            </a>
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#fce8f0;">🎌</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">The Veil Series</span>
+                                    <span class="dropdown-sub">by Kotteri · 7 เล่ม</span>
+                                </div>
+                            </a>
+                            <a href="../book.html">
+                                <div class="dropdown-icon" style="background:#fef9e7;">🇹🇭</div>
+                                <div class="dropdown-text">
+                                    <span class="dropdown-title">นิยายไทย</span>
+                                    <span class="dropdown-sub">โรมานซ์ · ภาษาไทย</span>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+
+                    <li class="navContract" id="navContractItem" style="display:flex; gap:10px; align-items:center; margin-left:0.6rem !important;">
+                        <a href="../login.html"
+                           style="color:#fff; font-size:14px; text-decoration:none;
+                                  padding:5px 14px; border:1.5px solid rgba(255,255,255,0.5);
+                                  border-radius:20px; transition:all 0.2s;"
+                           onmouseover="this.style.background='rgba(255,255,255,0.15)'"
+                           onmouseout="this.style.background='transparent'">
+                            เข้าสู่ระบบ
+                        </a>
+                        <a href="../register.html"
+                           style="color:#5f2119; font-size:14px; text-decoration:none;
+                                  padding:5px 14px; background:#fceaca;
+                                  border-radius:20px; font-weight:500; transition:all 0.2s;"
+                           onmouseover="this.style.background='#f5d5a0'"
+                           onmouseout="this.style.background='#fceaca'">
+                            สมัครสมาชิก
+                        </a>
+                    </li>
+
+                    <li class="navUser" id="navUserItem" style="display:none;">
+                        <a href="../profile.html" id="navDisplayName"
+                           style="color:#fff; padding:3px 12px;
                                   border:1px solid rgba(255,255,255,0.4);
-                                  border-radius:20px;font-size:14px;
+                                  border-radius:20px; font-size:14px;
                                   text-decoration:none;"></a>
                     </li>
                 </ul>
@@ -31,29 +131,26 @@
         </div>
     </nav>
 
-           
 <section>
     <div class="product-details">
         <div class="product-con-details">
 
-            <!-- รูป -->
             <div class="product-img">
                 <img src="../photo/theveil1.jpg" alt="veil1">
             </div>
 
-            <!-- ข้อมูล -->
             <div class="product-info-1">
                 <h1>Veil Volume 1: Temperature of Orange</h1>
                 <p>by Kotteri</p>
                 <p>⭐⭐⭐⭐⭐</p><br>
 
                 <p>
-                    Like a classic film, he and she encountered each other by chance. 
-                        He was an on-duty police officer in the city. She was a runaway heiress. 
-                        When he learned that she is looking for work, he decided to welcome her as the police station's telephone operator... 
-                        This was the beginning of the everyday lives of he and she, and the delicate distance between them. 
-                        Enjoy witty dialogue and bold illustrations, in this in full-color manga collection by Kotteri!</p><br>
-                </p>
+                    Like a classic film, he and she encountered each other by chance.
+                    He was an on-duty police officer in the city. She was a runaway heiress.
+                    When he learned that she is looking for work, he decided to welcome her as the police station's telephone operator...
+                    This was the beginning of the everyday lives of he and she, and the delicate distance between them.
+                    Enjoy witty dialogue and bold illustrations, in this in full-color manga collection by Kotteri!
+                </p><br>
 
                 <hr>
 
@@ -68,241 +165,175 @@
                 <div class="status-book">
                     <p class="online-price"><span style="color:#7c2220;"><b>฿528.00</b></span> Online Price</p>
                     <p class="member-price"><span style="color:#7c2220;"><b>฿475.00</b></span> Member Price</p>
-
                     <p>Availability Status : <span>In stock at the Fulfilment Centre.</span></p>
-
                     <label>Quantity :</label>
                     <input type="number" value="1" min="1"><br><br>
-
                     <div class="product-btn">
                         <a href="#" class="product-btn-1">Add to Cart</a>
-                        <a href="checkout.html" class="product-btn-1">Buy Now</a>
+                        <a href="../checkout.html" class="product-btn-1">Buy Now</a>
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+</section>
+
+<br><br><br>
+
+<section>
+    <div class="container">
+        <h2 class="product-title">You May Also Like</h2> <hr><br>
+        <div class="product-con">
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil1.html"><img src="../photo/theveil1.jpg" alt="veil1"></a></div>
+                <div class="product-info">
+                    <a href="veil1.html"><h3>Veil Volume 1 : <br> Temperature of Orange</h3><p>by Kotteri</p><br></a>
+                    Item Type: English Books <br> Publication Date: 2025/06 <br> Publisher: Udon (US) <br> ISBN: 9781772943610 <br> Size/Pages: 128p
+                </div>
+                <div class="product-details-price"><div class="product-price">฿537.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil2.html"><img src="../photo/theveil2.jpg" alt="veil2"></a></div>
+                <div class="product-info">
+                    <a href="veil2.html"><h3>Veil Volume 2 : <br> Calming Noir</h3></a>
+                    <p>by Kotteri</p><br>
+                    Item Type: English Books <br> Publication Date: 2025/07 <br> Publisher: Udon (US) <br> ISBN: 9781772943696 <br> Size/Pages: 128p
+                </div>
+                <div class="product-details-price"><div class="product-price">฿528.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil3.html"><img src="../photo/theveil3.jpg" alt="veil3"></a></div>
+                <div class="product-info">
+                    <a href="veil3.html"><h3>Veil Volume 3: <br> Graceful White</h3></a>
+                    <p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2020/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408415970 <br> Size/Pages: A5 21cm
+                </div>
+                <div class="product-details-price"><div class="product-price">฿529.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil4.html"><img src="../photo/veil4.jpg" alt="veil4"></a></div>
+                <div class="product-info">
+                    <a href="veil4.html"><h3>Veil Volume 4: <br> Transparent Burns</h3></a>
+                    <p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2021/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408640440 <br> Size/Pages: A5 21cm
+                </div>
+                <div class="product-details-price"><div class="product-price">฿553.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil5.html"><img src="../photo/veil5.jpg" alt="veil5"></a></div>
+                <div class="product-info">
+                    <a href="veil5.html"><h3>Veil Volume 5: <br> Golden Blink</h3></a>
+                    <p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2022/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408640778 <br> Size/Pages: A5 21cm
+                </div>
+                <div class="product-details-price"><div class="product-price">฿529.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil6.html"><img src="../photo/veil6.jpg" alt="veil6"></a></div>
+                <div class="product-info">
+                    <a href="veil6.html"><h3>Veil Volume 6: <br> Untangled Rouge</h3></a>
+                    <p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2023/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408641188 <br> Size/Pages: A5 21cm
+                </div>
+                <div class="product-details-price"><div class="product-price">฿600.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="veil7.html"><img src="../photo/veil7.jpg" alt="veil7"></a></div>
+                <div class="product-info">
+                    <a href="veil7.html"><h3>Veil Volume 7: <br> Warmest Blue</h3></a>
+                    <p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2025/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408641591 <br> Size/Pages: A5 21cm
+                </div>
+                <div class="product-details-price"><div class="product-price">฿536.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="book1.html"><img src="../photo/book1.gif" alt="book1"></a></div>
+                <div class="product-info-thai">
+                    <a href="book1.html"><h3>ทรวงทราม</h3></a>
+                    <p>โดย คราม</p><br>
+                    สำนักพิมพ์: ครามรัก <br> ประเภท: หนังสือ <br> หมวดหมู่: นิยายโรมานซ์ <br> วันที่วางขาย: 08 มีนาคม 2568 <br> ความยาว: 513 หน้า (≈ 182,921 คำ)
+                </div>
+                <div class="product-details-price"><div class="product-price">฿529.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="book2.html"><img src="../photo/book2.gif" alt="book2"></a></div>
+                <div class="product-info-thai">
+                    <a href="book2.html"><h3>ไทยวิจิตร</h3></a>
+                    <p>โดย สามห้า</p><br>
+                    สำนักพิมพ์: สามห้า <br> ประเภท: หนังสือ <br> หมวดหมู่: นิยายโรมานซ์ <br> วันที่วางขาย: 13 กันยายน 2568 <br> ความยาว: 533 หน้า (≈ 118,139 คำ)
+                </div>
+                <div class="product-details-price"><div class="product-price">฿399.00</div></div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img"><a href="book3.html"><img src="../photo/book3.gif" alt="book3"></a></div>
+                <div class="product-info-thai">
+                    <a href="book3.html"><h3>ผีเน่ากับโลงผุ</h3></a>
+                    <p>โดย ลินอลิน</p><br>
+                    สำนักพิมพ์: ลินอลิน <br> ประเภท: หนังสือ <br> หมวดหมู่: นิยายโรมานซ์ <br> วันที่วางขาย: 18 กรกฎาคม 2568 <br> ความยาว: 443 หน้า (≈ 132,735 คำ)
+                </div>
+                <div class="product-details-price"><div class="product-price">฿420.00</div></div>
             </div>
 
         </div>
     </div>
 </section>
 
-    <br><br><br>
-            
-<section >    
-    <div class="container">
-        <h2 class="product-title">You May Also Like</h2> <hr><br>
-        <div class="product-con">
-            <div class="product-item">
-                <div class="product-img">
-                    <a href="veil1.html">
-                    <img src="../photo/theveil1.jpg" alt="veil1"></a>
-                </div>
-                <div class="product-info">
-                    <a href="veil1.html">
-                    <h3>Veil Volume 1 : <br> Temperature of Orange</h3>
-                    <p>by Kotteri</p><br></a>
-                   
-                    Item Type:	English Books <br>
-                    Publication Date :	2025/06 <br>
-                    Publisher :	Udon (US) <br>
-                    ISBN :	9781772943610 <br>
-                    Size/Pages : 128p
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿537.00</div>     
-                    </div>
-                </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sbNav = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="veil2.html" span style="color:#7c2220;">
-                    <img src="../photo/theveil2.jpg" alt="veil2"></a>
-                </div>
-                <div class="product-info">
-                    <a href="veil2.html">
-                    <h3>Veil Volume 2 : <br> Calming Noir</h3></a>
-                    <p>by Kotteri</p> <br>
-                    Item Type: 	      English Books <br>
-                    Publication Date: 2025/07 <br>
-                    Publisher:        Udon (US) <br>
-                    ISBN:	          9781772943696 <br>
-                    Size/Pages:	      128p
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿528.00</div>     
-                    </div>
-                </div>
+    (async () => {
+        const { data: { session } } = await sbNav.auth.getSession();
+        if (!session) return;
 
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="veil3.html">
-                    <img src="../photo/theveil3.jpg" alt="veil3"></a>
-                </div>
-                <div class="product-info">
-                    <a href="veil3.html">
-                    <h3>Veil Volume 3: <br> Graceful white </h3></a>
-                    <p>by Kotteri</p> <br>
-                    Item Type:	Japanese Books <br>
-                    Publication Date:	2020/12 <br>
-                    Publisher:	実業之日本社 (JP) <br>
-                    ISBN:	9784408415970 <br>
-                    Size/Pages :	A5 21cm
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿529.00</div>     
-                    </div>
-                </div>
+        const user        = session.user;
+        const fullName    = user.user_metadata?.full_name || user.user_metadata?.name || "";
+        const displayName = fullName || user.email.split("@")[0];
 
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="veil4.html">
-                    <img src="../photo/veil4.jpg" alt="veil4"> </a>
-                </div>
-                <div class="product-info">
-                    <a href="veil4.html">
-                    <h3>Veil Volume 4: <br> Transparent burns</h3></a>
-                    <p>by Kotteri</p> <br>
-                    Item Type:	Japanese Books <br>
-                    Publication Date:	2021/12 <br>
-                    Publisher:	実業之日本社 (JP) <br>
-                    ISBN:	9784408640440 <br>
-                    Size/Pages:	A5 21cm
-                   
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿553.00</div>     
-                    </div>
-                </div>
+        const contractItem = document.getElementById("navContractItem");
+        if (contractItem) contractItem.style.display = "none";
 
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="veil5.html">
-                    <img src="../photo/veil5.jpg" alt="veil5"> </a>
-                </div>
-                <div class="product-info">
-                    <a href="veil5.html">
-                    <h3>Veil Volume 5: <br> Golden blink</h3></a>
-                    <p>by Kotteri</p> <br>
-                    Item Type:	Japanese Books <br>
-                    Publication Date:	2022/12 <br>
-                    Publisher:	実業之日本社 (JP) <br>
-                    ISBN:	9784408640778 <br>
-                    Size/Pages:A5 21cm
+        const userItem = document.getElementById("navUserItem");
+        const nameEl   = document.getElementById("navDisplayName");
+        if (userItem) userItem.style.display = "list-item";
+        if (nameEl)   nameEl.innerText = "👤 " + displayName;
+    })();
 
-                   
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿529.00</div>     
-                    </div>
-                </div>
+    // Dropdown — click เปิด/ปิด
+    document.querySelectorAll(".has-dropdown").forEach(li => {
+        li.addEventListener("click", e => {
+            e.stopPropagation();
+            document.querySelectorAll(".has-dropdown").forEach(other => {
+                if (other !== li) {
+                    other.classList.remove("open");
+                    other.querySelector(".dropdown").classList.remove("open");
+                }
+            });
+            li.classList.toggle("open");
+            li.querySelector(".dropdown").classList.toggle("open");
+        });
+    });
 
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="veil6.html">
-                    <img src="../photo/veil6.jpg" alt="veil6"></a>
-                </div>
-                <div class="product-info">
-                    <a href="veil6.html">
-                    <h3>Veil Volume 6: <br> TUntangled rouge</h3></a>
-                    <p>by Kotteri</p><br>
-                    Item Type:	Japanese Books <br>
-                    Publication Date:	2023/12 <br>
-                    Publisher:	実業之日本社 (JP) <br>
-                    ISBN:	9784408641188 <br>
-                    Size/Pages:	A5 21cm
-                   
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿600.00</div>     
-                    </div>
-                </div>
-                
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="veil7.html">
-                    <img src="../photo/veil7.jpg" alt="veil7"></a>
-                </div>
-                <div class="product-info">
-                    <a href="veil7.html">
-                    <h3>Veil Volume 7: <br>Warmest blue</h3></a>
-                    <p>by Kotteri</p><br>
-                    Item Type:	Japanese Books <br>
-                    Publication Date:	2025/12 <br>
-                    Publisher:	実業之日本社 (JP) <br>
-                    ISBN:	9784408641591 <br>
-                    Size/Pages:	A5 21cm
-                   
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿536.00</div>     
-                    </div>
-                </div>
-            <div class="product-item">
-                <div class="product-img">
-                    <a href="book1.html">
-                    <img src="../photo/book1.gif" alt="book1"> </a>
-                </div>
-                <div class="product-info-thai">
-                    <a href="book1.html">
-                    <h3>ทรวงทราม</h3></a>
-                    <p>โดย คราม</p><br>
-                    สำนักพิมพ์: ครามรัก <br>
-                    ประเภท: หนังสือ <br>
-                    หมวดหมู่: นิยายโรมานซ์ <br>
-                    วันที่วางขาย: 08 มีนาคม 2568 <br>
-                    ความยาว:   513 หน้า (≈ 182,921 คำ)
+    document.addEventListener("click", () => {
+        document.querySelectorAll(".has-dropdown").forEach(li => {
+            li.classList.remove("open");
+            li.querySelector(".dropdown").classList.remove("open");
+        });
+    });
+</script>
 
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿529.00</div>     
-                    </div>
-                </div>
-
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="book2.html">
-                    <img src="../photo/book2.gif" alt="book2"> </a>
-                </div>
-                <div class="product-info-thai">
-                    <a href="book2.html">
-                    <h3>ไทยวิจิตร <br></h3></a>
-                    <p>โดย สามห้า</p> <br>
-                    สำนักพิมพ์: สามห้า <br>
-                    ประเภท: หนังสือ <br>
-                    หมวดหมู่: นิยายโรมานซ์ <br>
-                    วันที่วางขาย: 13 กันยายน 2568 <br>
-                    ความยาว:533 หน้า (≈ 118,139 คำ)
- 
-
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿399.00</div>     
-                    </div>
-                </div>
-
-                <div class="product-item">
-                <div class="product-img">
-                    <a href="book3.html">
-                    <img src="../photo/book3.gif" alt="book3"> </a>
-                </div>
-                <div class="product-info-thai">
-                    <a href="book3.html">
-                    <h3>ผีเน่ากับโลงผุ </h3></a>
-                    <p>โดย ลินอลิน</p> <br>
-                    สำนักพิมพ์: ลินอลิน <br>
-                    ประเภท: หนังสือ <br>
-                    หมวดหมู่: นิยายโรมานซ์ <br>
-                    วันที่วางขาย: 18 กรกฎาคม 2568 <br>
-                    ความยาว: 443 หน้า (≈ 132,735 คำ) 
-
-                </div>
-                    <div class="product-details-price">
-                        <div class="product-price">฿420.00</div>     
-                    </div>
-                </div>
-        </div>
-        </div>
-    </div>
-</section>
 </body>
 </html>

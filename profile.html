@@ -229,6 +229,7 @@
                 <div class="btn-row">
                     <button class="btn-home"   onclick="window.location.href='index.html'">หน้าหลัก</button>
                     <button class="btn-home"   onclick="window.location.href='orders.html'">📋 ประวัติสั่งซื้อ</button>
+                    <button class="btn-home" id="adminBtn" style="display:none;" onclick="window.location.href='admin.html'">🔧 Admin Dashboard</button>
                     <button class="btn-logout" id="logoutBtn">ออกจากระบบ</button>
                 </div>
             </div>
@@ -311,14 +312,20 @@
             .maybeSingle();
 
         if (error) console.error("Fetch error:", error.message);
-
+        console.log("Profile data:", profile);
+        
         if (profile) {
             document.getElementById("fullName").value = profile.full_name || "";
             document.getElementById("phone").value    = profile.phone     || "";
             document.getElementById("address").value  = profile.address   || "";
             document.getElementById("province").value = profile.province  || "";
             document.getElementById("postcode").value = profile.postcode  || "";
-        } else {
+
+    // แสดงปุ่ม Admin เฉพาะ is_admin = true
+    if (profile.is_admin) {
+        document.getElementById("adminBtn").style.display = "block";
+    }
+    } else {
             // สมาชิกใหม่ → สร้าง row เริ่มต้น
             await sbClient.from("profiles").insert({
                 id: user.id, email: user.email,
@@ -367,6 +374,7 @@
             statusMsg.innerText   = "✅ บันทึกข้อมูลสำเร็จ";
             setTimeout(() => statusMsg.innerText = "", 3000);
         }
+
     }
 </script>
 </body>

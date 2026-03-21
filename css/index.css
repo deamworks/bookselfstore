@@ -30,6 +30,32 @@ nav {
     justify-content: space-between;
     align-items: center;
 }
+
+/* navbar user badge */
+.navContract,
+.navUser {
+    font-family: "Prompt", sans-serif;
+}
+
+#navUserItem a {
+    background: #7c2220;
+    color: #fff !important;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    border: none;
+    text-decoration: none;
+}
+
+#navUserItem a:hover {
+    background: #5f2119;
+}
+
+#navContractItem {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
 /*  */
 .logo a {
     color: #fff;

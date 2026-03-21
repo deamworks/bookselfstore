@@ -133,61 +133,61 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><a href="veil1.html"><img src="photo/theveil1.jpg"><br>4829571630</a></td>
+                        <td><a href="./bookpage/veil1.html"><img src="photo/theveil1.jpg"><br>4829571630</a></td>
                         <td class="book-name">Veil Volume 1: Temperature of Orange</td>
                         <td class="price" data-price="528">฿528.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="veil2.html"><img src="photo/theveil2.jpg"><br>7391058246</a></td>
+                        <td><a href="./bookpage/veil2.html"><img src="photo/theveil2.jpg"><br>7391058246</a></td>
                         <td class="book-name">Veil Volume 2: Calming Noir</td>
                         <td class="price" data-price="528">฿528.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="veil3.html"><img src="photo/theveil3.jpg"><br>1569047382</a></td>
+                        <td><a href="./bookpage/veil3.html"><img src="photo/theveil3.jpg"><br>1569047382</a></td>
                         <td class="book-name">Veil Volume 3: Graceful White</td>
                         <td class="price" data-price="529">฿529.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="veil4.html"><img src="photo/veil4.jpg"><br>9082715643</a></td>
+                        <td><a href="./bookpage/veil4.html"><img src="photo/veil4.jpg"><br>9082715643</a></td>
                         <td class="book-name">Veil Volume 4: Transparent Burns</td>
                         <td class="price" data-price="553">฿553.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="veil5.html"><img src="photo/veil5.jpg"><br>6248190573</a></td>
+                        <td><a href="./bookpage/veil5.html"><img src="photo/veil5.jpg"><br>6248190573</a></td>
                         <td class="book-name">Veil Volume 5: Golden Blink</td>
                         <td class="price" data-price="529">฿529.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="veil6.html"><img src="photo/veil6.jpg"><br>3716409285</a></td>
+                        <td><a href="./bookpage/veil6.html"><img src="photo/veil6.jpg"><br>3716409285</a></td>
                         <td class="book-name">Veil Volume 6: Untangled Rouge</td>
                         <td class="price" data-price="600">฿600.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="veil7.html"><img src="photo/veil7.jpg"><br>8502947163</a></td>
+                        <td><a href="./bookpage/veil7.html"><img src="photo/veil7.jpg"><br>8502947163</a></td>
                         <td class="book-name">Veil Volume 7: Warmest Blue</td>
                         <td class="price" data-price="536">฿536.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="book1.html"><img src="photo/book1.gif"><br>2975318640</a></td>
+                        <td><a href="./bookpage/book1.html"><img src="photo/book1.gif"><br>2975318640</a></td>
                         <td class="book-name" lang="th">ทรวงทราม</td>
                         <td class="price" data-price="529">฿529.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="book2.html"><img src="photo/book2.gif"><br>5648721903</a></td>
+                        <td><a href="./bookpage/book2.html"><img src="photo/book2.gif"><br>5648721903</a></td>
                         <td class="book-name" lang="th">ไทยวิจิตร</td>
                         <td class="price" data-price="399">฿399.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
                     </tr>
                     <tr>
-                        <td><a href="book3.html"><img src="photo/book3.gif"><br>9134067528</a></td>
+                        <td><a href="./bookpage/book3.html"><img src="photo/book3.gif"><br>9134067528</a></td>
                         <td class="book-name" lang="th">ผีเน่ากับโลงผุ</td>
                         <td class="price" data-price="420">฿420.00</td>
                         <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
@@ -493,7 +493,7 @@
                     line_total: parseFloat((item.price * item.qty).toFixed(2))
                 }));
 
-                // ① insert order
+                //  insert order
                 const { error } = await sbClient.from("orders").insert({
                     user_id:    session.user.id,
                     invoice_no: invoiceNo,
@@ -514,25 +514,28 @@
                     return;
                 }
 
-                // ② ส่งอีเมล พร้อม log ผลลัพธ์
+                // ส่งอีเมล พร้อม log ผลลัพธ์
                 try {
                     console.log("📧 กำลังส่งอีเมลไปที่:", session.user.email);
-                    const { data: emailData, error: emailError } = await sbClient.functions.invoke("send-order-email", {
-                        body: {
-                            to:         session.user.email,
-                            invoice_no: invoiceNo,
-                            items:      items,
-                            total:      total,
-                            name:       profile?.full_name || session.user.email.split("@")[0]
-                        }
-                    });
+                    const { data: emailData, error: emailError } = await sbClient.functions.invoke("smart-function", {
+                body: {
+                    to:         session.user.email,
+                    invoice_no: invoiceNo,
+                    items:      items,
+                    total:      total,
+                    name:       profile?.full_name || session.user.email.split("@")[0]
+    },
+                headers: {
+                Authorization: `Bearer ${session.access_token}`
+                }
+                });
                     console.log("📧 Email result:", JSON.stringify(emailData));
                     console.log("📧 Email error:", emailError);
                 } catch (emailErr) {
                     console.warn("📧 Email catch:", emailErr);
                 }
 
-                // ③ เคลียร์ตะกร้า + แจ้งสำเร็จ
+                // เคลียร์ตะกร้า + แจ้งสำเร็จ
                 cart = {};
                 renderCart();
                 showAlert(
