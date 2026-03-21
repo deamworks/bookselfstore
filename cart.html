@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตะกร้าสินค้า - Bookself Store</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Prompt', sans-serif; background: #f8f8f8; min-height: 100vh; }
+
+        nav { background: #5f2119; padding: 18px 20px; }
+        .nav-con { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo a { font-family: 'Lora', serif; color: #fff; font-size: 22px; font-weight: bold; text-decoration: none; }
+        .menu { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
+
+        .page-wrap { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-header h1 { font-size: 22px; font-weight: 600; color: #333; }
+        .item-count { font-size: 14px; color: #999; }
+
+        /* Cart items */
+        .cart-card { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding: 20px; margin-bottom: 20px; }
+
+        .cart-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid #f5f5f5; }
+        .cart-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .cart-item:first-child { padding-top: 0; }
+
+        .item-img { width: 60px; height: 80px; border-radius: 6px; background: #f5e6e6; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; overflow: hidden; }
+        .item-img img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; display: block; }
+        .item-info { flex: 1; min-width: 0; }
+        .item-name { font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; }
+        .item-sub  { font-size: 12px; color: #999; }
+
+        .item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .item-price { font-size: 15px; font-weight: 600; color: #7c2220; }
+        .item-line-total { font-size: 12px; color: #999; }
+
+        .qty-ctrl { display: flex; align-items: center; gap: 8px; }
+        .qty-btn {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 1.5px solid #ddd; background: white;
+            font-size: 16px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.15s; color: #555;
+        }
+        .qty-btn:hover { border-color: #7c2220; color: #7c2220; }
+        .qty-num { font-size: 14px; font-weight: 500; min-width: 20px; text-align: center; color: #333; }
+
+        .del-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 18px; padding: 4px; transition: color 0.15s; }
+        .del-btn:hover { color: #cc0000; }
+
+        /* Summary */
+        .summary-card { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding: 24px; }
+        .summary-title { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 16px; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #666; margin-bottom: 10px; }
+        .summary-discount { color: #2e7d32; }
+        .summary-divider { border: none; border-top: 1px solid #f0e6e6; margin: 14px 0; }
+        .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; }
+        .summary-total span:last-child { color: #7c2220; }
+
+        .discount-tag { font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; margin-left: 6px; }
+
+        .btn-checkout {
+            width: 100%; margin-top: 16px; padding: 14px;
+            background: #7c2220; color: white; border: none;
+            border-radius: 10px; font-family: 'Prompt', sans-serif;
+            font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-checkout:hover { background: #5f2119; }
+        .btn-checkout:disabled { background: #bbb; cursor: not-allowed; }
+
+        .btn-continue {
+            width: 100%; margin-top: 10px; padding: 12px;
+            background: #fff3f2; color: #7c2220; border: 2px solid #7c2220;
+            border-radius: 10px; font-family: 'Prompt', sans-serif;
+            font-size: 14px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-continue:hover { background: #7c2220; color: white; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .empty-icon { font-size: 56px; margin-bottom: 16px; }
+        .empty-state h2 { font-size: 18px; color: #333; margin-bottom: 8px; }
+        .empty-state p { font-size: 14px; color: #999; margin-bottom: 24px; }
+
+        /* Loading */
+        .spinner { width: 32px; height: 32px; border: 3px solid #f0e0e0; border-top-color: #7c2220; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 40px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Navbar cart icon */
+        .cart-nav-item a { position: relative; }
+        .cart-badge-count {
+            position: absolute; top: -8px; right: -10px;
+            background: #fceaca; color: #7c2220;
+            font-size: 11px; font-weight: 700;
+            min-width: 18px; height: 18px; border-radius: 9px;
+            padding: 0 4px; display: none;
+            align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-con">
+        <div class="logo"><a href="index.html">Bookself.</a></div>
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="book.html">Book</a></li>
+            <li><a href="checkout.html">Shop</a></li>
+            <li id="navContractItem" style="display:flex; gap:10px; align-items:center;">
+                <a href="login.html" style="color:#fff; font-size:14px; text-decoration:none; padding:5px 14px; border:1.5px solid rgba(255,255,255,0.5); border-radius:20px;"
+                   onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='transparent'">เข้าสู่ระบบ</a>
+                <a href="register.html" style="color:#5f2119; font-size:14px; text-decoration:none; padding:5px 14px; background:#fceaca; border-radius:20px; font-weight:500;">สมัครสมาชิก</a>
+            </li>
+            <li class="navUser" id="navUserItem" style="display:none;">
+                <a href="profile.html" id="navDisplayName" style="color:#fff; padding:3px 12px; border:1px solid rgba(255,255,255,0.4); border-radius:20px; font-size:14px; text-decoration:none;"></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <h1>ตะกร้าสินค้า</h1>
+        <span class="item-count" id="itemCount"></span>
+    </div>
+
+    <div id="loadingSpinner"><div class="spinner"></div></div>
+    <div id="cartContent" style="display:none;"></div>
+    <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-icon">🛒</div>
+        <h2>ตะกร้าว่างเปล่า</h2>
+        <p>ยังไม่มีสินค้าในตะกร้า</p>
+        <button class="btn-checkout" onclick="window.location.href='book.html'" style="max-width:200px; margin:0 auto;">เลือกซื้อหนังสือ</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/cart.js"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // Navbar auth
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) return;
+        const user = session.user;
+        const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+        const displayName = fullName || user.email.split("@")[0];
+        const contractItem = document.getElementById("navContractItem");
+        if (contractItem) contractItem.style.display = "none";
+        const userItem = document.getElementById("navUserItem");
+        const nameEl   = document.getElementById("navDisplayName");
+        if (userItem) userItem.style.display = "list-item";
+        if (nameEl)   nameEl.innerText = "👤 " + displayName;
+    })();
+
+    // รูปหนังสือแต่ละเล่ม
+    const bookImages = {
+        'veil1': './photo/theveil1.jpg',
+        'veil2': './photo/theveil2.jpg',
+        'veil3': './photo/theveil3.jpg',
+        'veil4': './photo/veil4.jpg',
+        'veil5': './photo/veil5.jpg',
+        'veil6': './photo/veil6.jpg',
+        'veil7': './photo/veil7.jpg',
+        'book1': './photo/book1.gif',
+        'book2': './photo/book2.gif',
+        'book3': './photo/book3.gif',
+    };
+
+    function getBookImg(id) {
+        if (bookImages[id]) {
+            return `<img src="${bookImages[id]}" alt="${id}" style="width:60px;height:80px;object-fit:cover;border-radius:6px;">`;
+        }
+        return `<span style="font-size:28px;">📚</span>`;
+    }
+
+    // Render cart
+    function renderCartPage() {
+        const cart = getCart();
+        const keys = Object.keys(cart);
+
+        document.getElementById("loadingSpinner").style.display = "none";
+
+        // ซ่อน/แสดง empty state และ cartContent
+        if (keys.length === 0) {
+            document.getElementById("cartContent").style.display = "none";
+            document.getElementById("cartContent").innerHTML = "";
+            document.getElementById("emptyState").style.display = "block";
+            document.getElementById("itemCount").textContent = "";
+            return;
+        }
+
+        document.getElementById("emptyState").style.display = "none";
+
+        const { subtotal, discount, vat, total, totalQty } = getCartTotal();
+        document.getElementById("itemCount").textContent = `${totalQty} รายการ`;
+
+        const itemsHtml = keys.map(id => {
+            const item = cart[id];
+            const lineTotal = item.price * item.qty;
+            return `
+                <div class="cart-item" id="item-${id}">
+                    <div class="item-img">${getBookImg(id)}</div>
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-sub">฿${item.price.toFixed(2)} / เล่ม</div>
+                    </div>
+                    <div class="item-right">
+                        <div class="item-price">฿${lineTotal.toFixed(2)}</div>
+                        <div class="qty-ctrl">
+                            <button class="qty-btn" onclick="changeQty('${id}', -1)">−</button>
+                            <span class="qty-num">${item.qty}</span>
+                            <button class="qty-btn" onclick="changeQty('${id}', 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="del-btn" onclick="deleteItem('${id}')">✕</button>
+                </div>`;
+        }).join("");
+
+        const discountRow = discount > 0
+            ? `<div class="summary-row"><span>ส่วนลด 10% <span class="discount-tag">ครบ 5 เล่ม</span></span><span class="summary-discount">−฿${discount.toFixed(2)}</span></div>`
+            : `<div class="summary-row"><span style="color:#bbb; font-size:13px;">ซื้อครบ 5 เล่มรับส่วนลด 10%</span><span></span></div>`;
+
+        document.getElementById("cartContent").style.display = "block";
+        document.getElementById("cartContent").innerHTML = `
+            <div class="cart-card">${itemsHtml}</div>
+            <div class="summary-card">
+                <div class="summary-title">สรุปคำสั่งซื้อ</div>
+                <div class="summary-row"><span>ราคารวม (${totalQty} เล่ม)</span><span>฿${subtotal.toFixed(2)}</span></div>
+                ${discountRow}
+                <div class="summary-row"><span>VAT 7%</span><span>฿${vat.toFixed(2)}</span></div>
+                <hr class="summary-divider">
+                <div class="summary-total"><span>ยอดรวม</span><span>฿${total.toFixed(2)}</span></div>
+                <button class="btn-checkout" onclick="goCheckout()">ดำเนินการชำระเงิน</button>
+                <button class="btn-continue" onclick="window.location.href='book.html'">← เลือกซื้อหนังสือเพิ่ม</button>
+            </div>`;
+    }
+
+    function changeQty(id, delta) {
+        updateQty(id, delta);
+        renderCartPage();
+    }
+
+    function deleteItem(id) {
+        removeFromCart(id);
+        renderCartPage();
+    }
+
+    async function goCheckout() {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) {
+            window.location.href = "login.html";
+            return;
+        }
+        window.location.href = "checkout.html";
+    }
+
+    renderCartPage();
+</script>
+</body>
+</html>

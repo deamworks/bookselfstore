@@ -47,7 +47,7 @@
     </style>
 </head>
 <body>
-        <nav>
+            <nav>
         <div class="container">
             <div class="nav-con">
                 <div class="logo"><a href="../index.html">Bookself.</a></div>
@@ -160,12 +160,14 @@
 
                     <p>Availability Status : <span>In stock at the Fulfilment Centre.</span></p>
 
-                    <label>Quantity :</label>
-                    <input type="number" value="1" min="1">
+                   
 
                     <div class="product-btn">
-                        <a href="#" class="product-btn-1">Add to Cart</a>
-                        <a href="../checkout.html" class="product-btn-1">Buy Now</a>
+                        <a class="product-btn-1" style="cursor:pointer;"
+                            onclick="addToCart('veil3', 'Veil Volume 3: Graceful White', 529)">
+                            Add to Cart
+                        </a>
+                        <a href="../cart.html" class="product-btn-1">View Cart</a>
                     </div>
                 </div>
 
@@ -394,6 +396,7 @@
     </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/cart.js"></script>
 <script>
     const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";

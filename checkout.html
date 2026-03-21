@@ -1,550 +1,442 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Checkout</title>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชำระเงิน - Bookself Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
 
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-            @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Prompt', sans-serif; background: #f8f8f8; min-height: 100vh; }
 
-            * { margin: 0; padding: 0; box-sizing: border-box; }
+        nav { background: #5f2119; padding: 18px 20px; }
+        .nav-con { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo a { font-family: 'Lora', serif; color: #fff; font-size: 22px; font-weight: bold; text-decoration: none; }
+        .menu { display: flex; list-style: none; gap: 2.5rem; align-items: center; }
+        .menu a { color: #fff; text-decoration: none; font-size: 14px; }
+        .menu a:hover { color: #c3766f; }
 
-            body { font-family: 'Poppins', sans-serif; background: #f8f8f8; padding: 40px; }
+        .page-wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 400px; gap: 24px; }
 
-            .table-container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        .card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 28px; margin-bottom: 20px; }
+        .card-title { font-size: 15px; font-weight: 600; color: #7c2220; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #f5e6e6; }
 
-            table { width: 100%; border-collapse: collapse; }
-            thead { background: #7c2220; color: white; }
-            thead th { padding: 15px; }
-            tbody td { padding: 15px; text-align: center; border-bottom: 1px solid #eee; }
-            tbody tr:nth-child(even) { background: #fadbd9; }
-            tbody tr:hover { background: #f5c6c3; }
-            td img { width: 80px; border-radius: 6px; margin-bottom: 5px; }
-            .book-name { text-align: left; font-weight: 500; }
-            .book-name:lang(th) { font-family: 'Prompt', sans-serif; }
-            .price { color: #7c2220; font-weight: bold; }
+        .order-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
+        .order-item:last-child { border-bottom: none; }
+        .order-book-icon { width: 48px; height: 64px; background: #fff3f2; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; overflow: hidden; }
+        .order-info { flex: 1; }
+        .order-name { font-size: 14px; font-weight: 500; color: #333; margin-bottom: 3px; }
+        .order-qty  { font-size: 12px; color: #999; }
+        .order-price { font-size: 14px; font-weight: 600; color: #7c2220; white-space: nowrap; }
 
-            button { font-family: 'Poppins', sans-serif; padding: 6px 15px; background: #7c2220; color: white; border: none; border-radius: 20px; cursor: pointer; }
-            button:hover { background: #5f2119; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #e0e0e0; border-radius: 8px;
+            font-family: 'Prompt', sans-serif; font-size: 14px;
+            color: #333; transition: border 0.2s; background: #fafafa;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #7c2220; background: white; }
+        .form-group textarea { resize: vertical; min-height: 70px; }
+        .form-row { display: flex; gap: 12px; }
+        .form-row .form-group { flex: 1; }
+        .address-note { font-size: 12px; color: #aaa; margin-top: 4px; }
 
-            .summary { font-family: 'Prompt', sans-serif; margin-top: 40px; padding: 30px; border-radius: 10px; background: #fff3f2; }
-            .cart-item { display: flex; justify-content: space-between; margin: 5px 0; }
-            .remove-btn { font-family: 'Prompt', sans-serif; background: #999; padding: 3px 10px; border-radius: 10px; font-size: 12px; }
-            .checkout-btn { font-family: 'Prompt', sans-serif; margin-top: 15px; width: 100%; }
-            .back-btn { font-family: 'Prompt', sans-serif; margin-top: 15px; width: 100%; background: #555; }
-            .back-btn:hover { background: #333; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #666; margin-bottom: 10px; }
+        .summary-discount { color: #2e7d32; }
+        .summary-divider { border: none; border-top: 1px solid #f0e6e6; margin: 14px 0; }
+        .summary-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: 600; }
+        .summary-total span:last-child { color: #7c2220; }
+        .discount-tag { font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; }
 
-            .receipt-modal { font-family: 'Prompt', sans-serif; position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 999; }
-            .receipt-content { width: 600px; max-height: 90vh; overflow: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-            .receipt-header { text-align: center; margin-bottom: 15px; }
-            .receipt-header h2 { color: #7c2220; margin-bottom: 5px; }
-            .receipt-content table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-            .receipt-content th, .receipt-content td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-            .receipt-content th { background: #f3f3f3; }
-            .total-section { margin-top: 15px; text-align: right; }
-            .print-btn { font-family: 'Prompt', sans-serif; margin-top: 15px; width: 100%; background: #7c2220; }
+        .btn-pay { width: 100%; margin-top: 16px; padding: 15px; background: #7c2220; color: white; border: none; border-radius: 10px; font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+        .btn-pay:hover { background: #5f2119; }
+        .btn-pay:disabled { background: #bbb; cursor: not-allowed; }
+        .btn-back { width: 100%; margin-top: 10px; padding: 12px; background: #fff3f2; color: #7c2220; border: 2px solid #7c2220; border-radius: 10px; font-family: 'Prompt', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .btn-back:hover { background: #7c2220; color: white; }
 
-            .update-date { font-family: "Prompt", sans-serif; }
-            tr:hover td.update-date { background-color: #fff; }
-            .title-page { margin: 20px; }
-            a { color: black; text-decoration: none; }
+        .spinner { width: 32px; height: 32px; border: 3px solid #f0e0e0; border-top-color: #7c2220; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 60px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-            .alert-modal { font-family: 'Prompt', sans-serif; position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
-            .alert-modal.show { display: flex; }
-            .alert-box { background: #fff; border-radius: 15px; padding: 30px 35px; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
-            @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-            .alert-icon    { font-size: 40px; margin-bottom: 10px; }
-            .alert-title   { font-size: 18px; font-weight: 600; color: #7c2220; margin-bottom: 8px; }
-            .alert-message { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.6; }
-            .alert-ok-btn  { font-family: 'Prompt', sans-serif; padding: 8px 35px; background: #7c2220; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; }
-            .alert-ok-btn:hover { background: #5f2119; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; justify-content: center; align-items: center; z-index: 999; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: white; border-radius: 16px; padding: 32px; max-width: 520px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { text-align: center; margin-bottom: 20px; }
+        .modal-header h2 { color: #7c2220; font-size: 20px; margin-bottom: 4px; }
+        .receipt-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+        .receipt-table th { background: #f9f9f9; padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; }
+        .receipt-table td { padding: 8px 10px; border-bottom: 1px solid #f5f5f5; }
+        .receipt-total-row { text-align: right; margin-top: 12px; }
+        .modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-done  { flex: 1; padding: 12px; background: #7c2220; color: white; border: none; border-radius: 10px; font-family: 'Prompt', sans-serif; font-size: 14px; cursor: pointer; }
+        .btn-print { flex: 1; padding: 12px; background: #f5f5f5; color: #555; border: none; border-radius: 10px; font-family: 'Prompt', sans-serif; font-size: 14px; cursor: pointer; }
 
-            .user-bar { max-width: 1200px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); font-family: 'Prompt', sans-serif; }
-            .ub-left  { display: flex; align-items: center; gap: 10px; }
-            .ub-right { display: flex; gap: 8px; align-items: center; }
-            .ub-avatar-img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7c2220; object-fit: cover; display: none; }
-            .ub-avatar-ini { width: 36px; height: 36px; border-radius: 50%; background: #7c2220; color: #fff; font-size: 15px; font-weight: 600; display: none; align-items: center; justify-content: center; }
-            .ub-name  { font-size: 14px; color: #333; font-weight: 500; }
-            .ub-guest { font-size: 14px; color: #999; }
-            .ub-btn-login    { font-size: 13px; color: #7c2220; text-decoration: none; border: 1.5px solid #7c2220; padding: 5px 14px; border-radius: 20px; transition: 0.2s; }
-            .ub-btn-login:hover { background: #7c2220; color: white; }
-            .ub-btn-reg      { font-size: 13px; color: #5f2119; text-decoration: none; background: #fceaca; padding: 5px 14px; border-radius: 20px; transition: 0.2s; }
-            .ub-btn-reg:hover { background: #f5d5a0; }
-            .ub-btn-profile  { font-size: 13px; color: #7c2220; text-decoration: none; border: 1.5px solid #7c2220; padding: 5px 14px; border-radius: 20px; transition: 0.2s; }
-            .ub-btn-profile:hover { background: #7c2220; color: white; }
-            .ub-btn-logout   { font-size: 13px; color: #999; background: none; border: 1.5px solid #ddd; padding: 5px 14px; border-radius: 20px; cursor: pointer; font-family: 'Prompt', sans-serif; transition: 0.2s; }
-            .ub-btn-logout:hover { border-color: #7c2220; color: white; }
+        .alert-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1001; }
+        .alert-modal.show { display: flex; }
+        .alert-box { background: white; border-radius: 14px; padding: 28px 32px; max-width: 360px; width: 90%; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+        .alert-icon { font-size: 38px; margin-bottom: 10px; }
+        .alert-title { font-size: 17px; font-weight: 600; color: #7c2220; margin-bottom: 8px; }
+        .alert-msg { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.6; white-space: pre-line; }
+        .alert-ok { padding: 8px 32px; background: #7c2220; color: white; border: none; border-radius: 20px; font-family: 'Prompt', sans-serif; font-size: 14px; cursor: pointer; }
 
-            .lock-overlay { font-family: "prompt", sans-serif; display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1002; justify-content: center; align-items: center; }
-            .lock-overlay.show { display: flex; }
-            .lock-box { background: white; border-radius: 16px; padding: 40px 36px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.2s ease; }
-            .lock-box .lk-icon { font-size: 48px; margin-bottom: 12px; }
-            .lock-box h3 { color: #7c2220; font-size: 18px; margin-bottom: 8px; }
-            .lock-box p  { color: #666; font-size: 14px; margin-bottom: 22px; line-height: 1.6; }
-            .lock-box .lk-go { display: inline-block; padding: 10px 28px; background: #7c2220; color: white; text-decoration: none; border-radius: 20px; font-size: 14px; margin-right: 8px; transition: 0.2s; }
-            .lock-box .lk-go:hover { background: #5f2119; color: white; }
-            .lock-box .lk-cancel { padding: 10px 20px; background: none; border: 1.5px solid #ddd; color: #999; border-radius: 20px; font-size: 14px; cursor: pointer; font-family: 'Prompt', sans-serif; transition: 0.2s; }
-            .lock-box .lk-cancel:hover { border-color: #aaa; color: #666; }
-        </style>
-    </head>
+        @media (max-width: 768px) { .page-wrap { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
 
-    <h1 class="title-page" align="center">Check Out</h1>
+<nav>
+    <div class="nav-con">
+        <div class="logo"><a href="index.html">Bookself.</a></div>
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="book.html">Book</a></li>
+            <li><a href="cart.html">🛒 ตะกร้า</a></li>
+            <li id="navUserItem" style="display:none;">
+                <a href="profile.html" id="navDisplayName"
+                   style="color:#fff; padding:3px 12px; border:1px solid rgba(255,255,255,0.4); border-radius:20px; font-size:14px; text-decoration:none;"></a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-    <body>
+<div id="loadingDiv" style="text-align:center;"><div class="spinner"></div></div>
 
-        <div class="user-bar">
-            <div class="ub-left">
-                <img  class="ub-avatar-img" id="ubAvatarImg" src="" alt="">
-                <div  class="ub-avatar-ini" id="ubAvatarIni"></div>
-                <span class="ub-name"       id="ubName"  style="display:none;"></span>
-                <span class="ub-guest"      id="ubGuest">ยังไม่ได้เข้าสู่ระบบ</span>
+<div id="emptyDiv" style="display:none; text-align:center; padding:80px 20px;">
+    <p style="font-size:48px; margin-bottom:16px;">🛒</p>
+    <h2 style="color:#999; font-size:18px; margin-bottom:12px;">ตะกร้าว่างเปล่า</h2>
+    <p style="color:#bbb; font-size:14px; margin-bottom:24px;">กรุณาเลือกสินค้าก่อนชำระเงิน</p>
+    <button onclick="window.location.href='cart.html'" style="padding:10px 28px; background:#7c2220; color:white; border:none; border-radius:20px; font-family:'Prompt',sans-serif; cursor:pointer; font-size:14px;">← กลับไปตะกร้า</button>
+</div>
+
+<div class="page-wrap" id="mainContent" style="display:none;">
+
+    <!-- ซ้าย -->
+    <div>
+        <div class="card">
+            <div class="card-title">📦 ที่อยู่จัดส่ง</div>
+            <div class="form-group">
+                <label>ชื่อ-นามสกุล <span style="color:#cc0000;">*</span></label>
+                <input type="text" id="shipName" placeholder="ชื่อ-นามสกุล">
             </div>
-            <div class="ub-right">
-                <div id="ubGuestBtns" style="display:flex; gap:8px;">
-                    <a href="login.html"    class="ub-btn-login">เข้าสู่ระบบ</a>
-                    <a href="register.html" class="ub-btn-reg">สมัครสมาชิก</a>
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์ <span style="color:#cc0000;">*</span></label>
+                <input type="tel" id="shipPhone" placeholder="0XX-XXX-XXXX">
+            </div>
+            <div class="form-group">
+                <label>ที่อยู่จัดส่ง <span style="color:#cc0000;">*</span></label>
+                <textarea id="shipAddress" placeholder="บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>จังหวัด <span style="color:#cc0000;">*</span></label>
+                    <input type="text" id="shipProvince" placeholder="จังหวัด">
                 </div>
-                <div id="ubMemberBtns" style="display:none; gap:8px; align-items:center;">
-                    <a href="profile.html" class="ub-btn-profile">👤 โปรไฟล์</a>
-                    <button class="ub-btn-logout" id="ubLogoutBtn">ออกจากระบบ</button>
+                <div class="form-group">
+                    <label>รหัสไปรษณีย์ <span style="color:#cc0000;">*</span></label>
+                    <input type="text" id="shipPostcode" placeholder="XXXXX">
                 </div>
             </div>
+            <p class="address-note">* ดึงข้อมูลจากโปรไฟล์อัตโนมัติ สามารถแก้ไขได้ก่อนยืนยัน</p>
         </div>
 
-        <div class="lock-overlay" id="lockOverlay">
-            <div class="lock-box">
-                <div class="lk-icon">🔒</div>
-                <h3>กรุณาเข้าสู่ระบบก่อน</h3>
-                <p>ต้องเข้าสู่ระบบก่อนจึงจะสั่งซื้อสินค้าได้</p>
-                <a href="login.html" class="lk-go">เข้าสู่ระบบ</a>
-                <button class="lk-cancel" onclick="document.getElementById('lockOverlay').classList.remove('show')">ยกเลิก</button>
+        <div class="card">
+            <div class="card-title">📚 รายการสินค้า</div>
+            <div id="orderItems"></div>
+        </div>
+    </div>
+
+    <!-- ขวา -->
+    <div>
+        <div class="card" style="position:sticky; top:24px;">
+            <div class="card-title">💳 สรุปคำสั่งซื้อ</div>
+            <div class="summary-row">
+                <span id="subtotalLabel">รวม 0 เล่ม</span>
+                <span id="subtotalVal">฿0.00</span>
             </div>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.</th><th>Name Book</th><th>Price</th>
-                        <th>Stock</th><th>Status</th><th>Checkout</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="./bookpage/veil1.html"><img src="photo/theveil1.jpg"><br>4829571630</a></td>
-                        <td class="book-name">Veil Volume 1: Temperature of Orange</td>
-                        <td class="price" data-price="528">฿528.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/veil2.html"><img src="photo/theveil2.jpg"><br>7391058246</a></td>
-                        <td class="book-name">Veil Volume 2: Calming Noir</td>
-                        <td class="price" data-price="528">฿528.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/veil3.html"><img src="photo/theveil3.jpg"><br>1569047382</a></td>
-                        <td class="book-name">Veil Volume 3: Graceful White</td>
-                        <td class="price" data-price="529">฿529.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/veil4.html"><img src="photo/veil4.jpg"><br>9082715643</a></td>
-                        <td class="book-name">Veil Volume 4: Transparent Burns</td>
-                        <td class="price" data-price="553">฿553.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/veil5.html"><img src="photo/veil5.jpg"><br>6248190573</a></td>
-                        <td class="book-name">Veil Volume 5: Golden Blink</td>
-                        <td class="price" data-price="529">฿529.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/veil6.html"><img src="photo/veil6.jpg"><br>3716409285</a></td>
-                        <td class="book-name">Veil Volume 6: Untangled Rouge</td>
-                        <td class="price" data-price="600">฿600.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/veil7.html"><img src="photo/veil7.jpg"><br>8502947163</a></td>
-                        <td class="book-name">Veil Volume 7: Warmest Blue</td>
-                        <td class="price" data-price="536">฿536.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/book1.html"><img src="photo/book1.gif"><br>2975318640</a></td>
-                        <td class="book-name" lang="th">ทรวงทราม</td>
-                        <td class="price" data-price="529">฿529.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/book2.html"><img src="photo/book2.gif"><br>5648721903</a></td>
-                        <td class="book-name" lang="th">ไทยวิจิตร</td>
-                        <td class="price" data-price="399">฿399.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td><a href="./bookpage/book3.html"><img src="photo/book3.gif"><br>9134067528</a></td>
-                        <td class="book-name" lang="th">ผีเน่ากับโลงผุ</td>
-                        <td class="price" data-price="420">฿420.00</td>
-                        <td class="stock">10</td><td>Available</td><td><button onclick="buy(this)">Buy</button></td>
-                    </tr>
-                    <tr>
-                        <td class="update-date" align="center" colspan="6">
-                            สินค้าอัพเดพ ณ วันที่ <script>document.write(new Date().toLocaleDateString("th-TH"))</script>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="summary">
-                <h3>ตะกร้าสินค้า</h3>
-                <div id="cartList"></div>
-                <p>จำนวนเล่มรวมทั้งหมด: <span id="totalQty">0</span> เล่ม</p>
-                <hr>
-                <p>Subtotal: <span id="subtotal">0.00</span> บาท</p>
-                <p>Discount 10% (ครบ 5 เล่ม): <span id="discount">0.00</span> บาท</p>
-                <p>VAT 7%: <span id="vat">0.00</span> บาท</p>
-                <h3>Total Payment: <span id="total">0.00</span> บาท</h3>
-                <button class="checkout-btn" onclick="checkout()">ชำระเงิน</button>
-                <a href="./index.html"><button class="back-btn">← Back to Home</button></a>
+            <div class="summary-row" id="discountRow" style="display:none;">
+                <span>ส่วนลด 10% <span class="discount-tag">ครบ 5 เล่ม</span></span>
+                <span class="summary-discount" id="discountVal"></span>
             </div>
-        </div>
-
-        <div class="alert-modal" id="alertModal">
-            <div class="alert-box">
-                <div class="alert-icon"    id="alertIcon">⚠️</div>
-                <div class="alert-title"   id="alertTitle">แจ้งเตือน</div>
-                <div class="alert-message" id="alertMessage"></div>
-                <button class="alert-ok-btn" onclick="closeAlert()">ตกลง</button>
+            <div class="summary-row" id="discountHint">
+                <span style="color:#bbb; font-size:13px;">ซื้อครบ 5 เล่ม รับส่วนลด 10%</span>
             </div>
+            <div class="summary-row">
+                <span>ราคาก่อน VAT</span>
+                <span id="beforeVatVal">฿0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>VAT 7%</span>
+                <span id="vatVal">฿0.00</span>
+            </div>
+            <hr class="summary-divider">
+            <div class="summary-total">
+                <span>ยอดรวมสุทธิ</span>
+                <span id="totalVal">฿0.00</span>
+            </div>
+            <button class="btn-pay" id="payBtn" onclick="confirmPurchase()">✅ ยืนยันการชำระเงิน</button>
+            <button class="btn-back" onclick="window.location.href='cart.html'">← กลับไปตะกร้า</button>
         </div>
+    </div>
+</div>
 
-        <div class="receipt-modal" id="receiptModal">
-            <div class="receipt-content" id="receipt"></div>
+<!-- Receipt Modal -->
+<div class="modal-overlay" id="receiptModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div style="font-size:48px; margin-bottom:8px;">✅</div>
+            <h2>สั่งซื้อสำเร็จ!</h2>
+            <p id="receiptInvoice" style="color:#999; font-size:13px; margin-top:4px;"></p>
         </div>
+        <div id="receiptShipping" style="background:#f9f9f9; border-radius:8px; padding:12px 16px; font-size:13px; margin-bottom:16px; line-height:1.9;"></div>
+        <table class="receipt-table">
+            <thead><tr><th>หนังสือ</th><th style="text-align:center">จำนวน</th><th style="text-align:right">ราคา</th></tr></thead>
+            <tbody id="receiptItems"></tbody>
+        </table>
+        <div class="receipt-total-row" id="receiptSummary" style="font-size:13px; color:#666; line-height:2; margin-top:8px;"></div>
+        <div class="modal-btn-row">
+            <button class="btn-print" onclick="window.print()">🖨️ พิมพ์ใบเสร็จ</button>
+            <button class="btn-done"  onclick="window.location.href='index.html'">กลับหน้าหลัก</button>
+        </div>
+    </div>
+</div>
 
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Alert Modal -->
+<div class="alert-modal" id="alertModal">
+    <div class="alert-box">
+        <div class="alert-icon"  id="alertIcon">⚠️</div>
+        <div class="alert-title" id="alertTitle">แจ้งเตือน</div>
+        <div class="alert-msg"   id="alertMsg"></div>
+        <button class="alert-ok" onclick="document.getElementById('alertModal').classList.remove('show')">ตกลง</button>
+    </div>
+</div>
 
-        <script>
-            const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
-            const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
-            const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/cart.js"></script>
+<script>
+    const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    let currentSession = null;
 
-            let isLoggedIn = false;
+    function showAlert(msg, title = "แจ้งเตือน", icon = "⚠️") {
+        document.getElementById("alertIcon").textContent  = icon;
+        document.getElementById("alertTitle").textContent = title;
+        document.getElementById("alertMsg").textContent   = msg;
+        document.getElementById("alertModal").classList.add("show");
+    }
 
-            document.addEventListener("DOMContentLoaded", async () => {
-                const { data: { session } } = await sbClient.auth.getSession();
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = "login.html"; return; }
+        currentSession = session;
 
-                document.getElementById("ubLogoutBtn").addEventListener("click", async () => {
-                    await sbClient.auth.signOut();
-                    location.reload();
-                });
+        const user = session.user;
+        const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+        const displayName = fullName || user.email.split("@")[0];
+        document.getElementById("navUserItem").style.display = "list-item";
+        document.getElementById("navDisplayName").innerText = "👤 " + displayName;
 
-                if (!session) return;
+        const cart = getCart();
+        if (Object.keys(cart).length === 0) {
+            document.getElementById("loadingDiv").style.display = "none";
+            document.getElementById("emptyDiv").style.display   = "block";
+            return;
+        }
 
-                isLoggedIn = true;
-                const user     = session.user;
-                const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
-                const avatar   = user.user_metadata?.avatar_url || "";
-                const display  = fullName || user.email.split("@")[0];
+        const { data: profile } = await sb.from("profiles")
+            .select("full_name, phone, address, province, postcode")
+            .eq("id", user.id).maybeSingle();
 
-                if (avatar) {
-                    const img = document.getElementById("ubAvatarImg");
-                    img.src = avatar;
-                    img.style.display = "block";
-                } else {
-                    const ini = document.getElementById("ubAvatarIni");
-                    ini.textContent   = display[0].toUpperCase();
-                    ini.style.display = "flex";
+        if (profile) {
+            document.getElementById("shipName").value     = profile.full_name || fullName;
+            document.getElementById("shipPhone").value    = profile.phone     || "";
+            document.getElementById("shipAddress").value  = profile.address   || "";
+            document.getElementById("shipProvince").value = profile.province  || "";
+            document.getElementById("shipPostcode").value = profile.postcode  || "";
+        } else {
+            document.getElementById("shipName").value = fullName;
+        }
+
+        renderSummary(cart);
+        document.getElementById("loadingDiv").style.display  = "none";
+        document.getElementById("mainContent").style.display = "grid";
+    })();
+
+    const bookImages = {
+        'veil1': 'photo/theveil1.jpg',
+        'veil2': 'photo/theveil2.jpg',
+        'veil3': 'photo/theveil3.jpg',
+        'veil4': 'photo/veil4.jpg',
+        'veil5': 'photo/veil5.jpg',
+        'veil6': 'photo/veil6.jpg',
+        'veil7': 'photo/veil7.jpg',
+        'book1': 'photo/book1.gif',
+        'book2': 'photo/book2.gif',
+        'book3': 'photo/book3.gif',
+    };
+
+    function getBookImg(id) {
+        if (bookImages[id]) {
+            return `<img src="${bookImages[id]}" alt="${id}"
+                style="width:48px;height:64px;object-fit:cover;border-radius:6px;display:block;">`;
+        }
+        return `<span style="font-size:24px;">📚</span>`;
+    }
+
+    function renderSummary(cart) {
+        const { subtotal, discount, vat, total, totalQty } = getCartTotal();
+
+        let itemsHtml = "";
+        for (const [id, item] of Object.entries(cart)) {
+            itemsHtml += `
+                <div class="order-item">
+                    <div class="order-book-icon">${getBookImg(id)}</div>
+                    <div class="order-info">
+                        <div class="order-name">${item.name}</div>
+                        <div class="order-qty">จำนวน ${item.qty} เล่ม × ฿${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="order-price">฿${(item.price * item.qty).toFixed(2)}</div>
+                </div>`;
+        }
+        document.getElementById("orderItems").innerHTML = itemsHtml;
+
+        document.getElementById("subtotalLabel").textContent = `รวม ${totalQty} เล่ม`;
+        document.getElementById("subtotalVal").textContent   = `฿${subtotal.toFixed(2)}`;
+        document.getElementById("beforeVatVal").textContent  = `฿${(total / 1.07).toFixed(2)}`;
+        document.getElementById("vatVal").textContent        = `฿${vat.toFixed(2)}`;
+        document.getElementById("totalVal").textContent      = `฿${total.toFixed(2)}`;
+
+        if (discount > 0) {
+            document.getElementById("discountRow").style.display = "flex";
+            document.getElementById("discountHint").style.display = "none";
+            document.getElementById("discountVal").textContent = `−฿${discount.toFixed(2)}`;
+        }
+    }
+
+    async function confirmPurchase() {
+        const payBtn = document.getElementById("payBtn");
+        payBtn.disabled = true;
+        payBtn.textContent = "กำลังดำเนินการ...";
+
+        const name     = document.getElementById("shipName").value.trim();
+        const phone    = document.getElementById("shipPhone").value.trim();
+        const address  = document.getElementById("shipAddress").value.trim();
+        const province = document.getElementById("shipProvince").value.trim();
+        const postcode = document.getElementById("shipPostcode").value.trim();
+
+        if (!name || !phone || !address || !province || !postcode) {
+            showAlert("กรุณากรอกที่อยู่จัดส่งให้ครบทุกช่อง", "ข้อมูลไม่ครบ", "⚠️");
+            payBtn.disabled = false;
+            payBtn.textContent = "✅ ยืนยันการชำระเงิน";
+            return;
+        }
+
+        const cart = getCart();
+        const { subtotal, discount, total } = getCartTotal();
+        const invoiceNo = "INV-" + Date.now();
+        const items = Object.entries(cart).map(([id, item]) => ({
+            book_id: id, book_name: item.name, price: item.price,
+            qty: item.qty, line_total: parseFloat((item.price * item.qty).toFixed(2))
+        }));
+
+        // ① ตรวจสอบ stock ก่อนชำระเงิน
+        payBtn.textContent = "กำลังตรวจสอบ stock...";
+        const { data: stockData, error: stockErr } = await sb
+            .from("books")
+            .select("id, name, stock_qty")
+            .in("id", items.map(i => i.book_id));
+
+        if (stockErr) {
+            // ถ้าไม่มี table books ให้ข้ามไปได้ (backward compatible)
+            console.warn("Stock check skipped:", stockErr.message);
+        } else if (stockData) {
+            // ตรวจแต่ละรายการ
+            for (const item of items) {
+                const book = stockData.find(b => b.id === item.book_id);
+                if (book && book.stock_qty < item.qty) {
+                    showAlert(
+                        `"${item.book_name}" มีสินค้าเหลือ ${book.stock_qty} เล่ม\nกรุณาลดจำนวนในตะกร้าก่อน`,
+                        "Stock ไม่พอ", "⚠️"
+                    );
+                    payBtn.disabled = false;
+                    payBtn.textContent = "✅ ยืนยันการชำระเงิน";
+                    return;
                 }
+            }
+        }
 
-                document.getElementById("ubName").textContent    = "สวัสดี, " + display;
-                document.getElementById("ubName").style.display  = "inline";
-                document.getElementById("ubGuest").style.display = "none";
-                document.getElementById("ubGuestBtns").style.display  = "none";
-                document.getElementById("ubMemberBtns").style.display = "flex";
+        // ② บันทึก order
+        payBtn.textContent = "กำลังบันทึกคำสั่งซื้อ...";
+        const { error } = await sb.from("orders").insert({
+            user_id: currentSession.user.id,
+            invoice_no: invoiceNo, items, total, status: "paid",
+            shipping_address: { name, phone, address, province, postcode }
+        });
+
+        if (error) {
+            showAlert("บันทึกคำสั่งซื้อไม่สำเร็จ:\n" + error.message, "ข้อผิดพลาด", "🚫");
+            payBtn.disabled = false;
+            payBtn.textContent = "✅ ยืนยันการชำระเงิน";
+            return;
+        }
+
+        // ③ ตัด stock
+        if (stockData) {
+            payBtn.textContent = "กำลังอัปเดต stock...";
+            for (const item of items) {
+                const { error: rpcErr } = await sb.rpc("decrement_stock", {
+                    book_id: item.book_id,
+                    qty: item.qty
+                });
+                if (rpcErr) console.warn("Stock decrement warn:", item.book_id, rpcErr.message);
+            }
+        }
+
+        // ④ ส่งอีเมล
+        try {
+            await sb.functions.invoke("smart-function", {
+                body: { to: currentSession.user.email, invoice_no: invoiceNo, items, total, name }
             });
+        } catch(e) { console.warn("Email:", e); }
 
-            function requireLogin() {
-                if (!isLoggedIn) {
-                    document.getElementById("lockOverlay").classList.add("show");
-                    return false;
-                }
-                return true;
-            }
+        clearCart();
+        showReceipt(invoiceNo, items, { name, phone, address, province, postcode }, subtotal, discount, total);
+        payBtn.disabled = false;
+        payBtn.textContent = "✅ ยืนยันการชำระเงิน";
+    }
 
-            let cart = {}, stocks = {};
+    function showReceipt(invoiceNo, items, addr, subtotal, discount, total) {
+        document.getElementById("receiptInvoice").textContent = "Invoice: " + invoiceNo;
+        document.getElementById("receiptShipping").innerHTML =
+            `<strong>📦 ที่อยู่จัดส่ง</strong><br>
+             ชื่อ: ${addr.name}<br>
+             โทร: ${addr.phone}<br>
+             ที่อยู่: ${addr.address}<br>
+             ${addr.province} ${addr.postcode}`;
 
-            function showAlert(message, title = "แจ้งเตือน", type = "warning") {
-                const icons  = { warning: "⚠️", error: "🚫", success: "✅" };
-                const colors = { warning: "#e67e22", error: "#7c2220", success: "#2e7d32" };
-                document.getElementById("alertTitle").innerText      = title;
-                document.getElementById("alertMessage").innerText    = message;
-                document.getElementById("alertIcon").innerText       = icons[type] || "⚠️";
-                document.getElementById("alertTitle").style.color    = colors[type] || "#7c2220";
-                document.getElementById("alertModal").classList.add("show");
-            }
+        let rows = "";
+        items.forEach(i => {
+            rows += `<tr>
+                <td>${i.book_name}</td>
+                <td style="text-align:center">${i.qty}</td>
+                <td style="text-align:right">฿${i.line_total.toFixed(2)}</td>
+            </tr>`;
+        });
+        document.getElementById("receiptItems").innerHTML = rows;
 
-            function closeAlert() {
-                document.getElementById("alertModal").classList.remove("show");
-            }
+        let summaryHtml = `<div style="text-align:right; line-height:2;">`;
+        summaryHtml += `<span>Subtotal: ฿${subtotal.toFixed(2)}</span><br>`;
+        if (discount > 0) summaryHtml += `<span style="color:#2e7d32">ส่วนลด 10%: −฿${discount.toFixed(2)}</span><br>`;
+        summaryHtml += `<strong style="font-size:16px; color:#7c2220">ยอดรวม: ฿${total.toFixed(2)} บาท</strong>`;
+        summaryHtml += `</div>`;
+        document.getElementById("receiptSummary").innerHTML = summaryHtml;
 
-            function buy(btn) {
-                if (!requireLogin()) return;
-
-                let row        = btn.closest("tr");
-                let id         = row.cells[0].innerText.trim();
-                let name       = row.querySelector(".book-name").innerText;
-                let price      = parseFloat(row.querySelector(".price").dataset.price);
-                let stockCell  = row.querySelector(".stock");
-                let statusCell = row.cells[4];
-
-                if (!stocks[id]) stocks[id] = parseInt(stockCell.innerText);
-
-                if (stocks[id] <= 0) {
-                    showAlert("สินค้าหมดแล้ว", "สินค้าหมด", "error");
-                    btn.disabled = true; btn.style.background = "#999";
-                    return;
-                }
-
-                stocks[id]--;
-                stockCell.innerText = stocks[id];
-
-                if (cart[id]) cart[id].qty++;
-                else cart[id] = { name, price, qty: 1 };
-
-                if (stocks[id] <= 0) {
-                    statusCell.innerText = "Sold Out";
-                    btn.disabled = true; btn.style.background = "#999";
-                }
-
-                renderCart();
-            }
-
-            function removeItem(id) {
-                if (!cart[id]) return;
-                cart[id].qty--;
-                stocks[id]++;
-
-                document.querySelectorAll("tr").forEach(row => {
-                    if (row.cells[0] && row.cells[0].innerText.trim() == id) {
-                        row.querySelector(".stock").innerText = stocks[id];
-                        if (stocks[id] > 0) {
-                            row.cells[4].innerText = "Available";
-                            let b = row.querySelector("button");
-                            b.disabled = false; b.style.background = "#7c2220";
-                        }
-                    }
-                });
-
-                if (cart[id].qty <= 0) delete cart[id];
-                renderCart();
-            }
-
-            function renderCart() {
-                let cartList = document.getElementById("cartList");
-                cartList.innerHTML = "";
-                let subtotal = 0, totalQty = 0;
-
-                for (let id in cart) {
-                    let item = cart[id];
-                    subtotal += item.price * item.qty;
-                    totalQty += item.qty;
-                    cartList.innerHTML += `
-                        <div class="cart-item">
-                            <span>${item.name} จำนวน ${item.qty} เล่ม</span>
-                            <button class="remove-btn" onclick="removeItem('${id}')">ลบ</button>
-                        </div>`;
-                }
-
-                let discount           = totalQty >= 5 ? subtotal * 0.10 : 0;
-                let totalAfterDiscount = subtotal - discount;
-                let priceBeforeVAT     = totalAfterDiscount / 1.07;
-                let vat                = totalAfterDiscount - priceBeforeVAT;
-
-                document.getElementById("totalQty").innerText = totalQty;
-                document.getElementById("subtotal").innerText = subtotal.toFixed(2);
-                document.getElementById("discount").innerText = discount.toFixed(2);
-                document.getElementById("vat").innerText      = vat.toFixed(2);
-                document.getElementById("total").innerText    = totalAfterDiscount.toFixed(2);
-            }
-
-            async function checkout() {
-                if (!requireLogin()) return;
-
-                if (Object.keys(cart).length === 0) {
-                    showAlert("กรุณาเลือกสินค้าก่อนชำระเงิน", "ยังไม่มีสินค้า", "warning");
-                    return;
-                }
-
-                const { data: { session } } = await sbClient.auth.getSession();
-                const { data: profile } = await sbClient
-                    .from("profiles")
-                    .select("full_name, phone, address, province, postcode")
-                    .eq("id", session.user.id)
-                    .single();
-
-                let modal   = document.getElementById("receiptModal");
-                let receipt = document.getElementById("receipt");
-                modal.style.display = "flex";
-
-                let invoiceNo      = "INV-" + Date.now();
-                let date           = new Date().toLocaleString("th-TH");
-                let subtotal       = parseFloat(document.getElementById("subtotal").innerText);
-                let discount       = parseFloat(document.getElementById("discount").innerText);
-                let total          = parseFloat(document.getElementById("total").innerText);
-                let priceBeforeVAT = total / 1.07;
-                let vat            = total - priceBeforeVAT;
-
-                const name     = profile?.full_name || session.user.email;
-                const phone    = profile?.phone     || "-";
-                const address  = profile?.address   || "-";
-                const province = profile?.province  || "-";
-                const postcode = profile?.postcode  || "-";
-
-                let html = `
-                    <div class="receipt-header">
-                        <h2>Bookself Store</h2>
-                        <p>www.bookselfstore.com</p>
-                        <p>Invoice No: ${invoiceNo}</p>
-                        <p>Date: ${date}</p>
-                    </div>
-
-                    <div style="margin:15px 0; padding:12px; background:#f9f9f9; border-radius:8px; font-size:14px; line-height:1.8;">
-                        <strong>📦 ที่อยู่จัดส่ง</strong><br>
-                        ชื่อ: ${name}<br>
-                        โทร: ${phone}<br>
-                        ที่อยู่: ${address}<br>
-                        จังหวัด: ${province} ${postcode}
-                    </div>
-
-                    <table><tr><th>Book</th><th>Qty</th><th>Price</th><th>Total</th></tr>`;
-
-                for (let id in cart) {
-                    let item = cart[id];
-                    html += `<tr>
-                        <td>${item.name}</td><td>${item.qty}</td>
-                        <td>${item.price.toFixed(2)}</td>
-                        <td>${(item.price * item.qty).toFixed(2)}</td>
-                    </tr>`;
-                }
-
-                html += `</table>
-                    <div class="total-section">
-                        <p>Subtotal: ${subtotal.toFixed(2)} บาท</p>
-                        <p>Discount: -${discount.toFixed(2)} บาท</p>
-                        <p>ราคาก่อน VAT: ${priceBeforeVAT.toFixed(2)} บาท</p>
-                        <p>VAT 7%: ${vat.toFixed(2)} บาท</p>
-                        <h3>Total: ${total.toFixed(2)} บาท</h3>
-                    </div>`;
-
-                if (!profile?.address) {
-                    html += `<p style="color:#e67e22; font-size:13px; margin-top:10px;">
-                        ⚠️ ยังไม่มีที่อยู่จัดส่ง <a href="profile.html" style="color:#7c2220;">คลิกเพื่อกรอกที่อยู่</a>
-                    </p>`;
-                }
-
-                html += `
-                    <div style="display:flex; gap:10px; margin-top:15px;">
-                        <button class="print-btn"
-                                style="margin-top:0; background:#999; flex:1;"
-                                onclick="document.getElementById('receiptModal').style.display='none'">
-                            ← ย้อนกลับ
-                        </button>
-                        <button class="print-btn"
-                                style="margin-top:0; flex:1;"
-                                onclick="confirmPurchase()">
-                            ยืนยันการซื้อ
-                        </button>
-                    </div>`;
-
-                receipt.innerHTML = html;
-            }
-
-            async function confirmPurchase() {
-                document.getElementById("receiptModal").style.display = "none";
-
-                const { data: { session } } = await sbClient.auth.getSession();
-                if (!session) {
-                    showAlert("กรุณาเข้าสู่ระบบก่อน", "ข้อผิดพลาด", "error");
-                    return;
-                }
-
-                const { data: profile } = await sbClient
-                    .from("profiles")
-                    .select("full_name, phone, address, province, postcode")
-                    .eq("id", session.user.id)
-                    .single();
-
-                const invoiceNo = "INV-" + Date.now();
-                const subtotal  = parseFloat(document.getElementById("subtotal").innerText);
-                const discount  = parseFloat(document.getElementById("discount").innerText);
-                const total     = parseFloat(document.getElementById("total").innerText);
-
-                const items = Object.entries(cart).map(([id, item]) => ({
-                    book_id:    id,
-                    book_name:  item.name,
-                    price:      item.price,
-                    qty:        item.qty,
-                    line_total: parseFloat((item.price * item.qty).toFixed(2))
-                }));
-
-                //  insert order
-                const { error } = await sbClient.from("orders").insert({
-                    user_id:    session.user.id,
-                    invoice_no: invoiceNo,
-                    items:      items,
-                    total:      total,
-                    status:     "paid",
-                    shipping_address: {
-                        name:     profile?.full_name || "",
-                        phone:    profile?.phone     || "",
-                        address:  profile?.address   || "",
-                        province: profile?.province  || "",
-                        postcode: profile?.postcode  || ""
-                    }
-                });
-
-                if (error) {
-                    showAlert("บันทึกคำสั่งซื้อไม่สำเร็จ:\n" + error.message, "ข้อผิดพลาด", "error");
-                    return;
-                }
-
-                // ส่งอีเมล พร้อม log ผลลัพธ์
-                try {
-                    console.log("📧 กำลังส่งอีเมลไปที่:", session.user.email);
-                    const { data: emailData, error: emailError } = await sbClient.functions.invoke("smart-function", {
-                body: {
-                    to:         session.user.email,
-                    invoice_no: invoiceNo,
-                    items:      items,
-                    total:      total,
-                    name:       profile?.full_name || session.user.email.split("@")[0]
-    },
-                headers: {
-                Authorization: `Bearer ${session.access_token}`
-                }
-                });
-                    console.log("📧 Email result:", JSON.stringify(emailData));
-                    console.log("📧 Email error:", emailError);
-                } catch (emailErr) {
-                    console.warn("📧 Email catch:", emailErr);
-                }
-
-                // เคลียร์ตะกร้า + แจ้งสำเร็จ
-                cart = {};
-                renderCart();
-                showAlert(
-                    `Invoice: ${invoiceNo}\nยอดชำระ: ${total.toFixed(2)} บาท\nขอบคุณที่ใช้บริการ Bookself Store`,
-                    "การสั่งซื้อสำเร็จ ✅",
-                    "success"
-                );
-            }
-        </script>
-
-    </body>
+        document.getElementById("receiptModal").classList.add("show");
+    }
+</script>
+</body>
 </html>

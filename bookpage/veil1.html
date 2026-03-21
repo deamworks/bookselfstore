@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheVeil Volume 1</title>
     <link rel="stylesheet" href="../css/veill1.css">
-
     <style>
     .menu { align-items: center; gap: 2.8rem; }
     .menu li { margin-left: 0 !important; }
-
     .menu li.has-dropdown { position: relative; }
-
     .dropdown {
         display: none; position: absolute;
         top: calc(100% + 12px); left: 50%;
@@ -38,31 +35,26 @@
         white-space: nowrap;
     }
     .dropdown a:hover { background: #fff3f2; color: #7c2220 !important; }
-    .dropdown-icon {
-        width: 34px; height: 34px; border-radius: 8px;
+    .dropdown-icon { width: 34px; height: 34px; border-radius: 8px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 18px; flex-shrink: 0;
-    }
+        font-size: 18px; flex-shrink: 0; }
     .dropdown-text { display: flex; flex-direction: column; }
     .dropdown-title { font-weight: 500; color: #333; font-size: 14px; }
     .dropdown-sub   { font-size: 11px; color: #999; margin-top: 1px; }
     .dropdown hr { border: none; border-top: 1px solid #f0f0f0; margin: 4px 8px; }
     .book-arrow { font-size: 10px; opacity: 0.7; margin-left: 3px; transition: transform 0.2s; }
     .menu li.has-dropdown.open .book-arrow { transform: rotate(180deg); }
-
-
     </style>
-</head>
+    </head>
 <body>
 
-    <nav>
+        <nav>
         <div class="container">
             <div class="nav-con">
                 <div class="logo"><a href="../index.html">Bookself.</a></div>
                 <ul class="menu">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../checkout.html">Shop</a></li>
-
                     <li class="has-dropdown">
                         <a style="display:flex;align-items:center;gap:2px;">
                             Book <span class="book-arrow">▼</span>
@@ -99,7 +91,6 @@
                             </a>
                         </div>
                     </li>
-
                     <li class="navContract" id="navContractItem" style="display:flex; gap:10px; align-items:center; margin-left:0.6rem !important;">
                         <a href="../login.html"
                            style="color:#fff; font-size:14px; text-decoration:none;
@@ -118,7 +109,6 @@
                             สมัครสมาชิก
                         </a>
                     </li>
-
                     <li class="navUser" id="navUserItem" style="display:none;">
                         <a href="../profile.html" id="navDisplayName"
                            style="color:#fff; padding:3px 12px;
@@ -166,11 +156,13 @@
                     <p class="online-price"><span style="color:#7c2220;"><b>฿528.00</b></span> Online Price</p>
                     <p class="member-price"><span style="color:#7c2220;"><b>฿475.00</b></span> Member Price</p>
                     <p>Availability Status : <span>In stock at the Fulfilment Centre.</span></p>
-                    <label>Quantity :</label>
-                    <input type="number" value="1" min="1"><br><br>
+                    
                     <div class="product-btn">
-                        <a href="#" class="product-btn-1">Add to Cart</a>
-                        <a href="../checkout.html" class="product-btn-1">Buy Now</a>
+                        <a class="product-btn-1" style="cursor:pointer;"
+                            onclick="addToCart('veil1', 'Veil Volume 1: Temperature of Orange', 528)">
+                            Add to Cart
+                        </a>
+                        <a href="../cart.html" class="product-btn-1">View Cart</a>
                     </div>
                 </div>
 
@@ -290,29 +282,24 @@
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/cart.js"></script>
 <script>
     const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
     const sbNav = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
     (async () => {
         const { data: { session } } = await sbNav.auth.getSession();
         if (!session) return;
-
-        const user        = session.user;
-        const fullName    = user.user_metadata?.full_name || user.user_metadata?.name || "";
+        const user = session.user;
+        const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
         const displayName = fullName || user.email.split("@")[0];
-
         const contractItem = document.getElementById("navContractItem");
         if (contractItem) contractItem.style.display = "none";
-
         const userItem = document.getElementById("navUserItem");
         const nameEl   = document.getElementById("navDisplayName");
         if (userItem) userItem.style.display = "list-item";
         if (nameEl)   nameEl.innerText = "👤 " + displayName;
     })();
-
-    // Dropdown — click เปิด/ปิด
     document.querySelectorAll(".has-dropdown").forEach(li => {
         li.addEventListener("click", e => {
             e.stopPropagation();
@@ -326,7 +313,6 @@
             li.querySelector(".dropdown").classList.toggle("open");
         });
     });
-
     document.addEventListener("click", () => {
         document.querySelectorAll(".has-dropdown").forEach(li => {
             li.classList.remove("open");
@@ -334,6 +320,5 @@
         });
     });
 </script>
-
 </body>
 </html>
