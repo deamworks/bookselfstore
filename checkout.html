@@ -374,6 +374,7 @@
         payBtn.textContent = "กำลังบันทึกคำสั่งซื้อ...";
         const { error } = await sb.from("orders").insert({
             user_id: currentSession.user.id,
+            user_email: currentSession.user.email,
             invoice_no: invoiceNo, items, total, status: "paid",
             shipping_address: { name, phone, address, province, postcode }
         });
