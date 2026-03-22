@@ -322,6 +322,52 @@
             <p style="font-size:12px; color:#bbb; margin-top:10px;"></p>
         </div>
 
+
+        <!-- เพิ่มสินค้าใหม่ -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title">➕ เพิ่มสินค้าใหม่</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 2fr 1fr 1fr auto; gap:12px; align-items:end;">
+                <div>
+                    <label style="font-size:12px; color:#999; display:block; margin-bottom:4px;">รหัสสินค้า *</label>
+                    <input type="text" id="newBookId" placeholder="เช่น veil8, book4"
+                        style="width:100%; padding:9px 12px; border:1.5px solid #ddd; border-radius:8px;
+                               font-family:'Prompt',sans-serif; font-size:13px; color:#333;">
+                </div>
+                <div>
+                    <label style="font-size:12px; color:#999; display:block; margin-bottom:4px;">ชื่อหนังสือ *</label>
+                    <input type="text" id="newBookName" placeholder="ชื่อหนังสือ"
+                        style="width:100%; padding:9px 12px; border:1.5px solid #ddd; border-radius:8px;
+                               font-family:'Prompt',sans-serif; font-size:13px; color:#333;">
+                </div>
+                <div>
+                    <label style="font-size:12px; color:#999; display:block; margin-bottom:4px;">ราคา (บาท) *</label>
+                    <input type="number" id="newBookPrice" placeholder="0.00" min="0" step="0.01"
+                        style="width:100%; padding:9px 12px; border:1.5px solid #ddd; border-radius:8px;
+                               font-family:'Prompt',sans-serif; font-size:13px; color:#333;">
+                </div>
+                <div>
+                    <label style="font-size:12px; color:#999; display:block; margin-bottom:4px;">Stock เริ่มต้น</label>
+                    <input type="number" id="newBookStock" placeholder="10" min="0" value="10"
+                        style="width:100%; padding:9px 12px; border:1.5px solid #ddd; border-radius:8px;
+                               font-family:'Prompt',sans-serif; font-size:13px; color:#333;">
+                </div>
+                <div>
+                    <button onclick="addNewBook()"
+                        style="padding:9px 20px; background:#7c2220; color:#fff; border:none;
+                               border-radius:8px; font-size:13px; cursor:pointer;
+                               font-family:'Prompt',sans-serif; white-space:nowrap; height:38px;">
+                        เพิ่มสินค้า
+                    </button>
+                </div>
+            </div>
+            <p id="addBookMsg" style="font-size:13px; margin-top:12px; display:none;"></p>
+            <p style="font-size:12px; color:#bbb; margin-top:10px;">
+                * รหัสสินค้าต้องไม่ซ้ำกัน เช่น veil8, book4, novel1 — ใช้สำหรับอ้างอิงรูปภาพและ cart
+            </p>
+        </div>
+
     </div>
 </div>
 
@@ -655,6 +701,62 @@
                 <div class="top-book-count">${count} เล่ม</div>
             </div>
         `).join("");
+    }
+
+    // ================================================================
+    // ADD NEW BOOK
+    // ================================================================
+    async function addNewBook() {
+        const id       = document.getElementById("newBookId").value.trim();
+        const name     = document.getElementById("newBookName").value.trim();
+        const price    = parseFloat(document.getElementById("newBookPrice").value);
+        const stockQty = parseInt(document.getElementById("newBookStock").value) || 0;
+        const msgEl    = document.getElementById("addBookMsg");
+
+        // Validate
+        if (!id || !name || isNaN(price) || price < 0) {
+            msgEl.style.display = "block";
+            msgEl.style.color   = "#cc0000";
+            msgEl.textContent   = "⚠️ กรุณากรอกรหัสสินค้า, ชื่อ และราคาให้ครบ";
+            return;
+        }
+
+        // ตรวจรหัสซ้ำ
+        const { data: existing } = await sb.from("books").select("id").eq("id", id).maybeSingle();
+        if (existing) {
+            msgEl.style.display = "block";
+            msgEl.style.color   = "#cc0000";
+            msgEl.textContent   = `⚠️ รหัสสินค้า "${id}" มีอยู่แล้ว กรุณาใช้รหัสอื่น`;
+            return;
+        }
+
+        // Insert
+        const { error } = await sb.from("books").insert({
+            id, name, price, stock_qty: stockQty
+        });
+
+        if (error) {
+            msgEl.style.display = "block";
+            msgEl.style.color   = "#cc0000";
+            msgEl.textContent   = "🚫 เพิ่มไม่สำเร็จ: " + error.message;
+            return;
+        }
+
+        // Success
+        msgEl.style.display = "block";
+        msgEl.style.color   = "#2e7d32";
+        msgEl.textContent   = `✅ เพิ่ม "${name}" สำเร็จแล้ว`;
+
+        // Clear form
+        document.getElementById("newBookId").value    = "";
+        document.getElementById("newBookName").value  = "";
+        document.getElementById("newBookPrice").value = "";
+        document.getElementById("newBookStock").value = "10";
+
+        // Refresh stock table
+        await loadStock();
+
+        setTimeout(() => { msgEl.style.display = "none"; }, 3000);
     }
 </script>
 </body>
