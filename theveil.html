@@ -4,318 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookself Shop</title>
-    <link rel="icon" href="photo/book-icon.png" type="image/x-icon">
-
     <link rel="stylesheet" href="./css/book.css">
-    <script src="js/navbar-auth.js" defer></script>
-
+    <link rel="icon" href="photo/book-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ===== SEARCH & FILTER BAR ===== */
-        .search-wrap {
-            max-width: 1200px;
-            margin: 24px auto 0;
-            padding: 0 20px;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 10px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 14px;
-            color: #333;
-            background: #fff;
-            transition: border 0.2s;
-        }
-        .search-input:focus {
-            outline: none;
-            border-color: #7c2220;
-        }
-
-        .sort-select {
-            padding: 10px 14px;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 13px;
-            color: #555;
-            background: #fff;
-            cursor: pointer;
-            transition: border 0.2s;
-        }
-        .sort-select:focus { outline: none; border-color: #7c2220; }
-
-        .filter-chips {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
-        }
-
-        .chip {
-            padding: 5px 16px;
-            border-radius: 20px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            border: 1.5px solid #ddd;
-            background: #fff;
-            color: #777;
-            transition: all 0.15s;
-        }
-        .chip:hover  { border-color: #7c2220; color: #7c2220; }
-        .chip.active { background: #7c2220; color: #fff; border-color: #7c2220; }
-
-        .result-count {
-            font-family: 'Prompt', sans-serif;
-            font-size: 13px;
-            color: #999;
-            margin: 10px 0 4px;
-            max-width: 1200px;
-            padding: 0 20px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .result-count span { color: #7c2220; font-weight: 600; }
-
-        /* ซ่อน section title เมื่อทุก item ใน section นั้นถูกซ่อน */
-        .container.hidden-section { display: none; }
-
-        /* empty state */
-        .empty-state {
-            font-family: 'Prompt', sans-serif;
-            text-align: center;
-            padding: 60px 20px;
-            color: #bbb;
-            font-size: 15px;
-            display: none;
-        }
-        .empty-state.show { display: block; }
+        .search-wrap { max-width:1200px; margin:24px auto 0; padding:0 20px; }
+        .search-bar { display:flex; gap:10px; margin-bottom:12px; }
+        .search-input { flex:1; padding:10px 16px; border:1.5px solid #ddd; border-radius:10px; font-family:'Prompt',sans-serif; font-size:14px; color:#333; background:#fff; transition:border 0.2s; }
+        .search-input:focus { outline:none; border-color:#7c2220; }
+        .sort-select { padding:10px 14px; border:1.5px solid #ddd; border-radius:10px; font-family:'Prompt',sans-serif; font-size:13px; color:#555; background:#fff; cursor:pointer; }
+        .sort-select:focus { outline:none; border-color:#7c2220; }
+        .filter-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+        .chip { padding:5px 16px; border-radius:20px; font-family:'Prompt',sans-serif; font-size:13px; cursor:pointer; border:1.5px solid #ddd; background:#fff; color:#777; transition:all 0.15s; }
+        .chip:hover { border-color:#7c2220; color:#7c2220; }
+        .chip.active { background:#7c2220; color:#fff; border-color:#7c2220; }
+        .result-count { font-family:'Prompt',sans-serif; font-size:13px; color:#999; margin:10px 0 4px; max-width:1200px; padding:0 20px; margin-left:auto; margin-right:auto; }
+        .result-count span { color:#7c2220; font-weight:600; }
+        .empty-state { font-family:'Prompt',sans-serif; text-align:center; padding:60px 20px; color:#bbb; font-size:15px; display:none; }
+        .empty-state.show { display:block; }
+    </style>
+    <style>
+    .menu-ul { align-items: center; gap: 2.8rem; }
+    .has-dropdown { position: relative; }
+    .book-dropdown {
+        display: none; position: absolute;
+        top: calc(100% + 12px); left: 50%;
+        transform: translateX(-50%);
+        background: #fff; border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        padding: 10px 8px; min-width: 210px;
+        z-index: 999; border: 1px solid rgba(0,0,0,0.06);
+        list-style: none;
+    }
+    .book-dropdown::before {
+        content: ''; position: absolute;
+        top: -7px; left: 50%; transform: translateX(-50%);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+    }
+    .book-dropdown.open { display: block; }
+    .book-dropdown a {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 10px;
+        color: #333 !important; font-size: 14px;
+        text-decoration: none; transition: background 0.18s;
+        white-space: nowrap;
+    }
+    .book-dropdown a:hover { background: #fff3f2; color: #7c2220 !important; }
+    .dd-icon { width: 34px; height: 34px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0; }
+    .dd-text { display: flex; flex-direction: column; }
+    .dd-title { font-weight: 500; color: #333; font-size: 14px; }
+    .dd-sub   { font-size: 11px; color: #999; margin-top: 1px; }
+    .book-dropdown hr { border: none; border-top: 1px solid #f0f0f0; margin: 4px 8px; }
+    .book-arrow { font-size: 10px; opacity: 0.7; margin-left: 3px; transition: transform 0.2s; }
+    .has-dropdown.open .book-arrow { transform: rotate(180deg); }
     </style>
 </head>
 <body>
 
-    <!-- ===== SEARCH & FILTER ===== -->
+    <!-- NAVBAR -->
+    <nav style="background:#5f2119; padding:18px 20px; font-family:'Prompt',sans-serif;">
+        <div style="max-width:1200px; margin:auto; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-family:'Lora',serif;">
+                <a href="index.html" style="color:#fff; font-size:22px; font-weight:bold; text-decoration:none;">Bookself.</a>
+            </div>
+            <ul id="navMenu" class="menu" style="display:flex; list-style:none; gap:2.8rem; align-items:center; margin:0; padding:0;">
+                <li><a href="index.html" style="color:#fff; text-decoration:none; font-size:14px;">Home</a></li>
+                <li><a href="book.html" style="color:#fff; text-decoration:none; font-size:14px;">Shop</a></li>
+                <li class="has-dropdown" id="bookDropLi" style="list-style:none;">
+                    <a style="display:flex;align-items:center;gap:2px;color:#fff;text-decoration:none;font-size:14px;cursor:pointer;">
+                        Book <span class="book-arrow">▼</span>
+                    </a>
+                    <div class="book-dropdown" id="bookDrop">
+                        <a href="book.html">
+                            <div class="dd-icon" style="background:#fff3f2;">📚</div>
+                            <div class="dd-text"><span class="dd-title">All Books</span><span class="dd-sub">หนังสือทั้งหมด</span></div>
+                        </a>
+                        <hr>
+                        <a href="theveil.html">
+                            <div class="dd-icon" style="background:#fce8f0;">🎌</div>
+                            <div class="dd-text"><span class="dd-title">The Veil Series</span><span class="dd-sub">by Kotteri · 7 เล่ม</span></div>
+                        </a>
+                        <hr>
+                        <a href="thaibook.html">
+                            <div class="dd-icon" style="background:#fef9e7;">🇹🇭</div>
+                            <div class="dd-text"><span class="dd-title">นิยายไทย</span><span class="dd-sub">โรมานซ์ · ภาษาไทย</span></div>
+                        </a>
+                    </div>
+                </li>
+                
+                
+                                <li class="cart-nav-item" style="list-style:none;">
+                    <a href="cart.html" style="position:relative; display:inline-flex; align-items:center; color:#fff; text-decoration:none; padding:0 4px;">
+                        <i class="fa-solid fa-cart-shopping" style="color:#fff; font-size:18px;"></i>
+                        <span class="cart-badge-count" style="position:absolute; top:-8px; right:-10px; background:#fceaca; color:#7c2220; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; padding:0 4px; display:none; align-items:center; justify-content:center; font-family:'Prompt',sans-serif;">0</span>
+                    </a>
+                </li>
+                <li id="navContractItem" style="display:flex;gap:10px;align-items:center;margin-left:0.6rem;">
+                    <a href="login.html" style="color:#fff;font-size:14px;text-decoration:none;padding:5px 14px;border:1.5px solid rgba(255,255,255,0.5);border-radius:20px;transition:all 0.2s;"
+                       onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='transparent'">เข้าสู่ระบบ</a>
+                    <a href="register.html" style="color:#5f2119;font-size:14px;text-decoration:none;padding:5px 14px;background:#fceaca;border-radius:20px;font-weight:500;transition:all 0.2s;"
+                       onmouseover="this.style.background='#f5d5a0'" onmouseout="this.style.background='#fceaca'">สมัครสมาชิก</a>
+                </li>
+                <li id="navUserItem" style="display:none;">
+                    <a href="profile.html" id="navDisplayName" style="color:#fff;padding:3px 12px;border:1px solid rgba(255,255,255,0.4);border-radius:20px;font-size:14px;text-decoration:none;"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- SEARCH & FILTER -->
     <div class="search-wrap">
         <div class="search-bar">
-            <input  class="search-input" id="searchInput"
-                    placeholder="ค้นหาชื่อหนังสือ หรือผู้แต่ง..."
-                    oninput="doFilter()">
+            <input class="search-input" id="searchInput" placeholder="ค้นหาชื่อหนังสือ หรือผู้แต่ง..." oninput="doFilter()">
             <select class="sort-select" id="sortSel" onchange="doFilter()">
                 <option value="default">เรียงตาม: ค่าเริ่มต้น</option>
                 <option value="price-asc">ราคา: ต่ำ → สูง</option>
                 <option value="price-desc">ราคา: สูง → ต่ำ</option>
             </select>
         </div>
-        <div class="filter-chips">
-            <button class="chip active" data-cat="all" onclick="setChip(this)">ทั้งหมด</button>
-            <button class="chip"        data-cat="en"  onclick="setChip(this)">English Books</button>
-            <button class="chip"        data-cat="jp"  onclick="setChip(this)">Japanese Books</button>
-            <button class="chip"        data-cat="th"  onclick="setChip(this)">นิยายไทย</button>
-        </div>
+    
     </div>
+    <div class="result-count" id="resultCount">แสดง <span id="countNum">7</span> รายการ</div>
 
-    <div class="result-count" id="resultCount">
-        แสดง <span id="countNum">10</span> รายการ
-    </div>
-
-    <!-- ===== VEIL SERIES ===== -->
+    <!-- VEIL SERIES -->
     <div class="container" id="sectionVeil">
         <h2 class="product-title">The Veil Series by Kotteri</h2>
         <div class="product-con" id="gridVeil">
 
             <div class="product-item" data-cat="en" data-title="veil volume 1 temperature of orange kotteri english">
-                <div class="product-img">
-                    <a href="bookpage/veil1.html">
-                    <img src="photo/theveil1.jpg" alt="veil1">
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 1 : <br> Temperature of Orange</h3>
-                    <p>by Kotteri</p><br></a>
-                    Item Type: English Books <br>
-                    Publication Date: 2025/06 <br>
-                    Publisher: Udon (US) <br>
-                    ISBN: 9781772943610 <br>
-                    Size/Pages: 128p
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="537">฿537.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil1.html"><img src="photo/theveil1.jpg" alt="veil1"></a></div>
+                <div class="product-info"><h3>Veil Volume 1 : <br> Temperature of Orange</h3><p>by Kotteri</p><br>
+                    Item Type: English Books <br> Publication Date: 2025/06 <br> Publisher: Udon (US) <br> ISBN: 9781772943610 <br> Size/Pages: 128p</div>
+                <div class="product-details"><div class="product-price" data-price="537">฿537.00</div></div>
             </div>
 
             <div class="product-item" data-cat="en" data-title="veil volume 2 calming noir kotteri english">
-                <div class="product-img">
-                    <a href="bookpage/veil2.html">
-                    <img src="photo/theveil2.jpg" alt="veil2">
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 2 : <br> Calming Noir</h3>
-                    <p>by Kotteri</p><br></a>
-                    Item Type: English Books <br>
-                    Publication Date: 2025/07 <br>
-                    Publisher: Udon (US) <br>
-                    ISBN: 9781772943696 <br>
-                    Size/Pages: 128p
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="528">฿528.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil2.html"><img src="photo/theveil2.jpg" alt="veil2"></a></div>
+                <div class="product-info"><h3>Veil Volume 2 : <br> Calming Noir</h3><p>by Kotteri</p><br>
+                    Item Type: English Books <br> Publication Date: 2025/07 <br> Publisher: Udon (US) <br> ISBN: 9781772943696 <br> Size/Pages: 128p</div>
+                <div class="product-details"><div class="product-price" data-price="528">฿528.00</div></div>
             </div>
 
             <div class="product-item" data-cat="jp" data-title="veil volume 3 graceful white kotteri japanese">
-                <div class="product-img">
-                    <a href="bookpage/veil3.html">
-                    <img src="photo/theveil3.jpg" alt="veil3"></a>
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 3: <br> Graceful White</h3>
-                    <p>by Kotteri</p><br>
-                    Item Type: Japanese Books <br>
-                    Publication Date: 2020/12 <br>
-                    Publisher: 実業之日本社 (JP) <br>
-                    ISBN: 9784408415970 <br>
-                    Size/Pages: A5 21cm
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="529">฿529.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil3.html"><img src="photo/theveil3.jpg" alt="veil3"></a></div>
+                <div class="product-info"><h3>Veil Volume 3: <br> Graceful White</h3><p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2020/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408415970 <br> Size/Pages: A5 21cm</div>
+                <div class="product-details"><div class="product-price" data-price="529">฿529.00</div></div>
             </div>
 
             <div class="product-item" data-cat="jp" data-title="veil volume 4 transparent burns kotteri japanese">
-                <div class="product-img">
-                    <a href="bookpage/veil4.html">
-                    <img src="photo/veil4.jpg" alt="veil4">
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 4: <br> Transparent Burns</h3>
-                    <p>by Kotteri</p><br></a>
-                    Item Type: Japanese Books <br>
-                    Publication Date: 2021/12 <br>
-                    Publisher: 実業之日本社 (JP) <br>
-                    ISBN: 9784408640440 <br>
-                    Size/Pages: A5 21cm
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="553">฿553.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil4.html"><img src="photo/veil4.jpg" alt="veil4"></a></div>
+                <div class="product-info"><h3>Veil Volume 4: <br> Transparent Burns</h3><p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2021/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408640440 <br> Size/Pages: A5 21cm</div>
+                <div class="product-details"><div class="product-price" data-price="553">฿553.00</div></div>
             </div>
 
             <div class="product-item" data-cat="jp" data-title="veil volume 5 golden blink kotteri japanese">
-                <div class="product-img">
-                    <img src="photo/veil5.jpg" alt="veil5">
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 5: <br> Golden Blink</h3>
-                    <p>by Kotteri</p><br>
-                    Item Type: Japanese Books <br>
-                    Publication Date: 2022/12 <br>
-                    Publisher: 実業之日本社 (JP) <br>
-                    ISBN: 9784408640778 <br>
-                    Size/Pages: A5 21cm
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="529">฿529.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil5.html"><img src="photo/veil5.jpg" alt="veil5"></a></div>
+                <div class="product-info"><h3>Veil Volume 5: <br> Golden Blink</h3><p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2022/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408640778 <br> Size/Pages: A5 21cm</div>
+                <div class="product-details"><div class="product-price" data-price="529">฿529.00</div></div>
             </div>
 
             <div class="product-item" data-cat="jp" data-title="veil volume 6 untangled rouge kotteri japanese">
-                <div class="product-img">
-                    <a href="bookpage/veil6.html">
-                    <img src="photo/veil6.jpg" alt="veil6">
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 6: <br> Untangled Rouge</h3>
-                    <p>by Kotteri</p><br></a>
-                    Item Type: Japanese Books <br>
-                    Publication Date: 2023/12 <br>
-                    Publisher: 実業之日本社 (JP) <br>
-                    ISBN: 9784408641188 <br>
-                    Size/Pages: A5 21cm
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="600">฿600.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil6.html"><img src="photo/veil6.jpg" alt="veil6"></a></div>
+                <div class="product-info"><h3>Veil Volume 6: <br> Untangled Rouge</h3><p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2023/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408641188 <br> Size/Pages: A5 21cm</div>
+                <div class="product-details"><div class="product-price" data-price="600">฿600.00</div></div>
             </div>
 
             <div class="product-item" data-cat="jp" data-title="veil volume 7 warmest blue kotteri japanese">
-                <div class="product-img">
-                    <img src="photo/veil7.jpg" alt="veil7">
-                </div>
-                <div class="product-info">
-                    <h3>Veil Volume 7: <br> Warmest Blue</h3>
-                    <p>by Kotteri</p><br>
-                    Item Type: Japanese Books <br>
-                    Publication Date: 2025/12 <br>
-                    Publisher: 実業之日本社 (JP) <br>
-                    ISBN: 9784408641591 <br>
-                    Size/Pages: A5 21cm
-                </div>
-                <div class="product-details">
-                    <div class="product-price" data-price="536">฿536.00</div>
-                </div>
+                <div class="product-img"><a href="bookpage/veil7.html"><img src="photo/veil7.jpg" alt="veil7"></a></div>
+                <div class="product-info"><h3>Veil Volume 7: <br> Warmest Blue</h3><p>by Kotteri</p><br>
+                    Item Type: Japanese Books <br> Publication Date: 2025/12 <br> Publisher: 実業之日本社 (JP) <br> ISBN: 9784408641591 <br> Size/Pages: A5 21cm</div>
+                <div class="product-details"><div class="product-price" data-price="536">฿536.00</div></div>
             </div>
 
         </div>
     </div>
 
-    <!-- empty state -->
-    <div class="empty-state" id="emptyState">
-        ไม่พบหนังสือที่ตรงกับการค้นหา
-    </div>
+
+
+    <div class="empty-state" id="emptyState">ไม่พบหนังสือที่ตรงกับการค้นหา</div>
 
     <script>
         let activeCat = "all";
-
         function setChip(el) {
             document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
             el.classList.add("active");
             activeCat = el.dataset.cat;
             doFilter();
         }
-
         function doFilter() {
             const q    = document.getElementById("searchInput").value.toLowerCase().trim();
             const sort = document.getElementById("sortSel").value;
-
             const allItems = Array.from(document.querySelectorAll(".product-item"));
-
-            // กรอง
             let visible = [];
             allItems.forEach(item => {
                 const matchCat  = activeCat === "all" || item.dataset.cat === activeCat;
                 const matchText = item.dataset.title.toLowerCase().includes(q);
-                const show      = matchCat && matchText;
+                const show = matchCat && matchText;
                 item.style.display = show ? "" : "none";
                 if (show) visible.push(item);
             });
-
-            // เรียงลำดับ (ย้าย DOM)
             if (sort !== "default") {
                 visible.sort((a, b) => {
                     const pa = parseFloat(a.querySelector(".product-price").dataset.price);
                     const pb = parseFloat(b.querySelector(".product-price").dataset.price);
                     return sort === "price-asc" ? pa - pb : pb - pa;
                 });
-
-                // รวมทุก item ไปไว้ใน gridVeil ชั่วคราวเมื่อ sort
-                const gridVeil  = document.getElementById("gridVeil");
-                const gridThai  = document.getElementById("gridThai");
-
-                if (sort !== "default") {
-                    visible.forEach(item => gridVeil.appendChild(item));
-                    // ซ่อน section Thai header เมื่อ sort ข้ามหมวด
-                    const thaiHeader = document.querySelector("#sectionThai .product-title-thai");
-                    if (thaiHeader) thaiHeader.style.display = "none";
-                }
+                const gridVeil = document.getElementById("gridVeil");
+                visible.forEach(item => gridVeil.appendChild(item));
+                const thaiHeader = document.querySelector("#sectionThai .product-title-thai");
+                if (thaiHeader) thaiHeader.style.display = "none";
             } else {
-                // คืน DOM กลับ section เดิม
                 const gridVeil = document.getElementById("gridVeil");
                 const gridThai = document.getElementById("gridThai");
                 allItems.forEach(item => {
@@ -325,19 +231,66 @@
                 const thaiHeader = document.querySelector("#sectionThai .product-title-thai");
                 if (thaiHeader) thaiHeader.style.display = "";
             }
-
-            // ซ่อน section ที่ไม่มี item เหลืออยู่เลย
             ["sectionVeil", "sectionThai"].forEach(id => {
-                const sec     = document.getElementById(id);
+                const sec = document.getElementById(id);
                 const hasItem = sec.querySelectorAll(".product-item:not([style*='display: none'])").length > 0;
                 sec.style.display = hasItem ? "" : "none";
             });
-
-            // นับและแสดง
             document.getElementById("countNum").textContent = visible.length;
             document.getElementById("emptyState").classList.toggle("show", visible.length === 0);
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        const SUPABASE_URL  = "https://zngfesvcxszvptburtio.supabase.co";
+        const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2Zlc3ZjeHN6dnB0YnVydGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTI4NTQsImV4cCI6MjA4OTU2ODg1NH0.Be0xbq5svhPm4mfzA0-tkdQ1jaJFlj0Fkvqrq_zvoow";
+        const sbNav = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        (async () => {
+            const { data: { session } } = await sbNav.auth.getSession();
+            if (!session) return;
+            const user = session.user;
+            const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+            const displayName = fullName || user.email.split("@")[0];
+            const contractItem = document.getElementById("navContractItem");
+            if (contractItem) contractItem.style.display = "none";
+            const userItem = document.getElementById("navUserItem");
+            const nameEl   = document.getElementById("navDisplayName");
+            if (userItem) userItem.style.display = "list-item";
+            if (nameEl)   nameEl.innerText = "👤 " + displayName;
+        })();
+        const dropItem = document.getElementById("bookDropdownItem");
+        const dropdown = document.getElementById("bookDropdown");
+        const arrow    = document.getElementById("bookArrow");
+        if (dropItem) {
+            dropItem.addEventListener("click", e => {
+                e.stopPropagation();
+                const open = dropdown.style.display === "block";
+                dropdown.style.display = open ? "none" : "block";
+                arrow.style.transform  = open ? "rotate(0deg)" : "rotate(180deg)";
+            });
+        }
+        document.addEventListener("click", () => {
+            if (dropdown) dropdown.style.display = "none";
+            if (arrow)    arrow.style.transform  = "rotate(0deg)";
+        });
+    </script>
+
+<script>
+    const bookDropLi = document.getElementById("bookDropLi");
+    const bookDrop   = document.getElementById("bookDrop");
+    if (bookDropLi) {
+        bookDropLi.addEventListener("click", e => {
+            e.stopPropagation();
+            bookDropLi.classList.toggle("open");
+            bookDrop.classList.toggle("open");
+        });
+    }
+    document.addEventListener("click", () => {
+        if (bookDropLi) bookDropLi.classList.remove("open");
+        if (bookDrop)   bookDrop.classList.remove("open");
+    });
+</script>
 </body>
 </html>
