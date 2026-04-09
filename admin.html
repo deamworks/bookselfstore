@@ -685,7 +685,7 @@
 
         const sorted = Object.entries(bookCount)
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 6);
+            .slice(0, 10);
 
         if (sorted.length === 0) {
             document.getElementById("topBooks").innerHTML = `<div class="empty-state">ยังไม่มีข้อมูล</div>`;
